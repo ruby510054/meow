@@ -481,6 +481,16 @@
   .about-dlg ul { margin: 0; padding-left: 1.2em; }
   .about-dlg li { margin-bottom: 4px; }
   .about-help { background: var(--accent-soft); border: 1.5px dashed var(--line); border-radius: var(--wobble2); padding: 10px 14px; font-size: 14px; }
+  .clear-dlg { font-size: 15px; line-height: 1.6; }
+  .clear-opt { border: 1.5px dashed color-mix(in srgb, var(--ink) 30%, transparent); border-radius: var(--wobble2); padding: 10px 14px; margin: 10px 0; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+  .clear-opt[hidden] { display: none; }
+  .clear-opt span { font-size: 13px; color: var(--muted); }
+  .clear-opt .warn { width: 100%; margin: 0; font-size: 14px; color: var(--accent); }
+  .clear-reset { width: 100%; font-size: 13.5px; display: flex; gap: 6px; align-items: flex-start; }
+  .clear-reset input { margin-top: 5px; accent-color: var(--accent); }
+  .clear-dlg .btn { font: inherit; font-size: 14px; color: var(--ink); background: var(--card); cursor: pointer; border: 1.5px solid var(--line); border-radius: var(--wobble2); padding: 3px 14px; }
+  .clear-dlg .btn.danger { background: #fde3e3; }
+  .clear-dlg .btn.danger.sure { background: #e5484d; color: #fff; }
   .day-dlg::backdrop { background: rgba(40, 28, 34, .38); }
   .dlg-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
   .dlg-head h2 { margin: 0; }
@@ -780,7 +790,7 @@
   <div class="data-bar">
     <button id="exportBtn">💾 下載備份檔</button>
     <button id="importBtn">📂 從備份檔讀取</button>
-    <button id="clearDemo" hidden>🧹 清除示範資料</button>
+    <button id="clearBtn">🧹 清除資料</button>
     <button id="aboutBtn">🐾 關於喵記</button>
     <input type="file" id="importFile" accept=".json,application/json" hidden>
   </div>
@@ -805,6 +815,21 @@
   </ul>
   <p class="about-help">喵記是陪你練習的小工具，不能取代專業的協助。如果最近常常覺得撐不住，或是有傷害自己的念頭，請找信任的人聊聊，或撥打<br><b>安心專線 1925</b>（24 小時，免付費）、<b>生命線 1995</b>、<b>張老師 1980</b>。</p>
   <p class="dlg-empty">研究出處和更多說明，請看 <a href="https://github.com/ruby510054/meow#為什麼做這個" target="_blank" rel="noopener">GitHub 上的介紹</a>。</p>
+</dialog>
+
+<dialog class="card day-dlg clear-dlg" id="clearDlg" aria-labelledby="clearTitle">
+  <div class="dlg-head"><h2 id="clearTitle">清除資料</h2><button class="dlg-x" data-close-clear aria-label="關閉">×</button></div>
+  <p id="clearInfo"></p>
+  <div class="clear-opt" id="clearDemoBox">
+    <button class="btn" id="clearDemoOnly">只清除示範資料</button>
+    <span>你自己記的心情會留著</span>
+  </div>
+  <div class="clear-opt danger-box">
+    <p class="warn">清除之後就找不回來了，建議先下載一份備份檔。</p>
+    <button class="btn" id="clearBackup">💾 先下載備份檔</button>
+    <label class="clear-reset"><input type="checkbox" id="clearReset"> 寵物和設定也一起重設（名字、花色、一起生活的天數、主題色、窗簾、音樂和音效）</label>
+    <button class="btn danger" id="clearAll">清除所有心情記錄</button>
+  </div>
 </dialog>
 
 <dialog class="card day-dlg" id="buddyDlg" aria-labelledby="buddyDlgTitle">
@@ -1375,14 +1400,19 @@ const randHue = () => Math.floor(Math.random() * 360);
 // ---------- 資料 ----------
 // entries["2026-09-28"] = [{ mood, text, t: "14:05" }, ...]，一天可以記很多次
 const KEY = "meow-diary";
-let entries = {};
-try { entries = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
+let entries = {}, firstVisit = true;
+try {
+  const stored = localStorage.getItem(KEY);
+  firstVisit = stored === null;
+  entries = JSON.parse(stored) || {};
+} catch (e) {}
 for (const k in entries) if (!Array.isArray(entries[k])) entries[k] = [entries[k]];  // 舊格式：一天一筆
 // 「今天」會跟著時間更新（網頁開著過了午夜也會換日）
 let today = new Date();
 const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 let TODAY = iso(today);
-if (!Object.keys(entries).length) {
+// 第一次打開時放一些示範資料（之後清空也不會再跑出來）
+if (firstVisit && !Object.keys(entries).length) {
   const demo = ["happy","calm","tired","happy","sad","calm","happy","anxious","tired","calm","happy","angry","calm","happy","tired","happy","calm","sad","happy","calm","happy","tired","calm","happy","anxious","happy","calm"];
   const times = ["09:10", "13:30", "21:45"];
   for (let d = 1; d < today.getDate(); d++) {
@@ -2918,7 +2948,6 @@ function afterChange(date) {
     if (!list.length) delete entries[date];
   }
   persist(); renderCal(); renderToday(); renderMeadow(); drawBuddy(); updateWeather();
-  $("clearDemo").hidden = !hasDemo();
   renderDlg();
 }
 
@@ -3235,7 +3264,6 @@ function removeDemo() {
 function refreshAll() {
   persist(); renderCal(); renderToday(); renderMeadow(); renderCoats(); drawBuddy(); updateWeather();
   $("buddyName").value = buddyName();
-  $("clearDemo").hidden = !hasDemo();
 }
 
 $("exportBtn").onclick = () => {
@@ -3301,10 +3329,44 @@ $("importFile").onchange = e => {
   e.target.value = "";
 };
 
-$("clearDemo").hidden = !hasDemo();
-$("clearDemo").onclick = () => {
+// ---------- 清除資料 ----------
+const SETTING_KEYS = ["meow-theme", "meow-buddy", "meow-music", "meow-sfx", "meow-sfx-vol", "meow-curtain", "meow-curtain-shut", "meow-last-backup"];
+function openClear() {
+  const real = realCount(), demo = Object.values(entries).flat().filter(r => r.demo).length;
+  $("clearInfo").textContent = `目前有 ${real} 筆你自己的記錄` + (demo ? `，和 ${demo} 筆示範資料。` : "。");
+  $("clearDemoBox").hidden = !demo;
+  $("clearReset").checked = false;
+  resetClearAll();
+  $("clearDlg").showModal?.();
+}
+function resetClearAll() { $("clearAll").classList.remove("sure"); $("clearAll").textContent = "清除所有心情記錄"; }
+$("clearBtn").onclick = openClear;
+document.querySelector("[data-close-clear]").onclick = () => $("clearDlg").close();
+$("clearDemoOnly").onclick = () => {
   removeDemo(); refreshAll();
+  $("clearDlg").close();
   buddySay("示範資料清掉了！接下來都是你自己的記錄囉");
+};
+$("clearBackup").onclick = () => $("exportBtn").click();
+// 全部清除要按兩次才會真的刪
+$("clearAll").onclick = () => {
+  const b = $("clearAll");
+  if (!b.classList.contains("sure")) {
+    b.classList.add("sure"); b.textContent = "真的要全部清除嗎？再按一次";
+    clearTimeout(b.t); b.t = setTimeout(resetClearAll, 4000);
+    return;
+  }
+  for (const k in entries) delete entries[k];
+  persist();
+  if ($("clearReset").checked) {
+    // 連寵物和設定一起重設：清掉設定後重新載入，一切從頭開始
+    try { SETTING_KEYS.forEach(k => localStorage.removeItem(k)); } catch (e) {}
+    location.reload();
+    return;
+  }
+  refreshAll();
+  $("clearDlg").close();
+  buddySay("都清乾淨了。從今天開始，一起慢慢記錄吧 🐾");
 };
 
 renderMoods();
