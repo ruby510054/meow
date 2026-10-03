@@ -146,7 +146,7 @@
     background: linear-gradient(var(--skyA), var(--skyB) 62%);
     transition: --skyA 2s ease, --skyB 2s ease;
   }
-  .meadow .cloud path { fill: var(--cloud, #fff); transition: fill 2s; }
+  .meadow .cloud .puff { fill: var(--cloud, #fff); transition: fill 2s; }
   .meadow .sun { transition: opacity 2s, filter 2s; }
   .weather {
     position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); z-index: 300; font-size: 13px; pointer-events: none; white-space: nowrap;
@@ -168,7 +168,7 @@
   .meadow.gloomy .scene, .meadow.gloomy .deco, .meadow.gloomy .trees { filter: saturate(.65) brightness(.93); }
   .meadow .fly { transition: opacity 1.5s; }
   .meadow.gloomy .fly { opacity: 0; }   /* 下雨天蝴蝶躲起來 */
-  .rainbow { position: absolute; left: 22%; top: 18%; width: 46%; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 2s; }
+  .rainbow { filter: blur(1.5px); position: absolute; left: 22%; top: 18%; width: 46%; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 2s; }
   .meadow.flash::after { content: ""; position: absolute; inset: 0; z-index: 270; background: #fff; animation: flash .5s ease-out; pointer-events: none; }
   @keyframes flash { 0%, 40% { opacity: .55; } 20%, 100% { opacity: 0; } }
   @keyframes winfall { to { transform: translateY(160px); } }
@@ -219,8 +219,14 @@
     position: absolute; top: 8px; left: 10px; z-index: 300; font-size: 14px;
     background: var(--card); border: 1.5px solid var(--line); padding: 2px 10px; border-radius: var(--wobble2);
   }
-  .sun { position: absolute; top: 18px; right: 34px; width: 58px; animation: spin 40s linear infinite; }
-  .cloud { position: absolute; width: 110px; opacity: .95; animation: drift 80s linear infinite; }
+  /* 太陽：中間亮、往外慢慢淡掉的光暈，輕輕一明一暗 */
+  .sun {
+    position: absolute; top: 3%; right: 5%; width: calc(130px * var(--ms, 1)); aspect-ratio: 1; border-radius: 50%;
+    background: radial-gradient(circle, #fffbf2 0 14%, #ffe6c8 24%, rgba(255, 214, 180, .6) 38%, rgba(255, 205, 175, .22) 54%, rgba(255, 205, 175, 0) 70%);
+    animation: glow 5s ease-in-out infinite alternate;
+  }
+  @keyframes glow { to { transform: scale(1.08); } }
+  .cloud { position: absolute; width: calc(150px * var(--ms, 1)); opacity: .95; animation: drift 80s linear infinite; }
   @keyframes drift { from { left: -140px; } to { left: 105%; } }
   @keyframes spin { to { transform: rotate(360deg); } }
   [data-theme="night"] .sun { filter: grayscale(1) brightness(1.5); }
@@ -545,6 +551,7 @@
 <!-- 手繪感濾鏡：讓線條有點歪歪抖抖的 -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
+    <filter id="softCloud" x="-20%" y="-30%" width="140%" height="160%"><feGaussianBlur stdDeviation="2.4"/></filter>
     <filter id="w" x="-10%" y="-10%" width="120%" height="120%">
       <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="3"/>
       <feDisplacementMap in="SourceGraphic" scale="2"/>
@@ -740,23 +747,11 @@
   </defs></svg>
   <div class="curtains" id="curtains"></div>
   <div class="meadow" id="meadow">
-    <!-- 草地分成好幾層：越遠越淡（帶一點藍灰），越近越深，看起來比較有距離感 -->
-    <svg class="scene far" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true">
-      <g filter="url(#w)" stroke-linejoin="round">
-        <path d="M-10 168 Q80 128 170 146 T350 132 T560 140 T760 118 T1010 134 L1010 310 L-10 310Z" fill="#c7d9c6" stroke="#8fa596" stroke-width="1.6"/>
-        <path d="M-10 180 Q150 140 330 166 T660 156 T1010 150 L1010 310 L-10 310Z" fill="#a3c98a" stroke="#4a3439" stroke-width="2" stroke-opacity=".55"/>
-      </g>
-    </svg>
+    <!-- 窗外的景色不畫線：草地用綠色深淺分出遠近，每一層的上緣是鋸齒狀的草尖（由程式畫） -->
+    <svg class="scene far" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true"></svg>
     <div class="trees" aria-hidden="true"></div>
-    <svg class="scene near" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true">
-      <g filter="url(#w)" stroke="#4a3439" stroke-width="2.5" stroke-linejoin="round">
-        <path d="M-10 200 Q240 180 500 195 T1010 187 L1010 310 L-10 310Z" fill="#88b96c"/>
-        <path d="M-10 264 Q260 250 520 260 T1010 254 L1010 310 L-10 310Z" fill="#76a85c" stroke-opacity=".5" stroke-width="1.8"/>
-      </g>
-    </svg>
-    <svg class="sun" viewBox="0 0 60 60" aria-hidden="true"><g filter="url(#w)" stroke="#4a3439" stroke-width="2" stroke-linecap="round">
-      <path d="M30 3v7M30 50v7M3 30h7M50 30h7M11 11l5 5M44 44l5 5M49 11l-5 5M16 44l-5 5" fill="none"/>
-      <circle cx="30" cy="30" r="13" fill="#ffc9b9"/></g></svg>
+    <svg class="scene near" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true"></svg>
+    <div class="sun" aria-hidden="true"></div>
     <svg class="rainbow" id="rainbow" viewBox="0 0 200 100" aria-hidden="true"><g fill="none" stroke-width="7" stroke-linecap="round" opacity=".75">
       <path d="M10 100 A90 90 0 0 1 190 100" stroke="#f9c4c9"/><path d="M17 100 A83 83 0 0 1 183 100" stroke="#fde0b8"/>
       <path d="M24 100 A76 76 0 0 1 176 100" stroke="#fdf2bf"/><path d="M31 100 A69 69 0 0 1 169 100" stroke="#cdeccb"/>
@@ -1555,17 +1550,17 @@ function addDeco(html, left, bottom, w) {
   const t = document.createElement("div");
   t.className = "tree";
   t.style.cssText = `left:${x}%;bottom:${y}%;width:calc(${Math.round(30 * k)}px * var(--ms, 1));opacity:${(.55 + k * .5).toFixed(2)};animation-delay:${-i * .7}s`;
-  t.innerHTML = `<svg viewBox="0 0 30 44"><g stroke="#4a3439" stroke-width="1.6" stroke-linejoin="round" stroke-opacity=".6">
-    <path d="M13.5 30 H16.5 V43 H13.5Z" fill="#b28a68"/><path d="M15 2 C26 2 29 14 26 22 C24 30 6 30 4 22 C1 14 4 2 15 2Z" fill="${i % 3 ? "#8fbf72" : "#7fb36a"}"/>
-    <path d="M10 10 Q13 7 17 8" fill="none" stroke="#fff" stroke-opacity=".4"/></g></svg>`;
+  t.innerHTML = `<svg viewBox="0 0 30 44">
+    <path d="M13.5 28 H16.5 V43 H13.5Z" fill="#a98466"/><path d="M15 2 C26 2 29 14 26 22 C24 30 6 30 4 22 C1 14 4 2 15 2Z" fill="${i % 3 ? "#86b96a" : "#78ad60"}"/>
+    <path d="M14 4 C21 4 23 11 21 16 C18 20 9 19 8 14 C7 8 9 4 14 4Z" fill="#fff" fill-opacity=".18"/></svg>`;
   meadow.querySelector(".trees").appendChild(t);
 });
 // 三片尖尖葉子的草叢（實心），fill 是顏色、tilt 讓每叢草歪的方向不太一樣
-const grass = (fill, tilt = 0, line = .7) => `<svg viewBox="0 0 30 24" style="transform:rotate(${tilt}deg)"><path d="M3 24 Q6 13 4 4 Q10 13 11.5 24Z M10 24 Q13.5 9 15 0 Q18 10 20 24Z M18.5 24 Q22 13 26.5 5 Q25 15 27 24Z"
-  fill="${fill}" stroke="#4a3439" stroke-width="1.3" stroke-linejoin="round" stroke-opacity="${line}"/>
+const grass = (fill, tilt = 0) => `<svg viewBox="0 0 30 24" style="transform:rotate(${tilt}deg)"><path d="M3 24 Q6 13 4 4 Q10 13 11.5 24Z M10 24 Q13.5 9 15 0 Q18 10 20 24Z M18.5 24 Q22 13 26.5 5 Q25 15 27 24Z"
+  fill="${fill}"/>
   <path d="M15 4 Q15.5 12 15.5 20" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="1.2"/></svg>`;
 // 算出草地分界線在某個水平位置的高度（照背景 SVG 裡的曲線，M → Q → T… 的寫法）
-function curveAt(d) {
+function curveY(d) {
   const nums = d.match(/-?[\d.]+/g).map(Number), pts = [];
   let p0 = [nums[0], nums[1]], c = [nums[2], nums[3]], p1 = [nums[4], nums[5]];
   const seg = (a, k, b) => { for (let t = 0; t <= 1; t += .02) pts.push([(1 - t) ** 2 * a[0] + 2 * (1 - t) * t * k[0] + t * t * b[0], (1 - t) ** 2 * a[1] + 2 * (1 - t) * t * k[1] + t * t * b[1]]); };
@@ -1574,50 +1569,72 @@ function curveAt(d) {
     const next = [nums[i], nums[i + 1]], k = [2 * p1[0] - c[0], 2 * p1[1] - c[1]];
     seg(p1, k, next); c = k; p1 = next;
   }
-  // 回傳：給 0~100 的水平位置，得到離底部的百分比
-  return xPct => {
-    const x = xPct * 10, i = pts.findIndex(q => q[0] >= x), a = pts[Math.max(0, i - 1)], b = pts[Math.max(0, i)];
-    const y = a[1] + (b[1] - a[1]) * ((x - a[0]) / ((b[0] - a[0]) || 1));
-    return (300 - y) / 3;
+  return x => {
+    let i = pts.findIndex(q => q[0] >= x);
+    if (i < 0) i = pts.length - 1;
+    const a = pts[Math.max(0, i - 1)], b = pts[i];
+    return a[1] + (b[1] - a[1]) * Math.min(1, Math.max(0, (x - a[0]) / ((b[0] - a[0]) || 1)));
   };
 }
-const flower = c => `<svg viewBox="0 0 24 40"><g filter="url(#w)" stroke="${INK}" stroke-width="1.5">
-  <path d="M12 40 Q11 26 12 16" stroke="#6fa655" stroke-width="2" fill="none"/>
+// 給 0~100 的水平位置，得到分界線離底部的百分比
+const curveAt = d => { const Y = curveY(d); return xPct => (300 - Y(xPct * 10)) / 3; };
+// 一層草地：上緣是鋸齒狀的草尖（amp 是草尖高度、step 是間距；amp 0 就是平滑的遠山）
+function grassLayer(d, fill, amp, step) {
+  const Y = curveY(d);
+  let p = `M-10 310 L-10 ${Y(-10).toFixed(1)}`;
+  for (let x = -10; x <= 1010; x += amp ? step : 20) {
+    p += ` L${x} ${Y(x).toFixed(1)}`;
+    if (amp) p += ` L${(x + step / 2).toFixed(1)} ${(Y(x + step / 2) - amp * (.55 + rand() * .9)).toFixed(1)}`;
+  }
+  return `<path d="${p} L1010 310Z" fill="${fill}"/>`;
+}
+const HILLS = {
+  far:   "M-10 168 Q80 128 170 146 T350 132 T560 140 T760 118 T1010 134",
+  mid:   "M-10 180 Q150 140 330 166 T660 156 T1010 150",
+  near:  "M-10 200 Q240 180 500 195 T1010 187",
+  near2: "M-10 232 Q300 218 560 228 T1010 222",
+  front: "M-10 264 Q260 250 520 260 T1010 254",
+};
+// 越遠越淡（帶一點藍灰），越近越深
+meadow.querySelector(".scene.far").innerHTML = grassLayer(HILLS.far, "#cfdfd0", 0) + grassLayer(HILLS.mid, "#b2d49b", 4, 9);
+meadow.querySelector(".scene.near").innerHTML = grassLayer(HILLS.near, "#95c47a", 6, 11) + grassLayer(HILLS.near2, "#84b76a", 7, 12) + grassLayer(HILLS.front, "#73a85a", 8, 13);
+const flower = c => `<svg viewBox="0 0 24 40">
+  <path d="M12 40 Q11 26 12 16" stroke="#5f9448" stroke-width="2.2" fill="none" stroke-linecap="round"/>
   <circle cx="12" cy="6" r="5" fill="${c}"/><circle cx="6" cy="11" r="5" fill="${c}"/><circle cx="18" cy="11" r="5" fill="${c}"/>
-  <circle cx="8" cy="17" r="5" fill="${c}"/><circle cx="16" cy="17" r="5" fill="${c}"/><circle cx="12" cy="12" r="3.5" fill="#ffe3a3"/></g></svg>`;
+  <circle cx="8" cy="17" r="5" fill="${c}"/><circle cx="16" cy="17" r="5" fill="${c}"/><circle cx="12" cy="12" r="3.5" fill="#ffd98a"/></svg>`;
 // 一排一排的草叢：越遠越小、越淡，越近越大、越深
-const midEdge = curveAt("M-10 180 Q150 140 330 166 T660 156 T1010 150");
-const nearEdge = curveAt("M-10 200 Q240 180 500 195 T1010 187");
-const frontEdge = curveAt("M-10 264 Q260 250 520 260 T1010 254");
+const midEdge = curveAt(HILLS.mid), nearEdge = curveAt(HILLS.near), frontEdge = curveAt(HILLS.front);
 const farTufts = meadow.querySelector(".trees");
 for (let x = 4 + rand() * 8; x < 100; x += 16 + rand() * 12) {   // 中間山丘的邊緣：小小的、淡淡的（在近處草地的後面）
   const t = document.createElement("div");
   t.className = "tree";
   t.style.cssText = `left:${x}%;bottom:${midEdge(x) - 1.6}%;width:calc(${Math.round(12 + rand() * 5)}px * var(--ms, 1));animation-delay:${-rand() * 4}s`;
-  t.innerHTML = grass("#9cc684", rand() * 16 - 8, .3);
+  t.innerHTML = grass("#9fc887", rand() * 16 - 8);
   farTufts.appendChild(t);
 }
-for (let x = 2 + rand() * 10; x < 100; x += 15 + rand() * 12) addDeco(grass("#80b465", rand() * 16 - 8, .5), x, (nearEdge(x) - 2.4) * 2.9, 17 + rand() * 6);    // 近處草地的邊緣
-for (let i = 0; i < 4; i++) addDeco(grass("#76ab5b", rand() * 16 - 8, .6), rand() * 97, (5 + rand() * 22) * 2.9, 20 + rand() * 7);   // 散在草地上
-for (let x = 6 + rand() * 10; x < 100; x += 20 + rand() * 14) addDeco(grass("#6a9f51", rand() * 14 - 7), x, (frontEdge(x) - 3.2) * 2.9, 24 + rand() * 6);   // 最前面那條草地的邊緣
-for (let x = 3 + rand() * 12; x < 100; x += 24 + rand() * 16) addDeco(grass("#5f9448", rand() * 12 - 6), x, -6, 30 + rand() * 8);   // 最底下、最靠近你的一排
+for (let x = 2 + rand() * 10; x < 100; x += 15 + rand() * 12) addDeco(grass("#7fb164", rand() * 16 - 8), x, (nearEdge(x) - 2.4) * 2.9, 17 + rand() * 6);    // 近處草地的邊緣
+for (let i = 0; i < 4; i++) addDeco(grass("#729f58", rand() * 16 - 8), rand() * 97, (5 + rand() * 22) * 2.9, 20 + rand() * 7);   // 散在草地上
+for (let x = 6 + rand() * 10; x < 100; x += 20 + rand() * 14) addDeco(grass("#5f9448", rand() * 14 - 7), x, (frontEdge(x) - 3.2) * 2.9, 24 + rand() * 6);   // 最前面那條草地的邊緣
+for (let x = 3 + rand() * 12; x < 100; x += 24 + rand() * 16) addDeco(grass("#54893f", rand() * 12 - 6), x, -6, 30 + rand() * 8);   // 最底下、最靠近你的一排
 const flowerColors = ["#f7a8c0", "#ffffff", "#d7c2f2", "#f7a8c0", "#ffc2d4"];
 for (let i = 0; i < 12; i++) addDeco(flower(flowerColors[i % 5]), rand() * 95, rand() * 90, 16 + rand() * 6);
 [0, -30, -58].forEach((delay, i) => {
   const c = document.createElement("div");
   c.className = "cloud";
-  c.style.cssText = `top:${18 + i * 22}px;animation-delay:${delay}s;width:${90 + i * 20}px`;
-  c.innerHTML = `<svg viewBox="0 0 110 50"><path filter="url(#w)" d="M18 44 Q2 44 6 32 Q4 18 22 20 Q28 4 48 10 Q62 0 76 14 Q98 10 98 28 Q108 42 90 44 Z" fill="#fff" stroke="${INK}" stroke-width="2"/></svg>`;
+  c.style.cssText = `top:${4 + i * 7}%;animation-delay:${delay}s;width:calc(${120 + i * 30}px * var(--ms, 1))`;
+  c.innerHTML = `<svg viewBox="0 0 130 64" overflow="visible"><g filter="url(#softCloud)">
+    <ellipse cx="66" cy="48" rx="54" ry="11" fill="#c9d2e6" fill-opacity=".35"/>
+    <g class="puff"><ellipse cx="64" cy="42" rx="52" ry="13"/><circle cx="42" cy="34" r="17"/><circle cx="68" cy="26" r="22"/><circle cx="92" cy="36" r="15"/></g></g></svg>`;
   meadow.appendChild(c);
 });
 ["", "f2"].forEach((cls, i) => {
   const f = document.createElement("div");
   f.className = "fly " + cls;
   const col = i ? "#c9b3f0" : "#f59ab5";
-  f.innerHTML = `<svg viewBox="0 0 30 24"><g stroke="${INK}" stroke-width="1.3">
+  f.innerHTML = `<svg viewBox="0 0 30 24"><g>
     <g class="wing"><ellipse cx="9" cy="9" rx="8" ry="7" fill="${col}"/><ellipse cx="10" cy="18" rx="5" ry="4" fill="${col}"/></g>
     <g class="wing r"><ellipse cx="21" cy="9" rx="8" ry="7" fill="${col}"/><ellipse cx="20" cy="18" rx="5" ry="4" fill="${col}"/></g>
-    <path d="M15 6 L15 21" stroke-width="2.4"/></g></svg>`;
+    <path d="M15 6 L15 21" stroke="#6b5a60" stroke-width="2.4" stroke-linecap="round"/></g></svg>`;
   meadow.appendChild(f);
 });
 
