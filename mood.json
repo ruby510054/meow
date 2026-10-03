@@ -1,0 +1,166 @@
+{
+  "version": "1.0",
+  "scale": {
+    "valence": "-1.0 (unpleasant) to 1.0 (pleasant)",
+    "arousal": "-1.0 (low energy) to 1.0 (high energy)"
+  },
+  "quadrants": [
+    {
+      "id": "high_unpleasant",
+      "label": { "zh": "高能量・不舒服", "en": "High energy, unpleasant" },
+      "color": "#F19799",
+      "families": [
+        {
+          "id": "anger",
+          "label": { "zh": "生氣", "en": "Anger" },
+          "emotions": [
+            { "id": "irritated", "label": { "zh": "煩躁", "en": "Irritated" }, "desc": "小事一直卡著，心裡很毛", "valence": -0.4, "arousal": 0.5 },
+            { "id": "frustrated", "label": { "zh": "挫折", "en": "Frustrated" }, "desc": "努力了卻一直被擋住", "valence": -0.6, "arousal": 0.5 },
+            { "id": "offended", "label": { "zh": "被冒犯", "en": "Offended" }, "desc": "覺得界線或尊嚴被踩到", "valence": -0.6, "arousal": 0.6 },
+            { "id": "jealous", "label": { "zh": "嫉妒", "en": "Jealous" }, "desc": "別人擁有我想要的東西", "valence": -0.6, "arousal": 0.5 },
+            { "id": "furious", "label": { "zh": "憤怒", "en": "Furious" }, "desc": "很強烈的生氣，快壓不住", "valence": -0.9, "arousal": 0.9 }
+          ]
+        },
+        {
+          "id": "fear",
+          "label": { "zh": "害怕", "en": "Fear" },
+          "emotions": [
+            { "id": "nervous", "label": { "zh": "緊張", "en": "Nervous" }, "desc": "面對即將發生的事，身體繃起來", "valence": -0.3, "arousal": 0.6 },
+            { "id": "worried", "label": { "zh": "擔心", "en": "Worried" }, "desc": "一直想著可能出錯的地方", "valence": -0.5, "arousal": 0.4 },
+            { "id": "anxious", "label": { "zh": "焦慮", "en": "Anxious" }, "desc": "說不清楚在怕什麼，但就是不安", "valence": -0.6, "arousal": 0.7 },
+            { "id": "scared", "label": { "zh": "害怕", "en": "Scared" }, "desc": "感覺到明確的威脅或危險", "valence": -0.7, "arousal": 0.8 },
+            { "id": "panicked", "label": { "zh": "恐慌", "en": "Panicked" }, "desc": "非常強烈的害怕，難以思考", "valence": -0.9, "arousal": 1.0 }
+          ]
+        },
+        {
+          "id": "stress",
+          "label": { "zh": "壓力", "en": "Stress" },
+          "emotions": [
+            { "id": "pressured", "label": { "zh": "有壓力", "en": "Pressured" }, "desc": "被期待或時間追著跑", "valence": -0.4, "arousal": 0.6 },
+            { "id": "restless", "label": { "zh": "坐立不安", "en": "Restless" }, "desc": "靜不下來，一直想動或分心", "valence": -0.3, "arousal": 0.7 },
+            { "id": "overwhelmed", "label": { "zh": "不知所措", "en": "Overwhelmed" }, "desc": "事情太多，不知道從哪裡開始", "valence": -0.7, "arousal": 0.7 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "high_pleasant",
+      "label": { "zh": "高能量・舒服", "en": "High energy, pleasant" },
+      "color": "#FAD46F",
+      "families": [
+        {
+          "id": "joy",
+          "label": { "zh": "喜悅", "en": "Joy" },
+          "emotions": [
+            { "id": "happy", "label": { "zh": "開心", "en": "Happy" }, "desc": "單純覺得心情很好", "valence": 0.7, "arousal": 0.5 },
+            { "id": "amused", "label": { "zh": "好笑", "en": "Amused" }, "desc": "覺得有趣、想笑", "valence": 0.6, "arousal": 0.5 },
+            { "id": "excited", "label": { "zh": "興奮", "en": "Excited" }, "desc": "期待某件事，充滿能量", "valence": 0.8, "arousal": 0.9 }
+          ]
+        },
+        {
+          "id": "confidence",
+          "label": { "zh": "自信", "en": "Confidence" },
+          "emotions": [
+            { "id": "confident", "label": { "zh": "有自信", "en": "Confident" }, "desc": "相信自己做得到", "valence": 0.6, "arousal": 0.4 },
+            { "id": "accomplished", "label": { "zh": "有成就感", "en": "Accomplished" }, "desc": "完成了一件不容易的事", "valence": 0.8, "arousal": 0.5 },
+            { "id": "proud", "label": { "zh": "自豪", "en": "Proud" }, "desc": "對自己或某人的表現感到驕傲", "valence": 0.8, "arousal": 0.6 }
+          ]
+        },
+        {
+          "id": "engagement",
+          "label": { "zh": "投入", "en": "Engagement" },
+          "emotions": [
+            { "id": "curious", "label": { "zh": "好奇", "en": "Curious" }, "desc": "想知道更多、想探索", "valence": 0.5, "arousal": 0.5 },
+            { "id": "motivated", "label": { "zh": "有動力", "en": "Motivated" }, "desc": "想要開始做點什麼", "valence": 0.6, "arousal": 0.6 },
+            { "id": "hopeful", "label": { "zh": "充滿希望", "en": "Hopeful" }, "desc": "覺得事情會往好的方向走", "valence": 0.6, "arousal": 0.3 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "low_unpleasant",
+      "label": { "zh": "低能量・不舒服", "en": "Low energy, unpleasant" },
+      "color": "#95A6E8",
+      "families": [
+        {
+          "id": "sadness",
+          "label": { "zh": "悲傷", "en": "Sadness" },
+          "emotions": [
+            { "id": "sad", "label": { "zh": "難過", "en": "Sad" }, "desc": "心裡沉沉的、想哭", "valence": -0.7, "arousal": -0.3 },
+            { "id": "disappointed", "label": { "zh": "失望", "en": "Disappointed" }, "desc": "結果跟期待落差很大", "valence": -0.6, "arousal": -0.2 },
+            { "id": "wronged", "label": { "zh": "委屈", "en": "Wronged" }, "desc": "覺得被不公平對待，卻說不出口", "valence": -0.7, "arousal": -0.1 },
+            { "id": "lonely", "label": { "zh": "孤單", "en": "Lonely" }, "desc": "覺得沒有人懂或沒有人陪", "valence": -0.7, "arousal": -0.4 },
+            { "id": "lost", "label": { "zh": "失落", "en": "Lost" }, "desc": "失去了某個重要的東西或方向", "valence": -0.6, "arousal": -0.4 }
+          ]
+        },
+        {
+          "id": "exhaustion",
+          "label": { "zh": "疲憊", "en": "Exhaustion" },
+          "emotions": [
+            { "id": "tired", "label": { "zh": "累", "en": "Tired" }, "desc": "身體或腦袋需要休息", "valence": -0.3, "arousal": -0.7 },
+            { "id": "unmotivated", "label": { "zh": "提不起勁", "en": "Unmotivated" }, "desc": "知道該做，但就是動不起來", "valence": -0.4, "arousal": -0.6 },
+            { "id": "helpless", "label": { "zh": "無力", "en": "Helpless" }, "desc": "覺得做什麼都改變不了", "valence": -0.7, "arousal": -0.6 },
+            { "id": "burned_out", "label": { "zh": "倦怠", "en": "Burned out" }, "desc": "長期耗損，對原本在乎的事也沒感覺", "valence": -0.7, "arousal": -0.8 }
+          ]
+        },
+        {
+          "id": "self_conscious",
+          "label": { "zh": "自我責備", "en": "Self-conscious" },
+          "emotions": [
+            { "id": "embarrassed", "label": { "zh": "尷尬", "en": "Embarrassed" }, "desc": "在別人面前出糗或不自在", "valence": -0.4, "arousal": 0.2 },
+            { "id": "guilty", "label": { "zh": "愧疚", "en": "Guilty" }, "desc": "覺得自己做錯事、對不起別人", "valence": -0.6, "arousal": -0.1 },
+            { "id": "ashamed", "label": { "zh": "羞愧", "en": "Ashamed" }, "desc": "覺得是「自己這個人」不夠好", "valence": -0.8, "arousal": -0.2 },
+            { "id": "inadequate", "label": { "zh": "自卑", "en": "Inadequate" }, "desc": "覺得自己比不上別人", "valence": -0.7, "arousal": -0.3 }
+          ]
+        },
+        {
+          "id": "numbness",
+          "label": { "zh": "麻木", "en": "Numbness" },
+          "emotions": [
+            { "id": "bored", "label": { "zh": "無聊", "en": "Bored" }, "desc": "提不起興趣，時間過得很慢", "valence": -0.3, "arousal": -0.5 },
+            { "id": "empty", "label": { "zh": "空虛", "en": "Empty" }, "desc": "心裡好像缺了一塊", "valence": -0.6, "arousal": -0.7 },
+            { "id": "numb", "label": { "zh": "無感", "en": "Numb" }, "desc": "什麼都感覺不太到", "valence": -0.4, "arousal": -0.8 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "low_pleasant",
+      "label": { "zh": "低能量・舒服", "en": "Low energy, pleasant" },
+      "color": "#8DCAAA",
+      "families": [
+        {
+          "id": "calm",
+          "label": { "zh": "平靜", "en": "Calm" },
+          "emotions": [
+            { "id": "relaxed", "label": { "zh": "放鬆", "en": "Relaxed" }, "desc": "身體和心情都鬆下來了", "valence": 0.6, "arousal": -0.6 },
+            { "id": "peaceful", "label": { "zh": "平靜", "en": "Peaceful" }, "desc": "內心安穩，沒有波動", "valence": 0.6, "arousal": -0.7 },
+            { "id": "at_ease", "label": { "zh": "自在", "en": "At ease" }, "desc": "做自己就好，不用勉強", "valence": 0.6, "arousal": -0.4 }
+          ]
+        },
+        {
+          "id": "contentment",
+          "label": { "zh": "滿足", "en": "Contentment" },
+          "emotions": [
+            { "id": "content", "label": { "zh": "滿足", "en": "Content" }, "desc": "覺得現在這樣就很好", "valence": 0.7, "arousal": -0.3 },
+            { "id": "secure", "label": { "zh": "安心", "en": "Secure" }, "desc": "不用擔心，覺得被保護", "valence": 0.6, "arousal": -0.5 },
+            { "id": "comfortable", "label": { "zh": "舒服", "en": "Comfortable" }, "desc": "身處的環境讓人感到舒適", "valence": 0.5, "arousal": -0.5 }
+          ]
+        },
+        {
+          "id": "connection",
+          "label": { "zh": "連結", "en": "Connection" },
+          "emotions": [
+            { "id": "grateful", "label": { "zh": "感激", "en": "Grateful" }, "desc": "感謝某人或某件事", "valence": 0.7, "arousal": -0.1 },
+            { "id": "touched", "label": { "zh": "感動", "en": "Touched" }, "desc": "心裡被某件事溫暖地觸動", "valence": 0.7, "arousal": 0.1 },
+            { "id": "loved", "label": { "zh": "被愛", "en": "Loved" }, "desc": "感受到被在乎、被接納", "valence": 0.9, "arousal": -0.1 }
+          ]
+        }
+      ]
+    }
+  ],
+  "special_options": [
+    { "id": "mixed", "label": { "zh": "混合情緒", "en": "Mixed" }, "desc": "同時有好幾種感覺，可以複選", "allow_multi_select": true },
+    { "id": "unsure", "label": { "zh": "說不上來", "en": "Not sure" }, "desc": "先從身體感覺或發生的事開始記錄", "redirect": "body_and_context" }
+  ]
+}
