@@ -148,10 +148,7 @@
   }
   .meadow .cloud .puff { fill: var(--cloud, #fff); transition: fill 2s; }
   .meadow .sun { transition: opacity 2s, filter 2s; }
-  .weather {
-    position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); z-index: 300; font-size: 13px; pointer-events: none; white-space: nowrap;
-    background: var(--card); border: 1.5px solid var(--line); padding: 2px 10px; border-radius: var(--wobble2);
-  }
+  .weather { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }   /* 心情天氣的文字只給螢幕閱讀器 */
   .rain, .wind { position: absolute; inset: 0; z-index: 260; pointer-events: none; opacity: 0; transition: opacity 2s; overflow: hidden; }
   .rain i {
     position: absolute; top: -20px; width: 1.6px; height: 13px; border-radius: 2px; background: rgba(255, 255, 255, .8);
@@ -169,7 +166,8 @@
   .meadow .fly { transition: opacity 1.5s; }
   .meadow.gloomy .fly { opacity: 0; }   /* 下雨天蝴蝶躲起來 */
   .rainbow { filter: blur(1.5px); position: absolute; left: 22%; top: 18%; width: 46%; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 2s; }
-  .meadow.flash::after { content: ""; position: absolute; inset: 0; z-index: 270; background: #fff; animation: flash .5s ease-out; pointer-events: none; }
+  /* 打雷的閃光：平常是透明的，動畫結束也停在透明（不然會整片變白） */
+  .meadow.flash::after { content: ""; position: absolute; inset: 0; z-index: 270; background: #fff; opacity: 0; animation: flash .5s ease-out forwards; pointer-events: none; }
   @keyframes flash { 0%, 40% { opacity: .55; } 20%, 100% { opacity: 0; } }
   @keyframes winfall { to { transform: translateY(160px); } }
   @media (max-width: 600px) { .meadow { height: clamp(240px, 46vh, 400px); border-width: 8px; } }
@@ -276,7 +274,7 @@
 
   /* 姿勢：站（走路、跳）、坐（理毛）、趴（睡覺、翻滾） */
   .cat .pose { opacity: 0; transition: opacity .2s; }
-  .cat.walk .p-stand, .cat.hop .p-stand { opacity: 1; }
+  .cat.walk .p-stand, .cat.hop .p-stand, .cat.spin .p-stand { opacity: 1; }
   .cat.sit .p-sit, .cat.groom .p-sit { opacity: 1; }
   .cat.loaf .p-loaf, .cat.sleep .p-loaf, .cat.roll .p-loaf { opacity: 1; }
   .cat .head { transition: transform .35s; transform-origin: 100px 42px; }
@@ -293,6 +291,12 @@
   .cat.hop .hopper { animation: hop .7s ease-out; }
   .cat.bouncy .hopper { animation: bouncy 2.2s ease-out infinite; }
   @keyframes bouncy { 0%, 45%, 100% { transform: none; } 15% { transform: translateY(-14%) rotate(-5deg); } 30% { transform: translateY(0) rotate(2deg); } }
+  /* 興奮：原地轉一圈又一圈（左右翻面＋小跳） */
+  .cat.spin .hopper { animation: spin 1.2s ease-in-out; }
+  @keyframes spin { 0%, 100% { transform: none; } 20% { transform: scaleX(-1) translateY(-10%); } 40% { transform: none; } 60% { transform: scaleX(-1) translateY(-10%); } 80% { transform: none; } }
+  /* 害怕：趴低身體、輕輕發抖 */
+  .cat.crouch .hopper { transform-origin: 50% 92%; animation: tremble .18s linear infinite alternate; }
+  @keyframes tremble { from { transform: scale(1.04, .86) translateX(-1px); } to { transform: scale(1.04, .86) translateX(1px); } }
   .cat.roll .hopper { animation: roll 1.1s ease-in-out; transform-origin: 50% 65%; }
   @keyframes hop { 40% { transform: translateY(-38px) rotate(-6deg); } 70% { transform: translateY(0) rotate(3deg); } 85% { transform: translateY(-6px); } }
   @keyframes roll { 50% { transform: translateY(-10px) rotate(180deg); } 100% { transform: rotate(360deg); } }
@@ -358,7 +362,21 @@
   .buddy-bubble.show { opacity: 1; }
   .buddy-bubble b { color: var(--accent); }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .float-heart { position: fixed; z-index: 6; width: 26px; }
+  .float-heart { position: fixed; z-index: 60; width: 26px; }
+  /* 出門走走：大窗戶變成整個畫面，窗框、窗簾、窗台都收起來 */
+  .home-btn { display: none; }
+  body.outside { overflow: hidden; }
+  body.outside .big-window { position: fixed; inset: 0; margin: 0; z-index: 40; }
+  body.outside .meadow { height: 100vh; height: 100dvh; border: 0; border-radius: 0; box-shadow: none; }
+  body.outside .rod, body.outside .curtains, body.outside .curtain-btns, body.outside .sill,
+  body.outside .mullion, body.outside .shine, body.outside .dock, body.outside .buddy-bubble { display: none; }
+  body.outside .home-btn {
+    display: block; position: fixed; top: 16px; left: 16px; z-index: 50; font: inherit; font-size: 17px; color: var(--ink); cursor: pointer;
+    background: var(--card); border: 2px solid var(--line); border-radius: var(--wobble); padding: 8px 22px; box-shadow: var(--shadow);
+  }
+  .meadow .cat[data-pet] .hopper > svg { filter: none; }   /* 寵物不套用遠處的柔化 */
+  .fade { position: fixed; inset: 0; z-index: 70; background: var(--accent-soft); opacity: 0; pointer-events: none; transition: opacity .38s; }
+  .fade.on { opacity: 1; }
   #home > .room-buddy { position: absolute; z-index: 3; pointer-events: auto; cursor: pointer; }
   .dock { position: fixed; right: 10px; bottom: 8px; width: 130px; height: 112px; z-index: 5; }
   .dock .cushion {
@@ -764,6 +782,7 @@
     <div class="shine a" aria-hidden="true"></div><div class="shine b" aria-hidden="true"></div>
   </div>
   <div class="curtain-btns"><button class="curtain-btn" id="curtainBtn"></button><button class="curtain-btn" id="curtainToggle"></button></div>
+  <button class="home-btn" id="homeBtn">🏠 回家</button>
   <div class="sill" aria-hidden="true"><svg class="sill-pot" viewBox="0 0 40 44"><g stroke="#4a3439" stroke-width="2" stroke-linejoin="round">
     <path d="M20 22 C12 20 6 12 9 4 C15 8 18 14 20 22 C20 12 24 6 31 3 C33 11 28 18 20 22" fill="#9fd07f"/>
     <path d="M7 22 H33 L30 42 H10Z" fill="#f4a7bd"/><path d="M7 22 H33 V27 H7Z" fill="#fde3ea"/></g></svg></div>
@@ -773,6 +792,7 @@
   <div class="toolbar">
     <button class="tool-btn" id="openRecord" aria-controls="recordDrawer">📝 記錄心情<small id="todayCount"></small></button>
     <button class="tool-btn" id="openCal" aria-controls="calDrawer">📅 心情日曆</button>
+    <button class="tool-btn" id="goOut">🚪 出門走走</button>
   </div>
 
   <aside class="drawer" id="recordDrawer" aria-label="記錄心情" inert>
@@ -810,6 +830,7 @@
   <p class="note">記錄會自動存在這個瀏覽器裡 · 定期下載備份檔，換瀏覽器或換電腦也能讀回來<br>喵叫聲錄音來自 Wikimedia Commons：Tsester、freemaster2（CC0）、PantheraLeo1359531（<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>），已剪輯並調高音調</p>
 </div>
 
+<div class="fade" id="fade" aria-hidden="true"></div>
 <div class="dock" id="dock" hidden>
   <div class="cushion"></div>
   <div class="cat sit" id="buddy" role="button"></div>
@@ -1541,6 +1562,7 @@ function addDeco(html, left, bottom, w) {
   d.className = "deco";
   // bottom 原本是以 290px 高的草原為準的 px，改成百分比，草原變大時跟著放大
   d.dataset.b = bottom;
+  if (html.includes("M3 24")) d.dataset.kind = "grass";
   d.style.cssText = `left:${left}%;bottom:${bottom / 2.9}%;width:calc(${w}px * var(--ms, 1));z-index:${200 - Math.round(bottom)};animation-delay:${-rand() * 3}s`;
   d.innerHTML = html;
   meadow.appendChild(d);
@@ -1643,27 +1665,54 @@ const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let CAT_W = 100, Y_MIN = 2, Y_MAX = 72, MS = 1;   // MS：草原的縮放倍數（以 290px 高為 1 倍）
 function sizeMeadow() {
   const h = meadow.clientHeight || 290;
-  MS = h / 290;
+  MS = Math.min(h / 290, 2.2, Math.max(1, meadow.clientWidth / 330));   // 全螢幕時不要大得太誇張，窄螢幕再小一點
   CAT_W = Math.round(100 * MS);
   Y_MAX = Math.round(72 * MS);
   meadow.style.setProperty("--ms", MS.toFixed(3));
-  meadow.querySelectorAll(".deco").forEach(d => d.style.zIndex = 200 - Math.round(d.dataset.b * MS));
+  meadow.querySelectorAll(".deco").forEach(d => d.style.zIndex = 200 - Math.round(d.dataset.b * h / 290));
   cats.forEach(c => { c.y = Math.min(c.y, Y_MAX); c.ty = Math.min(c.ty, Y_MAX); });
 }
 let cats = [];
 const sayEl = $("say");
 let sayCat = null, sayTimer = 0;
 
+// ---------- 每隻貓的個性：照情緒的「能量」和「愉悅度」決定 ----------
+// 能量越高：走得越快、越常跳；越低：越常坐著、趴著、睡覺
+// 愉悅度越高：越愛跟別的貓玩、依偎；越低：越喜歡自己待著
+// 另外有幾個情緒有自己的專屬動作（SPECIAL_ACT）
+const SPECIAL_ACT = {
+  excited: "spin",                     // 興奮：原地轉圈圈
+  restless: "pace",                    // 坐立不安：來回踱步
+  scared: "hide", panicked: "hide",    // 害怕、恐慌：躲到草叢後面、身體壓低
+  lonely: "edge",                      // 孤單：自己坐在草原的邊邊
+  loved: "rub", grateful: "rub",       // 被愛、感激：一直去蹭別的貓
+};
+function persona(entry) {
+  const ids = emoOf(entry), p = moodPoint(ids) || { v: .2, a: 0 };
+  const e = (p.a + 1) / 2, w = (p.v + 1) / 2;   // 都換成 0 ~ 1
+  const acts = {
+    walk: .4 + 3.4 * e,
+    sit: 1.2 + 1.6 * (1 - e),
+    loaf: 2.6 * (1 - e) * (1.2 - w),
+    sleep: Math.max(0, .42 - e) * 11,
+    groom: .4 + 1.4 * (1 - Math.abs(e - .45) * 2),
+    hop: Math.max(0, e - .45) * 6 * w,   // 有活力「而且」心情好才會蹦蹦跳跳
+    roll: e > .45 && w > .6 ? (w - .6) * 9 : 0,
+  };
+  return { acts, speed: 18 + 70 * e, energy: e, warmth: w, special: SPECIAL_ACT[ids.find(id => SPECIAL_ACT[id])] || null };
+}
+
 function makeCat(key, entry, enter) {
   const el = document.createElement("div");
   el.className = "cat sit";
   el.innerHTML = `<div class="flip"><div class="hopper">${bodySVG(entry.mood, undefined, entry.mood, accOf(entry, key.slice(0, 10)))}</div></div><div class="zzz">z<small>z</small></div>`;
-  el.style.setProperty("--step", (0.36 * 45 / MOODS[entry.mood].speed).toFixed(2) + "s");
+  const P = persona(entry);
+  el.style.setProperty("--step", (0.36 * 45 / P.speed).toFixed(2) + "s");
   el.setAttribute("role", "button");
   el.setAttribute("aria-label", `${key} 的${emoNames(entry)}貓`);
   meadow.appendChild(el);
   const W = meadow.clientWidth || 800;
-  const c = { key, entry, el, dir: 1, mode: "sit", timer: 1 + Math.random() * 3, partner: null,
+  const c = { key, entry, el, dir: 1, mode: "sit", timer: 1 + Math.random() * 3, partner: null, ...P,
     x: enter ? -CAT_W : Math.random() * (W - CAT_W), y: Y_MIN + Math.random() * (Y_MAX - Y_MIN), tx: 0, ty: 0 };
   el.onclick = () => {
     const date = key.slice(0, 10), [, mo, d] = date.split("-");
@@ -1701,10 +1750,50 @@ function setMode(c, mode) {
   else if (mode === "groom") c.timer = 3 + Math.random() * 3;
   else if (mode === "hop") c.timer = .75;
   else if (mode === "roll") c.timer = 1.15;
+  else if (mode === "spin") c.timer = 1.25;
+  else if (mode === "pace") {
+    // 在附近左右來回走 3 ~ 5 趟
+    look(c, "walk");
+    c.paceN = 3 + Math.floor(Math.random() * 3);
+    c.paceA = Math.min(Math.max(c.x - 50 * MS, 0), W - CAT_W); c.paceB = Math.min(c.paceA + 100 * MS, W - CAT_W);
+    c.tx = c.paceB; c.ty = c.y; c.timer = 20;
+  } else if (mode === "hide") {
+    // 走到一叢草的後面（離你遠一點的那側），趴低身體
+    const tufts = [...meadow.querySelectorAll('.deco[data-kind="grass"]')].filter(d => +d.dataset.b > 3);
+    const t = tufts.length ? tufts[Math.floor(Math.random() * tufts.length)] : null;
+    look(c, "walk");
+    c.tx = t ? Math.min(Math.max(parseFloat(t.style.left) / 100 * W - CAT_W * .45, 0), W - CAT_W) : Math.random() * (W - CAT_W);
+    c.ty = t ? Math.min(Y_MAX, +t.dataset.b / 290 * meadow.clientHeight + 5 * MS) : Y_MAX;
+    c.timer = 20;
+  } else if (mode === "edge") {
+    // 走到草原的邊邊，遠遠地自己坐著
+    look(c, "walk");
+    c.tx = Math.random() < .5 ? 0 : W - CAT_W * 1.05;
+    c.ty = Y_MAX - Math.random() * 10 * MS;
+    c.timer = 20;
+  }
+}
+// 到了目的地之後
+function arriveSpecial(c) {
+  const W = meadow.clientWidth;
+  if (c.mode === "pace") {
+    if (--c.paceN <= 0) return setMode(c, "sit");
+    c.tx = c.tx === c.paceB ? c.paceA : c.paceB;
+  } else if (c.mode === "hide") {
+    c.mode = "cower"; look(c, "loaf crouch"); c.timer = 6 + Math.random() * 5;
+  } else if (c.mode === "edge") {
+    c.dir = c.x < W / 2 ? -1 : 1;   // 背對大家、看著外面
+    c.mode = "alone"; look(c, "sit"); c.timer = 8 + Math.random() * 6;
+  }
 }
 
 function pickMode(c) {
-  const acts = MOODS[c.entry.mood].acts;
+  // 有專屬動作的情緒，有時候會做牠的招牌動作
+  if (c.special && Math.random() < .3) {
+    if (c.special === "rub") { if (rubSomeone(c)) return; }
+    else return setMode(c, c.special);
+  }
+  const acts = c.acts || MOODS[c.entry.mood].acts;
   let r = Math.random() * Object.values(acts).reduce((a, b) => a + b, 0);
   for (const [k, w] of Object.entries(acts)) { if ((r -= w) <= 0) return setMode(c, k); }
   setMode(c, "sit");
@@ -1717,30 +1806,39 @@ const pickWeighted = (list, weight) => {
   let r = Math.random() * list.reduce((s, x) => s + weight(x), 0);
   return list.find(x => (r -= weight(x)) <= 0) || list[0];
 };
-const isFree = c => !c.partner && ["sit", "walk", "sleep", "loaf", "groom"].includes(c.mode);
+const isFree = c => !c.partner && ["sit", "walk", "sleep", "loaf", "groom", "alone"].includes(c.mode);
 const mid = (a, b) => (a.x + b.x) / 2 + CAT_W / 2;
 
 function startSocial() {
   const free = cats.filter(isFree);
   if (free.length < 2) return;
-  // 難過的貓比較容易被安慰
-  const b = pickWeighted(free, c => c.entry.mood === "sad" ? 4 : c.mode === "sleep" ? 1.5 : 1);
+  // 難過的貓比較容易被安慰；主動找人玩的，是愉悅度高、或能量高的貓
+  const b = pickWeighted(free, c => c.entry.mood === "sad" ? 4 : c.mode === "sleep" ? 1.5 : .6 + c.warmth);
   const awake = free.filter(c => c !== b && c.mode !== "sleep");
   if (!awake.length) return;
-  const a = pickWeighted(awake, c => ["happy", "angry", "anxious"].includes(c.entry.mood) ? 2 : 1);
+  const a = pickWeighted(awake, c => .2 + c.warmth * 1.4 + c.energy * .8);
 
-  const moods = [a.entry.mood, b.entry.mood];
-  const lively = list => moods.some(m => list.includes(m));
+  const e = (a.energy + b.energy) / 2, w = (a.warmth + b.warmth) / 2;
   let act;
-  if (b.mode === "sleep" || b.entry.mood === "sad" || moods.includes("tired")) act = "cuddle";
+  if (b.mode === "sleep" || b.entry.mood === "sad" || e < .3) act = "cuddle";
   else act = pickWeighted(["cuddle", "chase", "boop", "wrestle", "follow"], k => ({
-    cuddle: 2,
-    chase: lively(["happy", "angry"]) ? 3 : 1,
-    boop: 1.5,
-    wrestle: lively(["happy", "angry", "anxious"]) ? 2.5 : .8,
-    follow: 1.5,
+    cuddle: .5 + w * 2.5 * (1.2 - e),   // 舒服又平靜：依偎
+    chase: e * 3,                        // 有活力：追來追去
+    boop: .5 + w,
+    wrestle: e * e * 3.5,                // 很有活力：打鬧
+    follow: .6 + (1 - e),
   })[k]);
-
+  pairUp(a, b, act);
+}
+// 被愛、感激的貓：主動去蹭別的貓
+function rubSomeone(c) {
+  const others = cats.filter(o => o !== c && isFree(o));
+  if (!others.length) return false;
+  const b = others.reduce((m, o) => Math.hypot(o.x - c.x, o.y - c.y) < Math.hypot(m.x - c.x, m.y - c.y) ? o : m);
+  pairUp(c, b, "cuddle");
+  return true;
+}
+function pairUp(a, b, act) {
   a.partner = b; b.partner = a; a.lead = true; b.lead = false; a.act = b.act = act;
   if (act === "chase") {
     flee(b, 1.6);
@@ -1978,9 +2076,11 @@ function tick(now) {
   if (chatTimer <= 0) { chatTimer = 5 + Math.random() * 6; chatter(); }
 
   for (const c of cats) {
-    const speed = MOODS[c.entry.mood].speed * MS, p = c.partner;
+    const speed = c.speed * MS, p = c.partner;
     c.timer -= dt;
-    if (c.mode === "walk") {
+    if (c.mode === "pace" || c.mode === "hide" || c.mode === "edge") {
+      if (stepTo(c, c.tx, c.ty, c.mode === "pace" ? speed * 1.25 : speed, dt)) arriveSpecial(c);
+    } else if (c.mode === "walk") {
       if (stepTo(c, c.tx, c.ty, speed, dt)) pickMode(c);
     } else if (c.mode === "approach") {
       const gap = (c.act === "cuddle" ? 40 : c.act === "wrestle" ? 58 : 66) * MS;
@@ -2038,6 +2138,7 @@ function tick(now) {
 function renderMeadow() {
   [...cats].forEach(removeCat);
   allRecords().slice(-7).forEach(r => makeCat(r.key, r.rec, false));
+  if (outside) addPetCat(false);
   cats.forEach(draw);
 }
 
@@ -2448,8 +2549,7 @@ function updateWeather() {
   $("rainbow").style.opacity = p && v > .55 && a < .2 ? .8 : 0;
   name = !p ? "" : p.unsure ? "霧濛濛 🌫️" : rainy ? (v < -.6 ? "大雨 🌧️" : "小雨 🌦️") : stormy ? (a > .7 ? "雷雨 ⛈️" : "起風了 🌬️")
     : v > .3 ? (a > .1 ? "晴朗 ☀️" : v > .55 ? "彩虹 🌈" : "微風晴空 🌤️") : "多雲 ☁️";
-  $("weather").hidden = !name;
-  $("weather").textContent = name ? `心情天氣：${name}` : "";
+  $("weather").textContent = name ? `心情天氣：${name}` : "";   // 畫面上不顯示，只留給螢幕閱讀器
   lastWeather = stormy && a > .7 ? "thunder" : "";
 }
 // 下雨、起風的粒子（產生一次就好，用透明度控制要不要看得到）
@@ -2470,6 +2570,7 @@ function updateWeather() {
 setInterval(() => {
   if (lastWeather !== "thunder" || reduceMotion || Math.random() < .5) return;
   const m = $("meadow"); m.classList.remove("flash"); void m.offsetWidth; m.classList.add("flash");
+  setTimeout(() => m.classList.remove("flash"), 600);
 }, 6000);
 
 // ---------- 背景小屋：時鐘、小燈泡 ----------
@@ -2522,6 +2623,7 @@ const buddyFace = () => picked || todayMood() || "calm";
 function saveBuddy() { try { localStorage.setItem("meow-buddy", JSON.stringify(buddy)); } catch (e) {} }
 
 const dockCat = $("buddy");
+let outside = false, petCat = null;   // 出門走走時，寵物變成草原上的一隻貓
 const roomBuddy = document.createElement("div");
 roomBuddy.className = "cat room-buddy loaf";
 roomBuddy.setAttribute("role", "button");
@@ -2532,8 +2634,8 @@ let RB_W = 130;
 let roomRun = 0, rbPlace = "home", rbPose = "loaf";
 const rb = { x: 0, y: 0, dir: 1 };
 const wait = ms => new Promise(r => setTimeout(r, ms));
-const activeCat = () => inRoom ? roomBuddy : dockCat;
-const curPose = () => inRoom ? rbPose : dockPose;
+const activeCat = () => outside && petCat ? petCat.el : inRoom ? roomBuddy : dockCat;
+const curPose = () => outside && petCat ? petCat.mode : inRoom ? rbPose : dockPose;
 
 // 寵物戴的配件：正在選的情緒，沒有就用今天最後一筆
 function buddyAcc() {
@@ -2568,6 +2670,7 @@ function placeBubble() {
 }
 function buddySay(text) {
   lastTalk = Date.now();
+  if (outside && petCat) { say(petCat, text, 5); $("bubbleSr").textContent = `${buddyName()}：${text}`; return; }
   const b = $("bubble");
   b.innerHTML = "<b></b>：<span></span>";
   b.firstChild.textContent = buddyName();
@@ -2593,6 +2696,10 @@ function buddyHeart() {
 }
 
 // ---------- 房間裡的生活 ----------
+function petEnergy() {
+  const last = (entries[TODAY] || []).at(-1);
+  return persona({ mood: buddyFace(), emo: pickedEmo.length ? pickedEmo : last ? emoOf(last) : undefined }).energy;
+}
 // rb.y 是腳的高度（離畫面底部幾 px）
 function setRB(secs) {
   roomBuddy.style.transition = secs ? `left ${secs}s linear, bottom ${secs}s ease-out` : "none";
@@ -2625,7 +2732,7 @@ function roomSpots() {
 const canRoom = () => innerWidth >= 1100 && roomSpots().gutters.length > 0;
 
 // 基本動作：走、跳、待著；被打斷時丟出 "cancel"
-async function rbMove(x, y, speed = 75) {
+async function rbMove(x, y, speed = 30 + 70 * petEnergy()) {
   const run = roomRun;
   if (Math.abs(x - rb.x) > 2) rb.dir = x > rb.x ? 1 : -1;
   rbLook("walk");
@@ -2672,10 +2779,13 @@ async function roomLife() {
     while (true) {
       const S = roomSpots();
       if (!S.gutters.length) { await wait(2000); if (run !== roomRun) return; continue; }
-      const sleepy = buddyFace() === "tired";
-      const acts = { play: 2, groom: 1.5, walk: 1.5 };
-      if (S.home) acts.home = sleepy ? 5 : 3;
-      if (S.bed) acts.bed = sleepy ? 5 : 2.5;
+      // 跟草原上的貓一樣，照你現在心情的能量決定活潑程度：能量高愛玩愛走，能量低愛窩著睡覺
+      const last = (entries[TODAY] || []).at(-1);
+      const P = persona({ mood: buddyFace(), emo: pickedEmo.length ? pickedEmo : last ? emoOf(last) : undefined });
+      const e = P.energy;
+      const acts = { play: .3 + 3.2 * e * P.warmth, groom: 1.5, walk: .5 + 2 * e };
+      if (S.home) acts.home = 1 + 4 * (1 - e);
+      if (S.bed) acts.bed = 1 + 4.5 * (1 - e);
       if (S.sofa) acts.sofa = 2;
       if (S.desk) acts.desk = 1.2;
       let r = Math.random() * Object.values(acts).reduce((a, b) => a + b, 0);
@@ -2731,6 +2841,7 @@ function placeBuddy() {
 }
 let placeTimer;
 addEventListener("resize", () => { clearTimeout(placeTimer); placeTimer = setTimeout(() => {
+  if (outside) return;
   const was = inRoom;
   placeBuddy();
   if (was && inRoom) {   // 家具縮放了，貓咪先回到貓床，再繼續活動
@@ -3450,6 +3561,76 @@ $("clearAll").onclick = () => {
   $("clearDlg").close();
   buddySay("都清乾淨了。從今天開始，一起慢慢記錄吧 🐾");
 };
+
+// ---------- 出門走走：整個畫面變成草原，寵物跟著一起出門 ----------
+function addPetCat(enter) {
+  const last = (entries[TODAY] || []).at(-1);
+  const c = makeCat("pet", { mood: buddyFace(), text: "", t: "", pet: true, emo: pickedEmo.length ? [...pickedEmo] : last ? emoOf(last) : undefined }, enter);
+  c.el.innerHTML = catHTML(buddyFace(), buddy.coat, buddyAcc());
+  c.el.dataset.pet = "1";
+  c.el.setAttribute("aria-label", `摸摸${buddyName()}`);
+  c.el.onclick = e => {
+    e.stopPropagation();
+    if (c.partner) endPair(c);
+    setMode(c, "hop");
+    const line = pick(PET);
+    buddySay(line);
+    line.includes("呼嚕") ? purr() : meow(COAT_PITCH[buddy.coat]);
+    buddyHeart(); setTimeout(buddyHeart, 300);
+  };
+  petCat = c;
+  draw(c);
+  return c;
+}
+// 換成全螢幕（或回到窗戶）後，草原的大小變了，把大家重新散開
+function spreadCats() {
+  sizeMeadow();
+  const W = meadow.clientWidth;
+  cats.forEach(c => {
+    if (c.partner) endPair(c);
+    c.x = Math.random() * (W - CAT_W); c.y = Y_MIN + Math.random() * (Y_MAX - Y_MIN);
+    c.tx = c.x; c.ty = c.y;
+    if (c.mode === "walk") setMode(c, "sit");
+    draw(c);
+  });
+  ball.x = W * .6; moveBall(0, W);
+}
+// 轉場：畫面淡出 → 換場景 → 淡入
+function fadeSwap(fn) {
+  const f = $("fade");
+  if (reduceMotion) return fn();
+  f.classList.add("on");
+  setTimeout(() => { fn(); requestAnimationFrame(() => f.classList.remove("on")); }, 380);
+}
+function goOut() {
+  if (outside) return;
+  closeDrawers();
+  fadeSwap(() => {
+    outside = true;
+    document.body.classList.add("outside");
+    roomRun++; roomBuddy.hidden = true;   // 房間裡的寵物先停下來（牠跟你出門了）
+    spreadCats();
+    addPetCat(!reduceMotion);
+    say(petCat, pick(["走吧！一起去草原～", "出門囉！好多朋友在外面", "風好舒服喔～"]), 4);
+    $("homeBtn").focus();
+  });
+}
+function goHome() {
+  if (!outside) return;
+  fadeSwap(() => {
+    if (petCat) { removeCat(petCat); petCat = null; }
+    outside = false;
+    document.body.classList.remove("outside");
+    spreadCats();
+    inRoom = false; $("dock").hidden = true;   // 讓寵物重新回到房間
+    placeBuddy();
+    buddySay(pick(["回到家了～ 草原好好玩！", "我們回來了，休息一下吧", "外面的朋友都好可愛喔"]));
+    $("goOut").focus();
+  });
+}
+$("goOut").onclick = goOut;
+$("homeBtn").onclick = goHome;
+document.addEventListener("keydown", e => { if (e.key === "Escape" && outside && !document.querySelector("dialog[open]")) goHome(); });
 
 renderMoods();
 renderCoats();
