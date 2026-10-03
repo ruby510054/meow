@@ -164,8 +164,8 @@
   }
   @keyframes gust { 0% { left: -20%; opacity: 0; } 20% { opacity: 1; } 100% { left: 110%; opacity: 0; } }
   .meadow.windy .deco { animation-duration: .8s; }
-  .meadow .scene, .meadow .deco { transition: filter 2s; }
-  .meadow.gloomy .scene, .meadow.gloomy .deco { filter: saturate(.65) brightness(.93); }
+  .meadow .scene, .meadow .deco, .meadow .trees { transition: filter 2s; }
+  .meadow.gloomy .scene, .meadow.gloomy .deco, .meadow.gloomy .trees { filter: saturate(.65) brightness(.93); }
   .meadow .fly { transition: opacity 1.5s; }
   .meadow.gloomy .fly { opacity: 0; }   /* 下雨天蝴蝶躲起來 */
   .rainbow { position: absolute; left: 22%; top: 18%; width: 46%; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 2s; }
@@ -213,6 +213,8 @@
   [data-theme="night"] .mullion { background: #b39a7e; }
   @media (max-width: 1099px) { .rod { display: none; } .big-window { margin-top: 10px; } }
   .meadow .scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .meadow .scene.far { z-index: 0; } .meadow .trees { position: absolute; inset: 0; z-index: 1; pointer-events: none; } .meadow .scene.near { z-index: 2; }
+  .meadow .tree { position: absolute; transform: translateX(-50%); transform-origin: bottom center; animation: sway 4s ease-in-out infinite alternate; }
   .meadow .label {
     position: absolute; top: 8px; left: 10px; z-index: 300; font-size: 14px;
     background: var(--card); border: 1.5px solid var(--line); padding: 2px 10px; border-radius: var(--wobble2);
@@ -238,6 +240,9 @@
   /* 貓咪 */
   .cat { position: absolute; width: 100px; transform-origin: bottom center; cursor: pointer; }
   .meadow .cat { width: calc(100px * var(--ms, 1)); }
+  /* 窗外的貓顏色柔和一點，像在遠處；下雨天再暗一點（屋內的寵物不受影響） */
+  .meadow .cat .hopper > svg { filter: saturate(.78) brightness(.93); transition: filter 2s; }
+  .meadow.gloomy .cat .hopper > svg { filter: saturate(.6) brightness(.86); }
   .cat svg { display: block; width: 100%; overflow: visible; }
   .cat .flip { transition: transform .25s; }
   .cat .tail { animation: wag 1.8s ease-in-out infinite alternate; }
@@ -592,8 +597,13 @@
     <g fill="#fff" stroke="none"><circle cx="26" cy="28" r="1.2"/><circle cx="44" cy="22" r="1"/><circle cx="78" cy="30" r="1.3"/><circle cx="22" cy="52" r="1"/><circle cx="80" cy="56" r="1"/></g>
     <circle cx="66" cy="38" r="12" fill="#fff3c4" stroke="none"/>
     <path d="M14 96 V84 Q52 76 90 84 V96Z" fill="#6f8f6a" stroke="none"/>
-    <path d="M36 88 C34 76 36 66 42 62 L41 54 L46 59 Q50 58 54 59 L59 54 L58 62 C64 66 66 76 64 88 C60 90 40 90 36 88Z" fill="#2b2839" stroke="none"/>
-    <path d="M62 86 C72 86 74 78 70 74" fill="none" stroke="#2b2839" stroke-width="3.4"/>
+    <g fill="#1d1a26" stroke="#1d1a26" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M38 77 C31 71 29 60 32 51 C34 46 39 47 38.5 51.5" fill="none" stroke-width="3.6"/>
+      <path d="M40 78 L36.5 90 M44 79 L46 90 M58 79 L55.5 90 M62 78 L65 90" fill="none" stroke-width="3.6"/>
+      <ellipse cx="50" cy="76" rx="15" ry="7" stroke="none"/>
+      <circle cx="67.5" cy="69.5" r="6.6" stroke="none"/>
+      <path d="M62.6 65.6 L63.2 58.4 L67.8 63.4Z M68 63.2 L72.6 58.6 L73.6 66Z" stroke-width="1"/></g>
+    
     <text x="52" y="114" text-anchor="middle" font-size="11" fill="#4a3439" stroke="none" font-family="Huninn, sans-serif">晚安，喵</text>
     <rect class="tape" x="-2" y="2" width="26" height="10" rx="1" transform="rotate(-24 11 7)" stroke="none"/>
     <rect class="tape" x="80" y="2" width="26" height="10" rx="1" transform="rotate(24 93 7)" stroke="none"/></g></svg></div>
@@ -730,10 +740,18 @@
   </defs></svg>
   <div class="curtains" id="curtains"></div>
   <div class="meadow" id="meadow">
-    <svg class="scene" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true">
+    <!-- 草地分成好幾層：越遠越淡（帶一點藍灰），越近越深，看起來比較有距離感 -->
+    <svg class="scene far" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true">
+      <g filter="url(#w)" stroke-linejoin="round">
+        <path d="M-10 168 Q80 128 170 146 T350 132 T560 140 T760 118 T1010 134 L1010 310 L-10 310Z" fill="#c7d9c6" stroke="#8fa596" stroke-width="1.6"/>
+        <path d="M-10 180 Q150 140 330 166 T660 156 T1010 150 L1010 310 L-10 310Z" fill="#a3c98a" stroke="#4a3439" stroke-width="2" stroke-opacity=".55"/>
+      </g>
+    </svg>
+    <div class="trees" aria-hidden="true"></div>
+    <svg class="scene near" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true">
       <g filter="url(#w)" stroke="#4a3439" stroke-width="2.5" stroke-linejoin="round">
-        <path d="M-10 175 Q140 118 320 158 T660 146 T1010 136 L1010 310 L-10 310Z" fill="#d4ecbc"/>
-        <path d="M-10 200 Q240 178 500 194 T1010 186 L1010 310 L-10 310Z" fill="#b6de99"/>
+        <path d="M-10 200 Q240 180 500 195 T1010 187 L1010 310 L-10 310Z" fill="#88b96c"/>
+        <path d="M-10 264 Q260 250 520 260 T1010 254 L1010 310 L-10 310Z" fill="#76a85c" stroke-opacity=".5" stroke-width="1.8"/>
       </g>
     </svg>
     <svg class="sun" viewBox="0 0 60 60" aria-hidden="true"><g filter="url(#w)" stroke="#4a3439" stroke-width="2" stroke-linecap="round">
@@ -1532,12 +1550,57 @@ function addDeco(html, left, bottom, w) {
   d.innerHTML = html;
   meadow.appendChild(d);
 }
-const grass = `<svg viewBox="0 0 20 20"><path d="M2 20 Q4 9 1 1 M8 20 Q8 7 11 2 M14 20 Q15 11 19 6" fill="none" stroke="#6fa655" stroke-width="2" stroke-linecap="round"/></svg>`;
+// 中間山丘上的小樹：位置是 [左邊 %, 離底部 %, 大小]，越遠（越高）的越小越淡
+[[7, 41.5, .8], [14, 43, .6], [31, 46, .7], [38, 46.6, .55], [55, 47, .6], [71, 49, .5], [79, 48.4, .7], [92, 49.5, .55]].forEach(([x, y, k], i) => {
+  const t = document.createElement("div");
+  t.className = "tree";
+  t.style.cssText = `left:${x}%;bottom:${y}%;width:calc(${Math.round(30 * k)}px * var(--ms, 1));opacity:${(.55 + k * .5).toFixed(2)};animation-delay:${-i * .7}s`;
+  t.innerHTML = `<svg viewBox="0 0 30 44"><g stroke="#4a3439" stroke-width="1.6" stroke-linejoin="round" stroke-opacity=".6">
+    <path d="M13.5 30 H16.5 V43 H13.5Z" fill="#b28a68"/><path d="M15 2 C26 2 29 14 26 22 C24 30 6 30 4 22 C1 14 4 2 15 2Z" fill="${i % 3 ? "#8fbf72" : "#7fb36a"}"/>
+    <path d="M10 10 Q13 7 17 8" fill="none" stroke="#fff" stroke-opacity=".4"/></g></svg>`;
+  meadow.querySelector(".trees").appendChild(t);
+});
+// 三片尖尖葉子的草叢（實心），fill 是顏色、tilt 讓每叢草歪的方向不太一樣
+const grass = (fill, tilt = 0, line = .7) => `<svg viewBox="0 0 30 24" style="transform:rotate(${tilt}deg)"><path d="M3 24 Q6 13 4 4 Q10 13 11.5 24Z M10 24 Q13.5 9 15 0 Q18 10 20 24Z M18.5 24 Q22 13 26.5 5 Q25 15 27 24Z"
+  fill="${fill}" stroke="#4a3439" stroke-width="1.3" stroke-linejoin="round" stroke-opacity="${line}"/>
+  <path d="M15 4 Q15.5 12 15.5 20" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="1.2"/></svg>`;
+// 算出草地分界線在某個水平位置的高度（照背景 SVG 裡的曲線，M → Q → T… 的寫法）
+function curveAt(d) {
+  const nums = d.match(/-?[\d.]+/g).map(Number), pts = [];
+  let p0 = [nums[0], nums[1]], c = [nums[2], nums[3]], p1 = [nums[4], nums[5]];
+  const seg = (a, k, b) => { for (let t = 0; t <= 1; t += .02) pts.push([(1 - t) ** 2 * a[0] + 2 * (1 - t) * t * k[0] + t * t * b[0], (1 - t) ** 2 * a[1] + 2 * (1 - t) * t * k[1] + t * t * b[1]]); };
+  seg(p0, c, p1);
+  for (let i = 6; i + 1 < nums.length; i += 2) {
+    const next = [nums[i], nums[i + 1]], k = [2 * p1[0] - c[0], 2 * p1[1] - c[1]];
+    seg(p1, k, next); c = k; p1 = next;
+  }
+  // 回傳：給 0~100 的水平位置，得到離底部的百分比
+  return xPct => {
+    const x = xPct * 10, i = pts.findIndex(q => q[0] >= x), a = pts[Math.max(0, i - 1)], b = pts[Math.max(0, i)];
+    const y = a[1] + (b[1] - a[1]) * ((x - a[0]) / ((b[0] - a[0]) || 1));
+    return (300 - y) / 3;
+  };
+}
 const flower = c => `<svg viewBox="0 0 24 40"><g filter="url(#w)" stroke="${INK}" stroke-width="1.5">
   <path d="M12 40 Q11 26 12 16" stroke="#6fa655" stroke-width="2" fill="none"/>
   <circle cx="12" cy="6" r="5" fill="${c}"/><circle cx="6" cy="11" r="5" fill="${c}"/><circle cx="18" cy="11" r="5" fill="${c}"/>
   <circle cx="8" cy="17" r="5" fill="${c}"/><circle cx="16" cy="17" r="5" fill="${c}"/><circle cx="12" cy="12" r="3.5" fill="#ffe3a3"/></g></svg>`;
-for (let i = 0; i < 22; i++) addDeco(grass, rand() * 97, rand() * 95, 16 + rand() * 10);
+// 一排一排的草叢：越遠越小、越淡，越近越大、越深
+const midEdge = curveAt("M-10 180 Q150 140 330 166 T660 156 T1010 150");
+const nearEdge = curveAt("M-10 200 Q240 180 500 195 T1010 187");
+const frontEdge = curveAt("M-10 264 Q260 250 520 260 T1010 254");
+const farTufts = meadow.querySelector(".trees");
+for (let x = 4 + rand() * 8; x < 100; x += 16 + rand() * 12) {   // 中間山丘的邊緣：小小的、淡淡的（在近處草地的後面）
+  const t = document.createElement("div");
+  t.className = "tree";
+  t.style.cssText = `left:${x}%;bottom:${midEdge(x) - 1.6}%;width:calc(${Math.round(12 + rand() * 5)}px * var(--ms, 1));animation-delay:${-rand() * 4}s`;
+  t.innerHTML = grass("#9cc684", rand() * 16 - 8, .3);
+  farTufts.appendChild(t);
+}
+for (let x = 2 + rand() * 10; x < 100; x += 15 + rand() * 12) addDeco(grass("#80b465", rand() * 16 - 8, .5), x, (nearEdge(x) - 2.4) * 2.9, 17 + rand() * 6);    // 近處草地的邊緣
+for (let i = 0; i < 4; i++) addDeco(grass("#76ab5b", rand() * 16 - 8, .6), rand() * 97, (5 + rand() * 22) * 2.9, 20 + rand() * 7);   // 散在草地上
+for (let x = 6 + rand() * 10; x < 100; x += 20 + rand() * 14) addDeco(grass("#6a9f51", rand() * 14 - 7), x, (frontEdge(x) - 3.2) * 2.9, 24 + rand() * 6);   // 最前面那條草地的邊緣
+for (let x = 3 + rand() * 12; x < 100; x += 24 + rand() * 16) addDeco(grass("#5f9448", rand() * 12 - 6), x, -6, 30 + rand() * 8);   // 最底下、最靠近你的一排
 const flowerColors = ["#f7a8c0", "#ffffff", "#d7c2f2", "#f7a8c0", "#ffc2d4"];
 for (let i = 0; i < 12; i++) addDeco(flower(flowerColors[i % 5]), rand() * 95, rand() * 90, 16 + rand() * 6);
 [0, -30, -58].forEach((delay, i) => {
@@ -2230,6 +2293,8 @@ function sidePanel(side, pw, ph, style) {
     ${extra}<path d="${folds}" fill="none" stroke-width="1.2" opacity="${style === "sheer" ? .22 : .3}"/>${bow}</g></svg>`;
 }
 
+// 窗簾拉開時剩下的寬度：大螢幕 64px，窄螢幕收得窄一點，才不會擋住太多窗戶
+const openPanelW = W => innerWidth >= 1100 ? 64 : Math.max(18, Math.round(W * .06));
 function curtainHTML() {
   const win = document.querySelector(".big-window"), W = win.offsetWidth, H = win.offsetHeight;
   const out = innerWidth >= 1100 ? 46 : 0;   // 寬螢幕時簾子掛在窗框外面一點
@@ -2253,7 +2318,7 @@ function curtainHTML() {
       <path d="M0 12 H${W}" fill="none" class="trim-line" stroke-width="3"/>
       <path d="${folds}" fill="none" stroke-width="1.2" opacity=".3"/>${poms}${cord}</g></svg>`;
   }
-  const pw = lerp(64, W / 2 + out + 10, curtainShut), ph = H + 18;
+  const pw = lerp(openPanelW(W), W / 2 + out + 10, curtainShut), ph = H + 18;
   return sidePanel("l", pw, ph, curtainStyle) + sidePanel("r", pw, ph, curtainStyle);
 }
 function renderCurtains() {
@@ -2292,7 +2357,7 @@ function bindCurtainDrag(svg) {
     const win = document.querySelector(".big-window"), W = win.offsetWidth, H = win.offsetHeight;
     const out = innerWidth >= 1100 ? 46 : 0, x0 = e.clientX, y0 = e.clientY, s0 = curtainShut;
     const side = svg.classList.contains("r") ? -1 : 1, isVal = svg.classList.contains("valance");
-    const range = isVal ? H - 66 : W / 2 + out + 10 - 64;
+    const range = isVal ? H - 66 : W / 2 + out + 10 - openPanelW(W);
     let moved = false;
     const move = ev => {
       const d = isVal ? ev.clientY - y0 : (ev.clientX - x0) * side;
