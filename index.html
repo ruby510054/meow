@@ -276,7 +276,14 @@
 
   /* 姿勢：站（走路、跳）、坐（理毛）、趴（睡覺、翻滾） */
   .cat .pose { opacity: 0; transition: opacity .2s; }
-  .cat.walk .p-stand, .cat.hop .p-stand, .cat.spin .p-stand { opacity: 1; }
+  .cat.walk .p-stand, .cat.hop .p-stand, .cat.spin .p-stand, .cat.leap .p-stand { opacity: 1; }
+  /* 跳躍：起跳前和落地時蹲一下；在空中前腳往前伸、後腳往後蹬 */
+  .cat.crouch-jump .p-sit { opacity: 1; }
+  .cat.crouch-jump .hopper { transform: scale(1.06, .9); transform-origin: 50% 92%; transition: transform .15s; }
+  .cat.crouch-jump .head { transform: translate(-10px, -2px); }
+  .cat.leap .leg.a { transform: rotate(-28deg); }
+  .cat.leap .leg.b { transform: rotate(28deg); }
+  .cat.leap .tail { animation: none; transform: rotate(-18deg); }
   .cat.sit .p-sit, .cat.groom .p-sit { opacity: 1; }
   .cat.loaf .p-loaf, .cat.sleep .p-loaf, .cat.roll .p-loaf { opacity: 1; }
   .cat .head { transition: transform .35s; transform-origin: 100px 42px; }
@@ -1249,14 +1256,12 @@ function poseArt(mood, pose, coat = mood) {
       <path d="M92 60 C92 50 85 45 75 45 C64 44 54 45 46 48 C36 51 32 59 34 67 C36 75 43 78.5 52 78.5 C62 79.5 72 79.5 82 77.5 C90 75.5 92 68 92 60Z" fill="${m.fur}"/>
       ${m.patches ? `<path d="M50 48 C57 45.5 64 47.5 63 55 C57 60 50 58 50 48Z" fill="${m.patches[1]}" stroke="none"/><path d="M68 64 C75 61 81 66 78.5 72 C73 74 69 70 68 64Z" fill="${m.patches[0]}" stroke="none"/>` : ""}
       ${stripes("M56 46.5 C57 50.5 56 53.5 54 55.5 M64 45.5 C65 49.5 64 52.5 62 54.5 M72 45.5 C73 49.5 72 52.5 70 54.5")}
-      <path d="M40 60 C43 67 47 72 53 76" fill="none" stroke-width="1.2" opacity=".45"/>
       ${fluff(87, 58, m.chest)}`;
   }
   if (pose === "sit") {
     return `<path d="M87 92 C94 86 96.5 72 92.5 60 C89.5 52 82 48 75 50 C66 53 60 60 57 67 C47 69 41 77 42 85 C43 91 50 93 58 92 Z" fill="${m.fur}"/>
       ${m.patches ? `<path d="M59 66 C65 60 73 62 73 69 C68 74 61 73 59 66Z" fill="${m.patches[1]}" stroke="none"/><path d="M47 79 C50 74 57 75 57 81 C53 85 48 84 47 79Z" fill="${m.patches[0]}" stroke="none"/>` : ""}
       ${stripes("M69 55 C70 59 68 62 66 64 M77 52 C78 56 76 59 74 61")}
-      <path d="M60 71 C51 73 48 83 54 90" fill="none" stroke-width="1.2" opacity=".45"/>
       ${sitPaw(81.5, 66, near)}
       ${fluff(87.5, 55, m.chest)}
       <g class="stay-paw">${sitPaw(89.5, 67, near)}</g>
@@ -1266,7 +1271,6 @@ function poseArt(mood, pose, coat = mood) {
   return `<path d="M28 85 C26 72 40 63 62 63 C82 63 98 70 99 83 C99.5 89 95 92.5 88 92.5 L38 92.5 C31 92.5 28 90 28 85Z" fill="${m.fur}"/>
     ${m.patches ? `<path d="M44 67 C52 63 60 66 57 74 C51 77 45 74 44 67Z" fill="${m.patches[1]}" stroke="none"/><path d="M70 68 C78 66 85 71 81 78 C75 79 71 75 70 68Z" fill="${m.patches[0]}" stroke="none"/>` : ""}
     ${stripes("M52 65 C53 69 52 72 50 74 M62 63.5 C63 67 62 70 60 72 M72 64.5 C73 68 72 71 70 73")}
-    <path d="M35 79 C39 84 45 86.5 52 86.5" fill="none" stroke-width="1.2" opacity=".45"/>
     <g class="tail" style="transform-origin:31px 86px">${tail("M31 85.5 C26 93 46 94.6 64 94.4 C72 94.2 77 93.8 80 92.5", m, puff)}</g>
     <ellipse cx="87" cy="91" rx="5.2" ry="3" fill="${near}"/><ellipse cx="95" cy="90.6" rx="5.2" ry="3" fill="${near}"/>
     <path d="M89 93.4 L89 91.6 M97 93 L97 91.2" stroke-width=".9" opacity=".55"/>`;
@@ -2884,12 +2888,28 @@ async function rbMove(x, y, speed = 30 + 70 * petEnergy()) {
   await wait(secs * 1000);
   if (run !== roomRun) throw "cancel";
 }
+// 跳上／跳下家具：先蹲下蓄力 → 沿著拋物線跳過去（腳伸直）→ 落地再蹲一下
 async function rbJump(x, y) {
   const run = roomRun;
   if (Math.abs(x - rb.x) > 2) rb.dir = x > rb.x ? 1 : -1;
-  rbLook("hop");
-  rb.x = x; rb.y = y; setRB(.55);
-  await wait(650);
+  setRB(0);
+  if (reduceMotion) { rb.x = x; rb.y = y; setRB(0); rbLook("sit"); return; }
+  rbLook("crouch-jump"); await wait(220);
+  if (run !== roomRun) throw "cancel";
+  const x0 = rb.x, y0 = rb.y, up = y - y0;
+  const arc = up > 0 ? 28 + up * .35 : 22;                 // 往上跳弧度高一點，往下跳低一點
+  const dur = 380 + Math.min(260, Math.hypot(x - x0, up) * 1.2);
+  const off = RB_W * .062, frames = [];
+  for (let i = 0; i <= 16; i++) {
+    const t = i / 16;
+    frames.push({ left: x0 + (x - x0) * t + "px", bottom: y0 + up * t + arc * 4 * t * (1 - t) - off + "px" });
+  }
+  rbLook("leap");
+  const anim = roomBuddy.animate(frames, { duration: dur, easing: "cubic-bezier(.3, .1, .5, 1)" });
+  await wait(dur);
+  rb.x = x; rb.y = y; setRB(0); anim.cancel();
+  if (run !== roomRun) throw "cancel";
+  rbLook("crouch-jump"); await wait(180);
   if (run !== roomRun) throw "cancel";
 }
 async function rbStay(pose, secs) {
