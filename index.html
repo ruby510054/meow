@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
 <style>
   :root, [data-theme="sakura"] {
-    --bg: #fdf1f4; --card: #fffafb; --ink: #4a3439; --muted: #a0848c;
+    --bg: #fdf1f4; --card: #fffafb; --ink: #4a3439; --muted: #85666e;
     --accent: #e8789a; --accent-soft: #fbdde6; --sky: #fde2eb; --sky2: #fff7f9;
     --wall: color-mix(in srgb, var(--accent-soft) 55%, #fffaf5);
   }
@@ -120,7 +120,7 @@
   .music { display: flex; align-items: center; gap: 8px; }
   .music button[aria-pressed="true"] { background: var(--accent-soft); }
   .music input { width: 80px; accent-color: var(--accent); }
-  .themes { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+  .themes { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
   .themes button {
     width: 26px; height: 26px; border: 2px solid var(--line); border-radius: 50% 45% 55% 50%;
     cursor: pointer; padding: 0; transition: transform .15s;
@@ -202,6 +202,7 @@
   .shine.a { left: 12%; width: 26px; } .shine.b { left: 17%; width: 10px; }
   .sill { position: absolute; left: -26px; right: -26px; bottom: -22px; height: 16px; z-index: 4; background: #e2bf98; border: 2px solid var(--line); border-radius: 5px; box-shadow: var(--shadow); }
   .sill-pot { position: absolute; right: 30px; bottom: 12px; width: 34px; }
+  @media (max-width: 600px) { .sill { left: -8px; right: -8px; } }
   .curtain-btns { position: absolute; left: 22px; bottom: -14px; z-index: 5; display: flex; gap: 6px; transform: translateY(50%); }
   .curtain-btn {
     font: inherit; font-size: 12px; color: var(--ink); cursor: pointer;
@@ -371,7 +372,7 @@
     box-shadow: var(--shadow); opacity: 0; transition: opacity .3s;
   }
   .buddy-bubble.show { opacity: 1; }
-  .buddy-bubble b { color: var(--accent); }
+  .buddy-bubble b { color: color-mix(in srgb, var(--accent) 55%, var(--ink)); }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .float-heart { position: fixed; z-index: 60; width: 26px; }
   /* 出門走走：大窗戶變成整個畫面，窗框、窗簾、窗台都收起來 */
@@ -435,7 +436,7 @@
   .quad .zzz { font-size: 11px; top: 18%; }
   .quad > svg { width: 34px; height: 34px; }
   .quad b { font-weight: 600; font-size: 14px; }
-  .quad small { font-size: 11.5px; color: var(--muted); }
+  .quad small { font-size: 11.5px; color: color-mix(in srgb, var(--muted) 60%, var(--ink)); }
   .picker.compact .quads { grid-template-columns: repeat(4, 1fr); gap: 5px; }
   .picker.compact .quad b { font-size: 12px; }
   .picker.compact .quad small { display: none; }
@@ -477,7 +478,7 @@
   textarea:focus { outline: 2px dashed var(--accent); outline-offset: 3px; }
   .save {
     margin-top: 12px; width: 100%; font: inherit; font-size: 17px; font-weight: 600; color: #fff;
-    background: var(--accent); border: 2px solid var(--line); border-radius: var(--wobble); padding: 11px; cursor: pointer;
+    background: color-mix(in srgb, var(--accent) 60%, var(--ink)); border: 2px solid var(--line); border-radius: var(--wobble); padding: 11px; cursor: pointer;
     box-shadow: var(--shadow); transition: background .4s;
   }
   .save:active { transform: translate(2px, 3px); box-shadow: none; }
@@ -541,13 +542,9 @@
     border: 2px dashed var(--line); border-radius: var(--wobble2); padding: 6px 14px; width: 100%;
   }
   .editor { display: grid; gap: 8px; margin: 8px 0; padding: 10px 12px; border: 2px dashed var(--line); border-radius: var(--wobble2); }
-  .editor .mini { display: flex; flex-wrap: wrap; gap: 4px; }
-  .editor .mini button {
     width: 50px; padding: 2px; font: inherit; font-size: 11px; color: var(--ink); cursor: pointer;
     border: 2px dashed transparent; border-radius: var(--wobble2); background: none;
   }
-  .editor .mini button.on { border-color: var(--line); background: var(--accent-soft); }
-  .editor .mini svg { width: 100%; display: block; }
   .editor .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 14px; }
   .editor input[type="time"] { font: inherit; color: var(--ink); background: transparent; border: 1.5px solid var(--line); border-radius: 8px; padding: 2px 6px; }
   .editor textarea { min-height: 56px; }
@@ -561,7 +558,8 @@
     border: 1.5px solid var(--line); border-radius: var(--wobble2); padding: 6px 14px; box-shadow: var(--shadow);
   }
   .data-bar button:active { transform: translate(1px, 2px); box-shadow: none; }
-  .note { text-align: center; color: var(--muted); font-size: 13px; margin-top: 24px; }
+  .note a { color: inherit; text-decoration: underline; }
+  .note { text-align: center; color: color-mix(in srgb, var(--muted) 45%, var(--ink)); font-size: 13px; margin-top: 24px; }
 
   /* 貓掌游標（用 JS 依主題顏色畫出來）；可以點的東西換成帶愛心的貓掌 */
   html, body { cursor: var(--cur, auto); }
@@ -742,7 +740,7 @@
 
 </div>
 
-<div class="wrap">
+<main class="wrap">
   <header>
     <h1>🐾 喵記 <small>今天的心情是哪隻貓？</small></h1>
     <button class="buddy-btn" id="buddyBtn" title="我的寵物">🐱 寵物</button>
@@ -839,7 +837,7 @@
     <input type="file" id="importFile" accept=".json,application/json" hidden>
   </div>
   <p class="note">記錄會自動存在這個瀏覽器裡 · 定期下載備份檔，換瀏覽器或換電腦也能讀回來<br>喵叫聲錄音來自 Wikimedia Commons：Tsester、freemaster2（CC0）、PantheraLeo1359531（<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>），已剪輯並調高音調</p>
-</div>
+</main>
 
 <div class="fade" id="fade" aria-hidden="true"></div>
 <div class="dock" id="dock" hidden>
@@ -1150,9 +1148,6 @@ function eye(cx, cy, mood, side, coat = mood) {
   };
   const line = m.eyeLine || INK;
   if (mood === "happy") return `<path d="M${cx - 4.5} ${cy + 1.5} Q${cx} ${cy - 4.5} ${cx + 4.5} ${cy + 1.5}" fill="none" stroke="${line}" stroke-width="1.8"/>`;
-  // 想睡：圓弧形的眼皮蓋住一半
-  const droopy = o => `<path d="M${cx - 5.8} ${cy + o} Q${cx} ${cy + o + 3} ${cx + 5.8} ${cy + o} L${cx + 5.8} ${cy - 7} L${cx - 5.8} ${cy - 7}Z" fill="${m.fur}" stroke="none"/>
-      <path d="M${cx - 5.4} ${cy + o} Q${cx} ${cy + o + 3} ${cx + 5.4} ${cy + o}" fill="none" stroke-width="1.5"/>`;
   if (mood === "calm") return iris(2.4) + `<circle cx="${cx + 2.6}" cy="${cy + 1.4}" r=".6" fill="#fff" stroke="none"/>`;
   if (mood === "tired") return `<path d="M${cx - 4.5} ${cy} Q${cx} ${cy + 3.2} ${cx + 4.5} ${cy}" fill="none" stroke="${line}" stroke-width="1.7"/>`;
   if (mood === "sad") return iris(3.1) + lid(-1.5, -4.8);
@@ -1163,6 +1158,7 @@ function eye(cx, cy, mood, side, coat = mood) {
 
 // mood 決定表情、耳朵；coat 決定花色（預設同一隻）
 function headArt(mood, coat = mood, acc = null) {
+  if (!MOODS[mood]) mood = "calm";
   const m = coatOf(coat), A = accSVG(acc);
   const [er, ey] = EARS[mood];
   const earL = m.point || m.fur, earR = m.point || m.earR || m.fur;
@@ -1296,6 +1292,7 @@ const ATTRS = `stroke="${INK}" stroke-width="1.8" stroke-linecap="round" stroke-
 
 // 草原上的全身貓（三種姿勢都畫好，用 CSS 切換）；preview 用 pose 參數只畫一種
 function bodySVG(mood, pose, coat = mood, acc = null) {
+  if (!MOODS[mood]) mood = "calm";
   const poses = ["stand", "sit", "loaf"].filter(p => !pose || p === pose);
   const hp = HEAD_POSE[pose === "loaf" ? "loaf" : pose] || HEAD_POSE.stand;
   const headAttr = pose ? `transform="translate(${hp.x} ${hp.y}) rotate(${hp.r} 100 42)"` : "";
@@ -1472,9 +1469,6 @@ const hashHue = str => { let h = 7; for (const ch of str) h = (h * 31 + ch.codeP
 const randHue = () => Math.floor(Math.random() * 360);
 // ---------- 隨機小飾品：跟心情無關，每隻貓一個，顏色也隨機 ----------
 // slot 是戴的位置；心情配件剛好也在那個位置時，會自動換成別的位置的飾品
-const star = (cx, cy, R, r) => "M" + Array.from({ length: 10 }, (_, i) => {
-  const a = -Math.PI / 2 + i * Math.PI / 5, k = i % 2 ? r : R;
-  return `${(cx + k * Math.cos(a)).toFixed(1)} ${(cy + k * Math.sin(a)).toFixed(1)}`; }).join(" L") + "Z";
 
 
 
@@ -1488,7 +1482,25 @@ try {
   firstVisit = stored === null;
   entries = JSON.parse(stored) || {};
 } catch (e) {}
-for (const k in entries) if (!Array.isArray(entries[k])) entries[k] = [entries[k]];  // 舊格式：一天一筆
+// 讀進來的資料先檢查一遍：壞掉的記錄跳過、缺的欄位補預設值，免得整個網頁打不開
+function cleanEntries(raw) {
+  const out = {};
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return out;
+  for (const [k, v] of Object.entries(raw)) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(k)) continue;
+    const list = (Array.isArray(v) ? v : [v]).filter(r => r && typeof r === "object" && !Array.isArray(r)).map(r => {
+      const rec = { mood: MOODS[r.mood] ? r.mood : "calm", text: typeof r.text === "string" ? r.text : "", t: /^\d{2}:\d{2}$/.test(r.t) ? r.t : "" };
+      if (Array.isArray(r.emo)) rec.emo = r.emo.filter(x => typeof x === "string").slice(0, 10);
+      for (const f of ["body", "ctx"]) if (Array.isArray(r[f])) rec[f] = r[f].filter(x => typeof x === "string").slice(0, 20);
+      if (Number.isFinite(r.hue)) rec.hue = r.hue;
+      if (r.demo) rec.demo = true;
+      return rec;
+    });
+    if (list.length) out[k] = list;
+  }
+  return out;
+}
+entries = cleanEntries(entries);
 // 「今天」會跟著時間更新（網頁開著過了午夜也會換日）
 let today = new Date();
 const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -1591,6 +1603,7 @@ const reduceMotionPref = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // ---------- 主題顏色 ----------
 function applyTheme(t) {
+  if (!document.querySelector(`#themes button[data-t="${t}"]`)) t = "sakura";
   document.documentElement.dataset.theme = t;
   paintCursor();
   document.querySelectorAll("#themes button").forEach(b => b.classList.toggle("on", b.dataset.t === t));
@@ -2291,6 +2304,12 @@ QUADS.forEach(q => q.families.forEach(f => {
   if (!EMO[f.id]) EMO[f.id] = { id: f.id, name: f.label.zh, desc: "", family: f.id, familyName: f.label.zh, quad: q.id, color: q.soft, face,
     valence: avgOf(f.emotions, "valence"), arousal: avgOf(f.emotions, "arousal") };
 }));
+// 情緒表準備好之後，再整理一次記錄：不認識的情緒詞拿掉，表情跟情緒詞對齊
+for (const list of Object.values(entries)) list.forEach(r => {
+  if (!r.emo) return;
+  r.emo = r.emo.filter(id => EMO[id]);
+  if (!r.emo.length) delete r.emo; else r.mood = EMO[r.emo[0]].face;
+});
 const SPECIAL = Object.fromEntries((EMO_DATA.special_options || []).map(o => [o.id, { name: o.label.zh, desc: o.desc || "" }]));
 EMO.unsure = { id: "unsure", name: SPECIAL.unsure?.name || "說不上來", desc: SPECIAL.unsure?.desc || "", family: "unsure", quad: null, color: "#a0848c", face: "calm" };
 // 「說不上來」時，先從身體感覺和發生的事開始記
@@ -3568,7 +3587,6 @@ if (music.on) document.addEventListener("pointerdown", () => { if (music.on) sta
 
 // ---------- 備份：下載成檔案、從檔案讀回來 ----------
 const realCount = () => Object.values(entries).flat().filter(r => !r.demo).length;
-const hasDemo = () => Object.values(entries).flat().some(r => r.demo);
 function needBackup() {
   let lastBackup = 0;
   try { lastBackup = +localStorage.getItem("meow-last-backup") || 0; } catch (e) {}
@@ -3708,19 +3726,6 @@ function addPetCat(enter) {
   petCat = c;
   draw(c);
   return c;
-}
-// 換成全螢幕（或回到窗戶）後，草原的大小變了，把大家重新散開
-function spreadCats() {
-  sizeMeadow();
-  const W = meadow.clientWidth;
-  cats.forEach(c => {
-    if (c.partner) endPair(c);
-    c.x = Math.random() * (W - CAT_W); c.y = Y_MIN + Math.random() * (Y_MAX - Y_MIN);
-    c.tx = c.x; c.ty = c.y;
-    if (c.mode === "walk") setMode(c, "sit");
-    draw(c);
-  });
-  ball.x = W * .6; moveBall(0, W);
 }
 // 轉場：畫面淡出 → 換場景 → 淡入
 function fadeSwap(fn) {
