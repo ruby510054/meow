@@ -285,6 +285,7 @@
   /* 貓咪 */
   .cat { position: absolute; width: 100px; transform-origin: bottom center; cursor: pointer; }
   .meadow .cat { width: calc(100px * var(--ms, 1)); }
+  .meadow .cat .flip { opacity: var(--fade, 1); transition: opacity 2s; }   /* 記錄越舊，身影越淡 */
   /* 窗外的貓顏色柔和一點，像在遠處；下雨天再暗一點（屋內的寵物不受影響） */
   /* 越遠越淡、越霧（--far：0 是最近、1 是最遠） */
   .meadow .cat .hopper > svg { filter: saturate(calc(.78 - var(--far, 0) * .35)) brightness(calc(.93 + var(--far, 0) * .1)) opacity(calc(1 - var(--far, 0) * .18)); transition: filter 2s; }
@@ -554,6 +555,8 @@
   .day svg { width: 100%; height: 100%; margin-top: 8px; }
   .day.today { border: 2px solid var(--accent); background: var(--accent-soft); }
   .day:not(.empty) { cursor: pointer; transition: background .15s; }
+  .day > svg, .day .heads, .day .more { opacity: var(--fade, 1); }
+  .week-note { width: 100%; margin: 0 0 4px; font-size: 13px; color: var(--muted); }
   .day:not(.empty):hover, .day:not(.empty):focus-visible { background: var(--accent-soft); outline: none; }
   .day .heads { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 80%; margin-top: 10px; }
   .day .heads svg { width: 100%; height: auto; margin: 0; }
@@ -763,7 +766,7 @@
     <path d="M22 28.4 C22 35.6 98 35.6 98 28.4" fill="none"  stroke-width="1.2" stroke-dasharray="2.6 2.6" style="stroke:var(--r-fab)"/>
     <g  stroke="none" opacity=".7" style="fill:var(--r-fab)"><ellipse cx="60" cy="30" rx="3" ry="2.4"/><circle cx="56.4" cy="27" r="1.2"/><circle cx="59" cy="25.8" r="1.2"/><circle cx="61.6" cy="25.8" r="1.2"/><circle cx="64.2" cy="27" r="1.2"/></g></g></svg></div>
   <div class="h-lamp" aria-hidden="true"><svg viewBox="0 0 60 210" overflow="visible"><g stroke="#7a5a50" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="30" cy="205" rx="26" ry="4" fill="#6b4f4f" opacity=".13" filter="url(#softShadow)" stroke="none"/><ellipse class="glow" cx="30" cy="40" rx="32" ry="36" fill="#fff1bf" stroke="none"/><rect x="27" y="44" width="6" height="156" rx="3" style="fill:var(--r-wood)"/><path d="M29 50 V194" stroke-width="1.6" opacity=".8" style="stroke:var(--r-wood-l)"/><path d="M12 204 Q12 196 30 196 Q48 196 48 204 Q48 207 30 207 Q12 207 12 204Z" style="fill:var(--r-wood-d)"/><path d="M30 203.7 C26.7 201.5 26.3 199.3 27.4 198.2 C28.2 197.3 29.6 197.8 30 198.9 C30.4 197.8 31.8 197.3 32.6 198.2 C33.7 199.3 33.3 201.5 30 203.7Z" fill="#fff" stroke="none"/><path d="M6 44 Q6 12 30 10 Q54 12 54 44Z" style="fill:var(--r-fab-l)"/><path d="M4 44 A4.333 4.333 0 0 0 12.7 44 A4.333 4.333 0 0 0 21.3 44 A4.333 4.333 0 0 0 30 44 A4.333 4.333 0 0 0 38.7 44 A4.333 4.333 0 0 0 47.3 44 A4.333 4.333 0 0 0 56 44Z" style="fill:var(--r-fab-l)" stroke-width="1.6"/><path d="M12 26 Q20 14 30 13" fill="none" stroke="#fff" stroke-width="2.4" opacity=".8"/><g stroke="none" style="fill:var(--r-fab)"><circle cx="20" cy="32" r="3"/><circle cx="34" cy="22" r="2.6"/><circle cx="42" cy="36" r="3.4"/><circle cx="28" cy="38" r="1.8"/></g><path d="M30 10 Q22 2 19 9 Q22 15 30 11 Q38 15 41 9 Q38 2 30 10Z" style="fill:var(--r-fab)"/><circle cx="30" cy="10.4" r="2.2" style="fill:var(--r-cream)"/></g></svg><svg class="rv rv-cafe" viewBox="0 0 60 210" overflow="visible"><g stroke="#7a5a50" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="30" cy="205" rx="26" ry="4" fill="#6b4f4f" opacity=".13" filter="url(#softShadow)" stroke="none"/><path d="M30 20 V58" stroke-width="1.4"/><ellipse class="glow" cx="30" cy="90" rx="26" ry="20" fill="#ffe9a8" stroke="none" opacity=".7"/><path d="M12 74 Q12 56 30 56 Q48 56 48 74Z" fill="#d98a58"/><path d="M11.8 64 L12.5 57 L18.1 61.9Z M48.2 64 L47.5 57 L41.9 61.9Z" fill="#d98a58"/><path d="M12 74 H48" stroke-width="2"/><path d="M26 74 Q26 82 30 82 Q34 82 34 74" fill="#fff6c8"/><path d="M17 68 Q19 60 26 59" fill="none" stroke="#fff" stroke-width="2.2" opacity="0.7"/><path d="M28 52 H32 V56 H28Z" fill="#b9a08f"/><path d="M10 206 L22 100 M50 206 L38 100 M30 206 L30 120" fill="none" stroke="#8a6244" stroke-width="2.6"/><rect x="3" y="96" width="54" height="74" rx="5" fill="#c99a70"/><rect x="8" y="101" width="44" height="64" rx="2" fill="#3f4a44"/><text x="30" y="115" font-size="8.6" text-anchor="middle" fill="#fdf6e8" stroke="none" font-family="Huninn, sans-serif">歡迎光臨</text><g stroke="#fdf6e8" stroke-width="1.1" fill="none"><path d="M18 136 H36 V141 Q36 149 27 149 Q18 149 18 141Z"/><path d="M36 138 Q41 138.6 36 144"/><path d="M24 132 Q22 128 24 124 M30 132 Q28 128 30 124"/><path d="M14 156 H46" stroke-dasharray="2 2.4"/></g><path d="M27 144.1 C24.3 142.3 23.9 140.5 24.8 139.6 C25.6 138.9 26.6 139.2 27 140.1 C27.4 139.2 28.4 138.9 29.2 139.6 C30.1 140.5 29.7 142.3 27 144.1Z" fill="#f3b49a" stroke="none"/><text x="30" y="163" font-size="6" text-anchor="middle" fill="#f3b49a" stroke="none" font-family="Huninn, sans-serif">喵拿鐵</text></g></svg></div>
-  <div class="h-bigbed" aria-hidden="true"><svg viewBox="0 0 360 190" overflow="visible"><g stroke="#7a5a50" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="180" cy="186" rx="176" ry="6" fill="#6b4f4f" opacity=".13" filter="url(#softShadow)" stroke="none"/><path d="M304 38 L309 12 L324 28Z M328 28 L343 12 L348 38Z" style="fill:var(--r-wood)"/><path d="M308 30 L310 18 L318 26Z M334 26 L342 18 L344 30Z" stroke="none" style="fill:var(--r-fab)"/><path d="M298 186 V54 Q298 26 326 26 Q354 26 354 54 V186Z" style="fill:var(--r-wood)"/><path d="M304 56 Q304 34 326 32" fill="none" stroke-width="3" style="stroke:var(--r-wood-l)"/><path d="M345 52 V180" stroke-width="6" opacity=".5" style="stroke:var(--r-wood-d)"/><path d="M326 70.2 C315.8 63.4 314.4 56.6 317.8 53.2 C320.6 50.5 324.6 51.8 326 55.2 C327.4 51.8 331.4 50.5 334.2 53.2 C337.6 56.6 336.2 63.4 326 70.2Z" style="fill:var(--r-fab)"/><path d="M320 55 Q322 52.6 325 53.4" fill="none" stroke="#fff" stroke-width="1.6" opacity="0.8"/><rect x="30" y="160" width="14" height="24" rx="6" style="fill:var(--r-wood-d)"/><rect x="284" y="160" width="14" height="24" rx="6" style="fill:var(--r-wood-d)"/><rect x="22" y="144" width="290" height="22" rx="10" style="fill:var(--r-wood)"/><path d="M24 146 H296 V166 Q288 176.4 280 166 Q272 176.4 264 166 Q256 176.4 248 166 Q240 176.4 232 166 Q224 176.4 216 166 Q208 176.4 200 166 Q192 176.4 184 166 Q176 176.4 168 166 Q160 176.4 152 166 Q144 176.4 136 166 Q128 176.4 120 166 Q112 176.4 104 166 Q96 176.4 88 166 Q80 176.4 72 166 Q64 176.4 56 166 Q48 176.4 40 166 Q32 176.4 24 166 L24 166Z" style="fill:var(--r-fab-l)"/><path d="M40 149 V167" stroke-width="1" opacity=".4"/><path d="M56 149 V167" stroke-width="1" opacity=".4"/><path d="M72 149 V167" stroke-width="1" opacity=".4"/><path d="M88 149 V167" stroke-width="1" opacity=".4"/><path d="M104 149 V167" stroke-width="1" opacity=".4"/><path d="M120 149 V167" stroke-width="1" opacity=".4"/><path d="M136 149 V167" stroke-width="1" opacity=".4"/><path d="M152 149 V167" stroke-width="1" opacity=".4"/><path d="M168 149 V167" stroke-width="1" opacity=".4"/><path d="M184 149 V167" stroke-width="1" opacity=".4"/><path d="M200 149 V167" stroke-width="1" opacity=".4"/><path d="M216 149 V167" stroke-width="1" opacity=".4"/><path d="M232 149 V167" stroke-width="1" opacity=".4"/><path d="M248 149 V167" stroke-width="1" opacity=".4"/><path d="M264 149 V167" stroke-width="1" opacity=".4"/><path d="M280 149 V167" stroke-width="1" opacity=".4"/><path d="M30 149.4 H290" fill="none" stroke="#fff" stroke-width="2" opacity="0.5"/><rect x="26" y="114" width="284" height="36" rx="14" style="fill:var(--r-cream)"/><path d="M34 144 H300" stroke="#efe6e2" stroke-width="3"/><path d="M250 99 Q274 88 298 96 Q304 108 297 118 Q273 125 251 117 Q246 108 250 99Z" style="fill:var(--r-cream)"/><path d="M256 101 Q274 93 293 99 Q298 108 293 114 Q273 120 255 113 Q252 107 256 101Z" fill="none" stroke-width="1" stroke-dasharray="2.4 2.4" style="stroke:var(--r-fab)"/><path d="M258 98 Q270 93 282 93" fill="none" stroke="#fff" stroke-width="2.4" opacity="0.9"/><path class="blanket" d="M36 112 Q130 98 238 106 Q252 132 246 160 Q236 166 226 160 Q216 168 206 161 Q196 168 186 161 Q176 168 166 161 Q156 168 146 161 Q136 168 126 161 Q116 168 106 161 Q96 168 86 161 Q76 168 66 161 Q56 168 46 161 Q38 166 32 160 Q24 136 36 112Z"/><path d="M34 154 Q130 146 246 154" fill="none" stroke="#fff" stroke-width="1.4" stroke-dasharray="3 3" opacity=".85"/><path d="M48 116 Q130 105 230 112" fill="none" stroke="#fff" stroke-width="4" opacity=".55"/><g class="dots" stroke="none"><circle cx="70" cy="126" r="3.4"/><circle cx="112" cy="140" r="3.4"/><circle cx="152" cy="122" r="3.4"/><circle cx="192" cy="140" r="3.4"/><circle cx="222" cy="124" r="3.4"/><circle cx="90" cy="148" r="2.6"/><circle cx="172" cy="151" r="2.6"/></g><path d="M4 186 V106 Q4 86 23 86 Q42 86 42 106 V186Z" style="fill:var(--r-wood)"/><path d="M10 108 Q10 92 23 91" fill="none" stroke-width="2.6" style="stroke:var(--r-wood-l)"/><path d="M23 112.6 C16.4 108.2 15.5 103.8 17.7 101.6 C19.5 99.8 22.1 100.7 23 102.9 C23.9 100.7 26.5 99.8 28.3 101.6 C30.5 103.8 29.6 108.2 23 112.6Z" style="fill:var(--r-fab)"/><circle cx="19.8" cy="124" r="0.9" fill="#7a5a50" stroke="none"/><circle cx="26.2" cy="124" r="0.9" fill="#7a5a50" stroke="none"/><path d="M21.4 125.4 Q22.2 126.7 23 125.6 Q23.8 126.7 24.6 125.4" fill="none" stroke-width="0.9"/><ellipse cx="17.4" cy="125.9" rx="1.6" ry="1" fill="#ff9db5" opacity=".6" stroke="none"/><ellipse cx="28.6" cy="125.9" rx="1.6" ry="1" fill="#ff9db5" opacity=".6" stroke="none"/></g></svg><svg class="rv rv-cafe" viewBox="0 0 360 190" overflow="visible"><g stroke="#7a5a50" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="180" cy="186" rx="176" ry="6" fill="#6b4f4f" opacity=".13" filter="url(#softShadow)" stroke="none"/><rect x="20" y="118" width="300" height="68" rx="8" fill="#c99a70"/><path d="M40 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M60 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M80 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M100 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M120 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M140 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M160 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M180 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M200 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M220 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M240 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M260 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M280 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M300 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M26.0 164.9 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M46.0 157.1 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M66.0 143.4 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M106.0 155.3 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M126.0 149.6 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M146.0 141.8 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M186.0 143.0 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M206.0 144.0 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M226.0 163.1 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M246.0 139.4 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M266.0 165.7 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M286.0 154.6 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M306.0 155.8 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><rect x="20" y="176" width="300" height="10" rx="4" fill="#8a6244"/><g fill="#a97b55" stroke="none" opacity="0.9"><ellipse cx="60" cy="156.8" rx="10.2" ry="8.2"/><circle cx="49.1" cy="145.2" r="4.1"/><circle cx="56.3" cy="140.5" r="4.1"/><circle cx="63.7" cy="140.5" r="4.1"/><circle cx="70.9" cy="145.2" r="4.1"/></g><g fill="#a97b55" stroke="none" opacity="0.9"><ellipse cx="280" cy="156.8" rx="10.2" ry="8.2"/><circle cx="269.1" cy="145.2" r="4.1"/><circle cx="276.3" cy="140.5" r="4.1"/><circle cx="283.7" cy="140.5" r="4.1"/><circle cx="290.9" cy="145.2" r="4.1"/></g><rect x="14" y="104" width="312" height="16" rx="8" fill="#e9caa6"/><path d="M24 108 H316" fill="none" stroke="#fff" stroke-width="2" opacity="0.6"/><path d="M182 104 L184 90 H204 L206 104Z" fill="#e3a07a"/><path d="M184 94 H204" stroke="#fff" stroke-width="1.6" opacity=".6"/><ellipse cx="188" cy="86" rx="4" ry="2.4" fill="#8cc46b" stroke-width="1.1" transform="rotate(-40 188 86)"/><ellipse cx="200" cy="86" rx="4" ry="2.4" fill="#8cc46b" stroke-width="1.1" transform="rotate(40 200 86)"/><ellipse cx="194" cy="82" rx="4" ry="2.4" fill="#8cc46b" stroke-width="1.1" transform="rotate(90 194 82)"/><rect x="34" y="62" width="72" height="42" rx="6" fill="#eaf7fb"/><path d="M38 84 H102" stroke-width="1.2"/><path d="M40.4 82 Q38.8 78 43.6 76.4 Q46.8 72.4 50 72.4 Q53.2 72.4 56.4 76.4 Q61.2 78 59.6 82 Q50 79.6 40.4 82Z" fill="#eaa865" stroke-width="1"/><path d="M44.4 76.4 Q46 79.6 46.8 80.6 M50 72.4 V79.8 M55.6 76.4 Q54 79.6 53.2 80.6" fill="none" stroke-width="0.8" opacity=".6"/><path d="M47.6 74 Q50 73 52.4 74" fill="none" stroke="#fff" stroke-width="1.1199999999999999" opacity="0.6"/><path d="M64.4 82 Q62.8 78 67.6 76.4 Q70.8 72.4 74 72.4 Q77.2 72.4 80.4 76.4 Q85.2 78 83.6 82 Q74 79.6 64.4 82Z" fill="#eaa865" stroke-width="1"/><path d="M68.4 76.4 Q70 79.6 70.8 80.6 M74 72.4 V79.8 M79.6 76.4 Q78 79.6 77.2 80.6" fill="none" stroke-width="0.8" opacity=".6"/><path d="M71.6 74 Q74 73 76.4 74" fill="none" stroke="#fff" stroke-width="1.1199999999999999" opacity="0.6"/><ellipse cx="94" cy="79.6" rx="5.4" ry="3.6" fill="#d9965a" stroke-width="1.2"/><path d="M94 79.6 m-1 0 a1.6 1.2 0 1 1 3 0 a3.4 2.6 0 1 1 -6.4 0 a5.4 4 0 1 1 10.6 0" fill="none" stroke="#8a5a3c" stroke-width="1.1" transform="scale(1)"/><path d="M89.8 77.8 Q92.8 75.8 96.4 76.4 Q95.2 78.4 95.8 79.2" fill="none" stroke="#fffaf3" stroke-width="1.1"/><path d="M46 102 L47 94 H57 L58 102Z" fill="#f3d7b7" stroke-width="1"/><path d="M46 95 Q45 88 52 88 Q59 88 58 95Z" fill="#a8705a" stroke-width="1"/><circle cx="50" cy="91" r=".7" fill="#4f3328" stroke="none"/><circle cx="54" cy="90" r=".7" fill="#4f3328" stroke="none"/><circle cx="52" cy="93" r=".7" fill="#4f3328" stroke="none"/><path d="M64 102 L65 94 H75 L76 102Z" fill="#f3d7b7" stroke-width="1"/><path d="M64 95 Q63 88 70 88 Q77 88 76 95Z" fill="#a8705a" stroke-width="1"/><circle cx="68" cy="91" r=".7" fill="#4f3328" stroke="none"/><circle cx="72" cy="90" r=".7" fill="#4f3328" stroke="none"/><circle cx="70" cy="93" r=".7" fill="#4f3328" stroke="none"/><path d="M82 102 L83 94 H93 L94 102Z" fill="#f3d7b7" stroke-width="1"/><path d="M82 95 Q81 88 88 88 Q95 88 94 95Z" fill="#a8705a" stroke-width="1"/><circle cx="86" cy="91" r=".7" fill="#4f3328" stroke="none"/><circle cx="90" cy="90" r=".7" fill="#4f3328" stroke="none"/><circle cx="88" cy="93" r=".7" fill="#4f3328" stroke="none"/><rect x="30" y="56" width="80" height="8" rx="4" fill="#a97b55"/><path d="M40 66 L48 100" fill="none" stroke="#fff" stroke-width="2.6" opacity="0.7"/><rect x="128" y="78" width="18" height="26" rx="4" fill="#eaf7fb" fill-opacity=".85"/><rect x="126" y="74" width="22" height="5" rx="2.4" fill="#a97b55"/><ellipse cx="133" cy="98" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(20 133 98)"/><path d="M131.7 98 H134.3" stroke="#a37455" stroke-width=".6" transform="rotate(20 133 98)"/><ellipse cx="140" cy="99" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(-30 140 99)"/><path d="M138.7 99 H141.3" stroke="#a37455" stroke-width=".6" transform="rotate(-30 140 99)"/><ellipse cx="136" cy="92" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(70 136 92)"/><path d="M134.7 92 H137.3" stroke="#a37455" stroke-width=".6" transform="rotate(70 136 92)"/><ellipse cx="132" cy="87" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(-10 132 87)"/><path d="M130.7 87 H133.3" stroke="#a37455" stroke-width=".6" transform="rotate(-10 132 87)"/><ellipse cx="141" cy="89" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(40 141 89)"/><path d="M139.7 89 H142.3" stroke="#a37455" stroke-width=".6" transform="rotate(40 141 89)"/><ellipse cx="137" cy="84" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(0 137 84)"/><path d="M135.7 84 H138.3" stroke="#a37455" stroke-width=".6" transform="rotate(0 137 84)"/><rect x="150" y="78" width="18" height="26" rx="4" fill="#eaf7fb" fill-opacity=".85"/><rect x="148" y="74" width="22" height="5" rx="2.4" fill="#a97b55"/><ellipse cx="155" cy="99" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(-20 155 99)"/><path d="M153.7 99 H156.3" stroke="#a37455" stroke-width=".6" transform="rotate(-20 155 99)"/><ellipse cx="162" cy="98" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(30 162 98)"/><path d="M160.7 98 H163.3" stroke="#a37455" stroke-width=".6" transform="rotate(30 162 98)"/><ellipse cx="158" cy="92" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(-60 158 92)"/><path d="M156.7 92 H159.3" stroke="#a37455" stroke-width=".6" transform="rotate(-60 158 92)"/><path d="M152 96 Q159 90 166 96 V102 H152Z" fill="#f6dc85" stroke="none" opacity=".7"/><path d="M250 104 L260 62 L270 104 M276 104 L266 62" fill="none" stroke="#8a6244" stroke-width="2.2"/><rect x="244" y="52" width="50" height="40" rx="4" fill="#c99a70"/><rect x="248" y="56" width="42" height="32" rx="2" fill="#3f4a44"/><text x="269" y="66" font-size="7" text-anchor="middle" fill="#fdf6e8" stroke="none" font-family="Huninn, sans-serif">今日</text><text x="269" y="76" font-size="7" text-anchor="middle" fill="#fdf6e8" stroke="none" font-family="Huninn, sans-serif">喵拿鐵</text><path d="M269 85.3 C266.3 83.5 265.9 81.7 266.8 80.8 C267.6 80.1 268.6 80.4 269 81.3 C269.4 80.4 270.4 80.1 271.2 80.8 C272.1 81.7 271.7 83.5 269 85.3Z" fill="#f3b49a" stroke="none"/><path d="M330 186 V120 Q330 112 338 112 H350 Q356 112 356 120 V186Z" fill="#a97b55"/><path d="M334 124 H352 V178 H334Z" fill="none" stroke="#8a6244" stroke-width="1.4"/><circle cx="343" cy="150" r="3.6" fill="#e3a07a"/><path d="M339.2 147.4 L339.5 144.4 L341.9 146.5Z M346.8 147.4 L346.5 144.4 L344.1 146.5Z" fill="#e3a07a"/></g></svg></div>
+  <div class="h-bigbed" aria-hidden="true"><svg viewBox="0 0 360 190" overflow="visible"><g stroke="#7a5a50" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="180" cy="186" rx="176" ry="6" fill="#6b4f4f" opacity=".13" filter="url(#softShadow)" stroke="none"/><path d="M304 38 L309 12 L324 28Z M328 28 L343 12 L348 38Z" style="fill:var(--r-wood)"/><path d="M308 30 L310 18 L318 26Z M334 26 L342 18 L344 30Z" stroke="none" style="fill:var(--r-fab)"/><path d="M298 186 V54 Q298 26 326 26 Q354 26 354 54 V186Z" style="fill:var(--r-wood)"/><path d="M304 56 Q304 34 326 32" fill="none" stroke-width="3" style="stroke:var(--r-wood-l)"/><path d="M345 52 V180" stroke-width="6" opacity=".5" style="stroke:var(--r-wood-d)"/><path d="M326 70.2 C315.8 63.4 314.4 56.6 317.8 53.2 C320.6 50.5 324.6 51.8 326 55.2 C327.4 51.8 331.4 50.5 334.2 53.2 C337.6 56.6 336.2 63.4 326 70.2Z" style="fill:var(--r-fab)"/><path d="M320 55 Q322 52.6 325 53.4" fill="none" stroke="#fff" stroke-width="1.6" opacity="0.8"/><rect x="30" y="160" width="14" height="24" rx="6" style="fill:var(--r-wood-d)"/><rect x="284" y="160" width="14" height="24" rx="6" style="fill:var(--r-wood-d)"/><rect x="22" y="144" width="290" height="22" rx="10" style="fill:var(--r-wood)"/><path d="M24 146 H296 V166 Q288 176.4 280 166 Q272 176.4 264 166 Q256 176.4 248 166 Q240 176.4 232 166 Q224 176.4 216 166 Q208 176.4 200 166 Q192 176.4 184 166 Q176 176.4 168 166 Q160 176.4 152 166 Q144 176.4 136 166 Q128 176.4 120 166 Q112 176.4 104 166 Q96 176.4 88 166 Q80 176.4 72 166 Q64 176.4 56 166 Q48 176.4 40 166 Q32 176.4 24 166 L24 166Z" style="fill:var(--r-fab-l)"/><path d="M40 149 V167" stroke-width="1" opacity=".4"/><path d="M56 149 V167" stroke-width="1" opacity=".4"/><path d="M72 149 V167" stroke-width="1" opacity=".4"/><path d="M88 149 V167" stroke-width="1" opacity=".4"/><path d="M104 149 V167" stroke-width="1" opacity=".4"/><path d="M120 149 V167" stroke-width="1" opacity=".4"/><path d="M136 149 V167" stroke-width="1" opacity=".4"/><path d="M152 149 V167" stroke-width="1" opacity=".4"/><path d="M168 149 V167" stroke-width="1" opacity=".4"/><path d="M184 149 V167" stroke-width="1" opacity=".4"/><path d="M200 149 V167" stroke-width="1" opacity=".4"/><path d="M216 149 V167" stroke-width="1" opacity=".4"/><path d="M232 149 V167" stroke-width="1" opacity=".4"/><path d="M248 149 V167" stroke-width="1" opacity=".4"/><path d="M264 149 V167" stroke-width="1" opacity=".4"/><path d="M280 149 V167" stroke-width="1" opacity=".4"/><path d="M30 149.4 H290" fill="none" stroke="#fff" stroke-width="2" opacity="0.5"/><rect x="26" y="114" width="284" height="36" rx="14" style="fill:var(--r-cream)"/><path d="M34 144 H300" stroke="#efe6e2" stroke-width="3"/><path d="M250 99 Q274 88 298 96 Q304 108 297 118 Q273 125 251 117 Q246 108 250 99Z" style="fill:var(--r-cream)"/><path d="M256 101 Q274 93 293 99 Q298 108 293 114 Q273 120 255 113 Q252 107 256 101Z" fill="none" stroke-width="1" stroke-dasharray="2.4 2.4" style="stroke:var(--r-fab)"/><path d="M260 101.6 Q270 97.4 281 97.2" fill="none" stroke="#fff" stroke-width="2.4" opacity="0.9"/><path class="blanket" d="M36 112 Q130 98 238 106 Q252 132 246 160 Q236 166 226 160 Q216 168 206 161 Q196 168 186 161 Q176 168 166 161 Q156 168 146 161 Q136 168 126 161 Q116 168 106 161 Q96 168 86 161 Q76 168 66 161 Q56 168 46 161 Q38 166 32 160 Q24 136 36 112Z"/><path d="M34 154 Q130 146 246 154" fill="none" stroke="#fff" stroke-width="1.4" stroke-dasharray="3 3" opacity=".85"/><path d="M48 116 Q130 105 230 112" fill="none" stroke="#fff" stroke-width="4" opacity=".55"/><g class="dots" stroke="none"><circle cx="70" cy="126" r="3.4"/><circle cx="112" cy="140" r="3.4"/><circle cx="152" cy="122" r="3.4"/><circle cx="192" cy="140" r="3.4"/><circle cx="222" cy="124" r="3.4"/><circle cx="90" cy="148" r="2.6"/><circle cx="172" cy="151" r="2.6"/></g><path d="M4 186 V106 Q4 86 23 86 Q42 86 42 106 V186Z" style="fill:var(--r-wood)"/><path d="M10 108 Q10 92 23 91" fill="none" stroke-width="2.6" style="stroke:var(--r-wood-l)"/><path d="M23 112.6 C16.4 108.2 15.5 103.8 17.7 101.6 C19.5 99.8 22.1 100.7 23 102.9 C23.9 100.7 26.5 99.8 28.3 101.6 C30.5 103.8 29.6 108.2 23 112.6Z" style="fill:var(--r-fab)"/><circle cx="19.8" cy="124" r="0.9" fill="#7a5a50" stroke="none"/><circle cx="26.2" cy="124" r="0.9" fill="#7a5a50" stroke="none"/><path d="M21.4 125.4 Q22.2 126.7 23 125.6 Q23.8 126.7 24.6 125.4" fill="none" stroke-width="0.9"/><ellipse cx="17.4" cy="125.9" rx="1.6" ry="1" fill="#ff9db5" opacity=".6" stroke="none"/><ellipse cx="28.6" cy="125.9" rx="1.6" ry="1" fill="#ff9db5" opacity=".6" stroke="none"/></g></svg><svg class="rv rv-cafe" viewBox="0 0 360 190" overflow="visible"><g stroke="#7a5a50" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="180" cy="186" rx="176" ry="6" fill="#6b4f4f" opacity=".13" filter="url(#softShadow)" stroke="none"/><rect x="20" y="118" width="300" height="68" rx="8" fill="#c99a70"/><path d="M40 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M60 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M80 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M100 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M120 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M140 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M160 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M180 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M200 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M220 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M240 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M260 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M280 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M300 126 V180" stroke="#a97b55" stroke-width="1.3"/><path d="M26.0 164.9 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M46.0 157.1 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M66.0 143.4 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M106.0 155.3 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M126.0 149.6 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M146.0 141.8 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M186.0 143.0 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M206.0 144.0 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M226.0 163.1 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M246.0 139.4 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M266.0 165.7 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M286.0 154.6 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><path d="M306.0 155.8 q4.0 -3 8.0 0" fill="none" stroke="#a97b55" stroke-width="1" opacity=".7"/><rect x="20" y="176" width="300" height="10" rx="4" fill="#8a6244"/><g fill="#a97b55" stroke="none" opacity="0.9"><ellipse cx="60" cy="156.8" rx="10.2" ry="8.2"/><circle cx="49.1" cy="145.2" r="4.1"/><circle cx="56.3" cy="140.5" r="4.1"/><circle cx="63.7" cy="140.5" r="4.1"/><circle cx="70.9" cy="145.2" r="4.1"/></g><g fill="#a97b55" stroke="none" opacity="0.9"><ellipse cx="280" cy="156.8" rx="10.2" ry="8.2"/><circle cx="269.1" cy="145.2" r="4.1"/><circle cx="276.3" cy="140.5" r="4.1"/><circle cx="283.7" cy="140.5" r="4.1"/><circle cx="290.9" cy="145.2" r="4.1"/></g><rect x="14" y="104" width="312" height="16" rx="8" fill="#e9caa6"/><path d="M24 108 H316" fill="none" stroke="#fff" stroke-width="2" opacity="0.6"/><path d="M182 104 L184 90 H204 L206 104Z" fill="#e3a07a"/><path d="M184 94 H204" stroke="#fff" stroke-width="1.6" opacity=".6"/><ellipse cx="188" cy="86" rx="4" ry="2.4" fill="#8cc46b" stroke-width="1.1" transform="rotate(-40 188 86)"/><ellipse cx="200" cy="86" rx="4" ry="2.4" fill="#8cc46b" stroke-width="1.1" transform="rotate(40 200 86)"/><ellipse cx="194" cy="82" rx="4" ry="2.4" fill="#8cc46b" stroke-width="1.1" transform="rotate(90 194 82)"/><rect x="34" y="62" width="72" height="42" rx="6" fill="#eaf7fb"/><path d="M38 84 H102" stroke-width="1.2"/><path d="M40.4 82 Q38.8 78 43.6 76.4 Q46.8 72.4 50 72.4 Q53.2 72.4 56.4 76.4 Q61.2 78 59.6 82 Q50 79.6 40.4 82Z" fill="#eaa865" stroke-width="1"/><path d="M44.4 76.4 Q46 79.6 46.8 80.6 M50 72.4 V79.8 M55.6 76.4 Q54 79.6 53.2 80.6" fill="none" stroke-width="0.8" opacity=".6"/><path d="M47.6 74 Q50 73 52.4 74" fill="none" stroke="#fff" stroke-width="1.1199999999999999" opacity="0.6"/><path d="M64.4 82 Q62.8 78 67.6 76.4 Q70.8 72.4 74 72.4 Q77.2 72.4 80.4 76.4 Q85.2 78 83.6 82 Q74 79.6 64.4 82Z" fill="#eaa865" stroke-width="1"/><path d="M68.4 76.4 Q70 79.6 70.8 80.6 M74 72.4 V79.8 M79.6 76.4 Q78 79.6 77.2 80.6" fill="none" stroke-width="0.8" opacity=".6"/><path d="M71.6 74 Q74 73 76.4 74" fill="none" stroke="#fff" stroke-width="1.1199999999999999" opacity="0.6"/><ellipse cx="94" cy="79.6" rx="5.4" ry="3.6" fill="#d9965a" stroke-width="1.2"/><path d="M94 79.6 m-1 0 a1.6 1.2 0 1 1 3 0 a3.4 2.6 0 1 1 -6.4 0 a5.4 4 0 1 1 10.6 0" fill="none" stroke="#8a5a3c" stroke-width="1.1" transform="scale(1)"/><path d="M89.8 77.8 Q92.8 75.8 96.4 76.4 Q95.2 78.4 95.8 79.2" fill="none" stroke="#fffaf3" stroke-width="1.1"/><path d="M46 102 L47 94 H57 L58 102Z" fill="#f3d7b7" stroke-width="1"/><path d="M46 95 Q45 88 52 88 Q59 88 58 95Z" fill="#a8705a" stroke-width="1"/><circle cx="50" cy="91" r=".7" fill="#4f3328" stroke="none"/><circle cx="54" cy="90" r=".7" fill="#4f3328" stroke="none"/><circle cx="52" cy="93" r=".7" fill="#4f3328" stroke="none"/><path d="M64 102 L65 94 H75 L76 102Z" fill="#f3d7b7" stroke-width="1"/><path d="M64 95 Q63 88 70 88 Q77 88 76 95Z" fill="#a8705a" stroke-width="1"/><circle cx="68" cy="91" r=".7" fill="#4f3328" stroke="none"/><circle cx="72" cy="90" r=".7" fill="#4f3328" stroke="none"/><circle cx="70" cy="93" r=".7" fill="#4f3328" stroke="none"/><path d="M82 102 L83 94 H93 L94 102Z" fill="#f3d7b7" stroke-width="1"/><path d="M82 95 Q81 88 88 88 Q95 88 94 95Z" fill="#a8705a" stroke-width="1"/><circle cx="86" cy="91" r=".7" fill="#4f3328" stroke="none"/><circle cx="90" cy="90" r=".7" fill="#4f3328" stroke="none"/><circle cx="88" cy="93" r=".7" fill="#4f3328" stroke="none"/><rect x="30" y="56" width="80" height="8" rx="4" fill="#a97b55"/><path d="M40 66 L48 100" fill="none" stroke="#fff" stroke-width="2.6" opacity="0.7"/><rect x="128" y="78" width="18" height="26" rx="4" fill="#eaf7fb" fill-opacity=".85"/><rect x="126" y="74" width="22" height="5" rx="2.4" fill="#a97b55"/><ellipse cx="133" cy="98" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(20 133 98)"/><path d="M131.7 98 H134.3" stroke="#a37455" stroke-width=".6" transform="rotate(20 133 98)"/><ellipse cx="140" cy="99" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(-30 140 99)"/><path d="M138.7 99 H141.3" stroke="#a37455" stroke-width=".6" transform="rotate(-30 140 99)"/><ellipse cx="136" cy="92" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(70 136 92)"/><path d="M134.7 92 H137.3" stroke="#a37455" stroke-width=".6" transform="rotate(70 136 92)"/><ellipse cx="132" cy="87" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(-10 132 87)"/><path d="M130.7 87 H133.3" stroke="#a37455" stroke-width=".6" transform="rotate(-10 132 87)"/><ellipse cx="141" cy="89" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(40 141 89)"/><path d="M139.7 89 H142.3" stroke="#a37455" stroke-width=".6" transform="rotate(40 141 89)"/><ellipse cx="137" cy="84" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(0 137 84)"/><path d="M135.7 84 H138.3" stroke="#a37455" stroke-width=".6" transform="rotate(0 137 84)"/><rect x="150" y="78" width="18" height="26" rx="4" fill="#eaf7fb" fill-opacity=".85"/><rect x="148" y="74" width="22" height="5" rx="2.4" fill="#a97b55"/><ellipse cx="155" cy="99" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(-20 155 99)"/><path d="M153.7 99 H156.3" stroke="#a37455" stroke-width=".6" transform="rotate(-20 155 99)"/><ellipse cx="162" cy="98" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(30 162 98)"/><path d="M160.7 98 H163.3" stroke="#a37455" stroke-width=".6" transform="rotate(30 162 98)"/><ellipse cx="158" cy="92" rx="1.9" ry="1.3" fill="#6b4a3a" stroke="none" transform="rotate(-60 158 92)"/><path d="M156.7 92 H159.3" stroke="#a37455" stroke-width=".6" transform="rotate(-60 158 92)"/><path d="M152 96 Q159 90 166 96 V102 H152Z" fill="#f6dc85" stroke="none" opacity=".7"/><path d="M250 104 L260 62 L270 104 M276 104 L266 62" fill="none" stroke="#8a6244" stroke-width="2.2"/><rect x="244" y="52" width="50" height="40" rx="4" fill="#c99a70"/><rect x="248" y="56" width="42" height="32" rx="2" fill="#3f4a44"/><text x="269" y="66" font-size="7" text-anchor="middle" fill="#fdf6e8" stroke="none" font-family="Huninn, sans-serif">今日</text><text x="269" y="76" font-size="7" text-anchor="middle" fill="#fdf6e8" stroke="none" font-family="Huninn, sans-serif">喵拿鐵</text><path d="M269 85.3 C266.3 83.5 265.9 81.7 266.8 80.8 C267.6 80.1 268.6 80.4 269 81.3 C269.4 80.4 270.4 80.1 271.2 80.8 C272.1 81.7 271.7 83.5 269 85.3Z" fill="#f3b49a" stroke="none"/><path d="M330 186 V120 Q330 112 338 112 H350 Q356 112 356 120 V186Z" fill="#a97b55"/><path d="M334 124 H352 V178 H334Z" fill="none" stroke="#8a6244" stroke-width="1.4"/><circle cx="343" cy="150" r="3.6" fill="#e3a07a"/><path d="M339.2 147.4 L339.5 144.4 L341.9 146.5Z M346.8 147.4 L346.5 144.4 L344.1 146.5Z" fill="#e3a07a"/></g></svg></div>
   <div class="h-sofa" aria-hidden="true"><svg viewBox="0 0 230 140" overflow="visible"><g stroke="#7a5a50" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="115" cy="137" rx="112" ry="5" fill="#6b4f4f" opacity=".13" filter="url(#softShadow)" stroke="none"/><rect x="22" y="116" width="14" height="20" rx="6" style="fill:var(--r-wood-d)"/><rect x="194" y="116" width="14" height="20" rx="6" style="fill:var(--r-wood-d)"/><path class="sofa-body" d="M28 84 V36 Q28 14 52 14 H178 Q202 14 202 36 V84Z"/><path d="M38 24 Q46 19 60 19 H170" fill="none" stroke="#fff" stroke-width="3" opacity=".5"/><rect class="sofa-body" x="8" y="100" width="214" height="22" rx="11"/><path d="M12 112 H218 V124 Q211.6 132.3 205.2 124 Q198.8 132.3 192.4 124 Q186 132.3 179.6 124 Q173.2 132.3 166.8 124 Q160.4 132.3 154 124 Q147.6 132.3 141.2 124 Q134.8 132.3 128.4 124 Q122 132.3 115.6 124 Q109.2 132.3 102.8 124 Q96.4 132.3 90 124 Q83.6 132.3 77.2 124 Q70.8 132.3 64.4 124 Q58 132.3 51.6 124 Q45.2 132.3 38.8 124 Q32.4 132.3 26 124 Q19.6 132.3 13.2 124 L12 124Z" style="fill:var(--r-fab-l)"/><path d="M24.8 115 V125" stroke-width="1" opacity=".4"/><path d="M37.6 115 V125" stroke-width="1" opacity=".4"/><path d="M50.4 115 V125" stroke-width="1" opacity=".4"/><path d="M63.2 115 V125" stroke-width="1" opacity=".4"/><path d="M76 115 V125" stroke-width="1" opacity=".4"/><path d="M88.8 115 V125" stroke-width="1" opacity=".4"/><path d="M101.6 115 V125" stroke-width="1" opacity=".4"/><path d="M114.4 115 V125" stroke-width="1" opacity=".4"/><path d="M127.2 115 V125" stroke-width="1" opacity=".4"/><path d="M140 115 V125" stroke-width="1" opacity=".4"/><path d="M152.8 115 V125" stroke-width="1" opacity=".4"/><path d="M165.6 115 V125" stroke-width="1" opacity=".4"/><path d="M178.4 115 V125" stroke-width="1" opacity=".4"/><path d="M191.2 115 V125" stroke-width="1" opacity=".4"/><path d="M204 115 V125" stroke-width="1" opacity=".4"/><path d="M18 115.4 H212" fill="none" stroke="#fff" stroke-width="2" opacity="0.5"/><rect class="sofa-seat" x="30" y="77" width="85" height="29" rx="12"/><rect class="sofa-seat" x="115" y="77" width="85" height="29" rx="12"/><path d="M38 83 H107 M123 83 H192" stroke="#fff" stroke-width="2.4" opacity=".6"/><rect x="34" y="81" width="77" height="21" rx="9" fill="none" stroke="#7a5a50" stroke-width="1" stroke-dasharray="2.4 2.4" opacity=".4"/><rect x="119" y="81" width="77" height="21" rx="9" fill="none" stroke="#7a5a50" stroke-width="1" stroke-dasharray="2.4 2.4" opacity=".4"/><path class="sofa-body" d="M4 110 V62 Q4 44 21 44 Q38 44 38 62 V110 Q38 118 30 118 H12 Q4 118 4 110Z"/><path class="sofa-body" d="M192 110 V62 Q192 44 209 44 Q226 44 226 62 V110 Q226 118 218 118 H200 Q192 118 192 110Z"/><path d="M10 60 Q12 50 21 49 M198 60 Q200 50 209 49" fill="none" stroke="#fff" stroke-width="2.4" opacity=".55"/><path d="M46 52 L48 36 L58 45Z M68 45 L78 36 L80 52Z" style="fill:var(--r-cream)"/><path d="M49 47 L50 40 L55 44Z M71 44 L76 40 L77 47Z" stroke="none" style="fill:var(--r-fab-l)"/><path d="M42 64 Q42 44 63 44 Q84 44 84 64 Q84 80 63 80 Q42 80 42 64Z" style="fill:var(--r-cream)"/><path d="M55 62 Q58 59 61 62 M65 62 Q68 59 71 62" fill="none" stroke-width="1.6"/><path d="M61.5 67 L64.5 67 L63 68.6Z" fill="#f29bae" stroke-width="1"/><ellipse cx="51" cy="68" rx="3.4" ry="2" fill="#ff9db5" stroke="none" opacity=".7"/><ellipse cx="75" cy="68" rx="3.4" ry="2" fill="#ff9db5" stroke="none" opacity=".7"/><g transform="rotate(8 167 62)"><rect x="148" y="44" width="38" height="36" rx="13" style="fill:var(--r-fab-l)"/><rect x="152" y="48" width="30" height="28" rx="10" fill="none" stroke-width="1" stroke-dasharray="2.4 2.4" style="stroke:var(--r-fab)"/><g stroke="none" style="fill:var(--r-fab)"><ellipse cx="167" cy="66" rx="6" ry="5"/><circle cx="160" cy="58" r="2.4"/><circle cx="165" cy="55" r="2.4"/><circle cx="170" cy="55" r="2.4"/><circle cx="175" cy="58" r="2.4"/></g></g></g></svg><svg class="rv rv-cafe" viewBox="0 0 230 140" overflow="visible"><g stroke="#7a5a50" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="115" cy="137" rx="112" ry="5" fill="#6b4f4f" opacity=".13" filter="url(#softShadow)" stroke="none"/><rect x="22" y="116" width="14" height="20" rx="6" fill="#8a6244"/><rect x="194" y="116" width="14" height="20" rx="6" fill="#8a6244"/><path d="M28 84 V36 Q28 14 52 14 H178 Q202 14 202 36 V84Z" fill="#c98a63"/><path d="M38 24 Q46 19 60 19 H170" fill="none" stroke="#fff" stroke-width="3" opacity="0.45"/><circle cx="56" cy="38" r="1.8" fill="#a96f4c" stroke="none"/><circle cx="86" cy="38" r="1.8" fill="#a96f4c" stroke="none"/><circle cx="116" cy="38" r="1.8" fill="#a96f4c" stroke="none"/><circle cx="146" cy="38" r="1.8" fill="#a96f4c" stroke="none"/><circle cx="176" cy="38" r="1.8" fill="#a96f4c" stroke="none"/><circle cx="71" cy="60" r="1.8" fill="#a96f4c" stroke="none"/><circle cx="101" cy="60" r="1.8" fill="#a96f4c" stroke="none"/><circle cx="131" cy="60" r="1.8" fill="#a96f4c" stroke="none"/><circle cx="161" cy="60" r="1.8" fill="#a96f4c" stroke="none"/><rect x="8" y="100" width="214" height="22" rx="11" fill="#c98a63"/><rect x="30" y="77" width="85" height="29" rx="12" fill="#e3a07a"/><rect x="115" y="77" width="85" height="29" rx="12" fill="#e3a07a"/><path d="M38 83 H107 M123 83 H192" stroke="#fff" stroke-width="2.4" opacity=".5"/><path d="M4 110 V62 Q4 44 21 44 Q38 44 38 62 V110 Q38 118 30 118 H12 Q4 118 4 110Z" fill="#c98a63"/><path d="M192 110 V62 Q192 44 209 44 Q226 44 226 62 V110 Q226 118 218 118 H200 Q192 118 192 110Z" fill="#c98a63"/><path d="M10 60 Q12 50 21 49 M198 60 Q200 50 209 49" fill="none" stroke="#fff" stroke-width="2.4" opacity=".45"/><path d="M46 52 L48 36 L58 45Z M68 45 L78 36 L80 52Z" fill="#f8e1cf"/><path d="M49 47 L50 40 L55 44Z M71 44 L76 40 L77 47Z" fill="#efc2a5" stroke="none"/><path d="M42 64 Q42 44 63 44 Q84 44 84 64 Q84 80 63 80 Q42 80 42 64Z" fill="#f8e1cf"/><circle cx="59.4" cy="63" r="1" fill="#7a5a50" stroke="none"/><circle cx="66.6" cy="63" r="1" fill="#7a5a50" stroke="none"/><path d="M61.2 64.6 Q62.1 66.1 63 64.8 Q63.9 66.1 64.8 64.6" fill="none" stroke-width="1"/><ellipse cx="56.7" cy="65.2" rx="1.8" ry="1.1" fill="#ff9db5" opacity=".6" stroke="none"/><ellipse cx="69.3" cy="65.2" rx="1.8" ry="1.1" fill="#ff9db5" opacity=".6" stroke="none"/><g transform="rotate(8 167 62)"><rect x="148" y="44" width="38" height="36" rx="13" fill="#fff4e6"/><rect x="152" y="48" width="30" height="28" rx="10" fill="none" stroke="#e3a07a" stroke-width="1" stroke-dasharray="2.4 2.4"/><path d="M158.2 61.8 H171.8 V66.9 Q171.8 71.2 165 71.2 Q158.2 71.2 158.2 66.9Z" fill="#e3a07a" stroke-width="1.2"/><path d="M171.8 63.5 Q176.1 63.8 175.2 66.6 Q174.3 68.6 171.3 68.1" fill="none" stroke-width="1.3"/><ellipse cx="165" cy="61.8" rx="6.8" ry="1.9" fill="#b07a52" stroke-width="1.1"/><path d="M165 63 C163.6 62.1 163.4 61.2 163.9 60.7 C164.3 60.3 164.8 60.5 165 61 C165.2 60.5 165.7 60.3 166.1 60.7 C166.6 61.2 166.4 62.1 165 63Z" fill="#fff3e0" stroke="none"/><path d="M160.4 64.3 V67.8" stroke="#fff" stroke-width="1.2" opacity=".8"/></g></g></svg></div>
 
 
@@ -772,6 +775,7 @@
 <main class="wrap">
   <header>
     <h1>🐾 喵記 <small>今天的心情是哪隻貓？</small></h1>
+    <button class="buddy-btn" id="langBtn" data-noi18n>EN</button>
     <button class="buddy-btn" id="roomBtn">🏠 房間</button>
     <button class="buddy-btn" id="buddyBtn" title="我的寵物">🐱 寵物</button>
     <div class="music">
@@ -837,7 +841,7 @@
 
   <div class="toolbar">
     <button class="tool-btn" id="openRecord" aria-controls="recordDrawer">📝 記錄心情<small id="todayCount"></small></button>
-    <button class="tool-btn" id="openCal" aria-controls="calDrawer">📅 心情日曆</button>
+    <button class="tool-btn" id="openCal" aria-controls="calDrawer">🍃 這七天</button>
     <button class="tool-btn" id="goOut">🚪 出門走走</button>
   </div>
 
@@ -845,21 +849,19 @@
     <button class="drawer-x" data-close aria-label="收起來">×</button>
     <section class="card">
       <h2>現在的心情</h2>
-      <p class="hint" id="hint">先選一個最接近的區塊，再挑一個詞；記錄之後貓咪會跑進草原裡玩喔！一天可以記很多次～</p>
+      <p class="hint" id="hint">選一個最接近的感覺</p>
       <div id="picker"></div>
       <div class="acc-preview" id="accPreview" hidden></div>
-      <textarea id="text" placeholder="想說點什麼嗎？（可以不寫喔）"></textarea>
+      <textarea id="text" placeholder="想說點什麼嗎？"></textarea>
       <button class="save" id="save">記錄下來 🐟</button>
       <div class="today" id="today"></div>
     </section>
   </aside>
-  <aside class="drawer" id="calDrawer" aria-label="心情日曆" inert>
+  <aside class="drawer" id="calDrawer" aria-label="這七天的心情" inert>
     <button class="drawer-x" data-close aria-label="收起來">×</button>
     <section class="card">
       <div class="cal-head">
-        <button id="prev" aria-label="上個月">‹</button>
-        <h2 id="month"></h2>
-        <button id="next" aria-label="下個月">›</button>
+        <h2 id="month">這七天</h2>
       </div>
       <div class="cal" id="cal"></div>
       <div class="summary" id="summary"></div>
@@ -873,7 +875,7 @@
     <button id="aboutBtn">🐾 關於喵記</button>
     <input type="file" id="importFile" accept=".json,application/json" hidden>
   </div>
-  <p class="note">記錄會自動存在這個瀏覽器裡 · 定期下載備份檔，換瀏覽器或換電腦也能讀回來<br>喵叫聲錄音來自 Wikimedia Commons：Tsester、freemaster2（CC0）、PantheraLeo1359531（<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>），已剪輯並調高音調</p>
+  <p class="note">記錄只留在這個瀏覽器，七天後就會淡去</p>
 </main>
 
 <div class="fade" id="fade" aria-hidden="true"></div>
@@ -885,16 +887,14 @@
 
 <dialog class="card day-dlg about-dlg" id="aboutDlg" aria-labelledby="aboutTitle">
   <div class="dlg-head"><h2 id="aboutTitle">關於喵記</h2><button class="dlg-x" data-close-about aria-label="關閉">×</button></div>
-  <p>喵記是一個讓人練習<b>覺察和表達情緒</b>的小地方。每天花幾秒鐘，跟貓咪說說現在的感覺吧。</p>
-  <h3>練習說出情緒，有什麼好處？</h3>
+  <p>每天花幾秒鐘，跟貓咪說說現在的感覺。</p>
   <ul>
-    <li><b>說出來，情緒會緩和一點</b>：替情緒命名，本身就是一種調節情緒的方式</li>
-    <li><b>分得越細，越能好好面對</b>：比較容易找到適合的方法照顧自己。喵記準備了很多情緒詞，希望讓人比較容易分辨自己的情緒</li>
-    <li><b>寫下來，對身心都有幫助</b>：把感受寫下來，是很多人整理心情的方式</li>
-    <li><b>記錄久了，更認識自己</b>：從日曆上看出心情的規律，例如睡不好的隔天比較容易煩躁</li>
+    <li>說出來，情緒會緩和一點</li>
+    <li>分得越細，越能好好面對</li>
+    <li>情緒會隨著時間變淡，記錄也只留七天</li>
   </ul>
   <p class="about-help">喵記是陪你練習的小工具，不能取代專業的協助。如果最近常常覺得撐不住，或是有傷害自己的念頭，請找信任的人聊聊，或撥打<br><b>安心專線 1925</b>（24 小時，免付費）、<b>生命線 1995</b>、<b>張老師 1980</b>。</p>
-  <p class="dlg-empty">研究出處和更多說明，請看 <a href="https://github.com/ruby510054/meow#為什麼做這個" target="_blank" rel="noopener">GitHub 上的介紹</a>。</p>
+  <p class="dlg-empty">研究出處和更多說明，請看 <a href="https://github.com/ruby510054/meow#為什麼做這個" target="_blank" rel="noopener">GitHub 上的介紹</a>。<br>喵叫聲錄音來自 Wikimedia Commons：Tsester、freemaster2（CC0）、PantheraLeo1359531（<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>），已剪輯並調高音調</p>
 </dialog>
 
 <dialog class="card day-dlg clear-dlg" id="clearDlg" aria-labelledby="clearTitle">
@@ -1117,6 +1117,336 @@ const MEOW_CLIPS = [
 ];
 </script>
 <script>
+// ---------- 語言：中文／English ----------
+// 畫面上的中文照這張對照表換成英文；之後才出現的字（對話、日曆…）也會自動換。
+// 情緒詞的英文直接用 mood.json 裡的 label.en；你自己寫的心情內容不會被翻譯。
+const EN = {
+  // 標題、按鈕
+  "喵記 Meow Diary": "Meow Diary", "喵記": "Meow Diary", "今天的心情是哪隻貓？": "Which cat is your mood today?",
+  "房間": "Room", "我的寵物": "My pet", "寵物": "Pet", "音效開": "Sound on", "音效關": "Sound off", "音效音量": "Sound volume",
+  "音樂開": "Music on", "音樂關": "Music off", "音量": "Volume", "顏色": "Color",
+  "櫻花粉": "Sakura", "蜜桃": "Peach", "薰衣草": "Lavender", "薄荷": "Mint", "天空": "Sky", "檸檬": "Lemon", "莓果": "Berry", "可可": "Cocoa",
+  "奶白": "Milk", "拿鐵": "Latte", "焦糖": "Caramel", "草莓牛奶": "Strawberry milk", "抹茶": "Matcha", "藍莓優格": "Blueberry yogurt", "焙茶": "Hojicha", "夜空": "Night sky",
+  "回家": "Go home", "記錄心情": "Log mood", "心情日曆": "Mood calendar", "出門走走": "Go outside", "收起來": "Hide",
+  "現在的心情": "How do you feel right now?",
+  "先選一個最接近的區塊，再挑一個詞；記錄之後貓咪會跑進草原裡玩喔！一天可以記很多次～": "Pick the closest area first, then a word. After you log it, a cat will run into the meadow to play! You can log as many times a day as you like~",
+  "先選一個最接近的區塊，再挑一個詞；記錄之後貓咪會跑進草原裡玩喔！": "Pick the closest area first, then a word. After you log it, a cat will run into the meadow to play!",
+  "想說點什麼嗎？": "Anything you want to say? (optional)",
+  "發生了什麼事？": "What happened? How does your body feel? (optional)",
+  "記錄下來 🐟": "Log it 🐟", "上個月": "Previous month", "下個月": "Next month",
+  "下載備份檔": "Download backup", "從備份檔讀取": "Load from backup", "清除資料": "Clear data", "關於喵記": "About Meow Diary",
+  "記錄只存在這個瀏覽器裡，而且只留最近七天 · 想換瀏覽器或電腦，可以先下載備份檔": "Entries stay only in this browser, and only for the last 7 days · To move to another browser or computer, download a backup first",
+  "喵叫聲錄音來自 Wikimedia Commons：Tsester、freemaster2（CC0）、PantheraLeo1359531（": "Meow recordings from Wikimedia Commons: Tsester, freemaster2 (CC0), PantheraLeo1359531 (",
+  "），已剪輯並調高音調": "), trimmed and pitched up",
+  "關閉": "Close", "換個房間": "Change room", "名字": "Name",
+  "牠平常住在你的房間裡，最喜歡書桌下的貓床。點牠可以摸摸喔": "It lives in your room and loves the cat bed under the desk. Click it to pet it",
+  "補記一筆": "Add an entry",
+  // 關於
+  "喵記是一個讓人練習": "Meow Diary is a little place to practice ", "覺察和表達情緒": "noticing and expressing your feelings",
+  "的小地方。每天花幾秒鐘，跟貓咪說說現在的感覺吧。": ". Take a few seconds each day to tell a cat how you feel.",
+  "練習說出情緒，有什麼好處？": "Why put feelings into words?",
+  "說出來，情緒會緩和一點": "Naming a feeling softens it", "：替情緒命名，本身就是一種調節情緒的方式": ": putting a name to a feeling is itself a way of regulating it",
+  "分得越細，越能好好面對": "Finer words, better coping", "：比較容易找到適合的方法照顧自己。喵記準備了很多情緒詞，希望讓人比較容易分辨自己的情緒": ": it's easier to find the right way to look after yourself. Meow Diary has lots of feeling words to help you tell your feelings apart",
+  "寫下來，對身心都有幫助": "Writing it down helps", "：把感受寫下來，是很多人整理心情的方式": ": writing down how you feel is how many people sort out their emotions",
+  "情緒會隨著時間變淡": "Feelings fade with time", "：所以記錄只留七天，草原上的貓咪身影也會慢慢變淡": ": so entries only stay for 7 days, and the cats in the meadow slowly fade too",
+  "喵記是陪你練習的小工具，不能取代專業的協助。如果最近常常覺得撐不住，或是有傷害自己的念頭，請找信任的人聊聊，或撥打": "Meow Diary is a small practice tool and can't replace professional help. If you often feel you can't cope, or have thoughts of hurting yourself, please talk to someone you trust, or call ",
+  "安心專線 1925": "Taiwan Mental Health Hotline 1925", "（24 小時，免付費）、": " (24 hours, free), ", "GitHub 上的介紹": "the GitHub page", "生命線 1995": "Lifeline 1995", "張老師 1980": "Teacher Chang 1980",
+  "研究出處和更多說明，請看": "For sources and more details, see ",
+  // 清除
+  "只清除示範資料": "Only clear the demo entries", "你自己記的心情會留著": "Your own entries will stay",
+  "清除之後就找不回來了，建議先下載一份備份檔。": "This can't be undone. Download a backup first.", "先下載備份檔": "Download a backup first",
+  "寵物和設定也一起重設（名字、花色、一起生活的天數、主題色、窗簾、音樂和音效）": "Also reset the pet and settings (name, coat, days together, colors, curtains, music, sound and language)",
+  "清除所有心情記錄": "Clear all entries",
+  // 房間
+  "粉色小屋": "Pink cottage", "跟著顏色主題變化": "Follows the color theme", "貓咪咖啡廳": "Cat café", "黑板菜單、貓跳台": "Chalkboard menu, cat tree",
+  "喵～": "Meow~", "晚安，喵": "Good night", "貓咪拿鐵": "Cat latte", "肉球鬆餅": "Paw pancake", "小魚乾": "Fish snack",
+  "歡迎光臨": "Welcome", "喵拿鐵": "Meow latte", "今日": "Today's", "MENU": "MENU",
+  // 寵物名字（花色）
+  "橘子": "Tangerine", "金金": "Goldie", "花花": "Calico", "奶茶": "Milk Tea", "布丁": "Pudding", "灰灰": "Smokey", "雪球": "Snowball",
+  "麻糬": "Mochi", "銀銀": "Silver", "芝麻": "Sesame", "黑糖": "Brown Sugar", "栗子": "Chestnut", "煤球": "Coal",
+  // 心情（舊版六種）
+  "開心": "Happy", "平靜": "Calm", "難過": "Sad", "生氣": "Angry", "好累": "Tired", "焦慮": "Anxious",
+  // 情緒說明
+  "小事一直卡著，心裡很毛": "Little things keep bugging me", "努力了卻一直被擋住": "I keep trying but get blocked",
+  "覺得界線或尊嚴被踩到": "My boundaries or dignity were stepped on", "別人擁有我想要的東西": "Someone has what I want",
+  "很強烈的生氣，快壓不住": "Intense anger, hard to hold in", "面對即將發生的事，身體繃起來": "My body tenses up about what's coming",
+  "一直想著可能出錯的地方": "I keep thinking about what could go wrong", "說不清楚在怕什麼，但就是不安": "Uneasy without knowing why",
+  "感覺到明確的威脅或危險": "I sense a clear threat or danger", "非常強烈的害怕，難以思考": "Overwhelming fear, hard to think",
+  "被期待或時間追著跑": "Chased by expectations or deadlines", "靜不下來，一直想動或分心": "Can't settle, fidgety or distracted",
+  "事情太多，不知道從哪裡開始": "Too much to do, don't know where to start", "單純覺得心情很好": "Simply in a good mood",
+  "覺得有趣、想笑": "Something's funny, I want to laugh", "期待某件事，充滿能量": "Looking forward to something, full of energy",
+  "相信自己做得到": "I believe I can do it", "完成了一件不容易的事": "I finished something hard",
+  "對自己或某人的表現感到驕傲": "Proud of myself or someone else", "想知道更多、想探索": "I want to know more and explore",
+  "想要開始做點什麼": "I want to get started on something", "覺得事情會往好的方向走": "Things will turn out well",
+  "心裡沉沉的、想哭": "Heavy-hearted, feel like crying", "結果跟期待落差很大": "It didn't turn out as I hoped",
+  "覺得被不公平對待，卻說不出口": "Treated unfairly but couldn't say so", "覺得沒有人懂或沒有人陪": "Nobody understands or is with me",
+  "失去了某個重要的東西或方向": "Lost something important, or my direction", "身體或腦袋需要休息": "My body or mind needs a rest",
+  "知道該做，但就是動不起來": "I know I should, but I can't get going", "覺得做什麼都改變不了": "Nothing I do will change anything",
+  "長期耗損，對原本在乎的事也沒感覺": "Worn down; I don't care about things I used to", "在別人面前出糗或不自在": "Awkward or embarrassed in front of others",
+  "覺得自己做錯事、對不起別人": "I did something wrong and feel bad", "覺得是「自己這個人」不夠好": "I feel I'm not good enough as a person",
+  "覺得自己比不上別人": "I feel I don't measure up", "提不起興趣，時間過得很慢": "Nothing interests me, time drags",
+  "心裡好像缺了一塊": "Something feels missing inside", "什麼都感覺不太到": "I can't really feel anything",
+  "身體和心情都鬆下來了": "My body and mind have relaxed", "內心安穩，沒有波動": "Steady and still inside",
+  "做自己就好，不用勉強": "I can just be myself", "覺得現在這樣就很好": "Things are good just as they are",
+  "不用擔心，覺得被保護": "Nothing to worry about, I feel protected", "身處的環境讓人感到舒適": "My surroundings feel comfortable",
+  "感謝某人或某件事": "Thankful for someone or something", "心裡被某件事溫暖地觸動": "Something warmly touched my heart",
+  "感受到被在乎、被接納": "I feel cared for and accepted",
+  "同時有好幾種感覺，可以複選": "Several feelings at once — pick more than one", "先從身體感覺或發生的事開始記錄": "Start with how your body feels or what happened",
+  // 情緒選擇
+  "混合情緒": "Mixed", "說不上來": "Not sure",
+  "可以點好幾個詞，選完就記錄吧": "Pick several words, then log it", "點一個最接近的詞，看看說明": "Click the closest word to see what it means",
+  "先選一個最接近現在感覺的區塊": "First pick the area closest to how you feel", "身體有什麼感覺？": "How does your body feel?", "跟什麼有關？": "What's it about?",
+  "這次的配件：": "This time's accessory: ", "🎲 換個顏色": "🎲 New color", "換個顏色": "New color",
+  "選好了就按下面的按鈕記錄吧～": "When you're ready, press the button below to log it~",
+  "胸口悶悶的": "Tight chest", "肩膀很緊": "Tense shoulders", "心跳很快": "Racing heart", "胃不舒服": "Upset stomach", "頭痛": "Headache",
+  "想哭": "Want to cry", "呼吸很淺": "Shallow breathing", "手腳冰冷": "Cold hands and feet", "全身沒力": "No energy", "很想睡": "Very sleepy",
+  "坐不住": "Can't sit still", "身體輕鬆": "Body feels light",
+  "工作／學業": "Work / school", "家人": "Family", "朋友": "Friends", "感情": "Relationship", "自己": "Myself", "健康": "Health",
+  "睡眠": "Sleep", "金錢": "Money", "天氣": "Weather", "網路／社群": "Online / social media", "一個人獨處": "Being alone", "其他": "Other",
+  // 家族的貼心話
+  "哈——！誰惹你了？先深呼吸，我陪你一起氣一下": "Hiss! Who upset you? Take a deep breath — I'll be mad with you for a bit",
+  "怕怕的時候，我就在你旁邊，哪裡都不去": "When you're scared, I'm right here and I'm not going anywhere",
+  "事情好多齁…我們一件一件來，先喝口水": "So much to do… let's take it one thing at a time. Have some water first",
+  "耶！你開心我也開心～ 翻肚肚給你摸 🐾": "Yay! If you're happy, I'm happy~ Here, belly rubs 🐾",
+  "好厲害！我就知道你做得到 ✨": "Amazing! I knew you could do it ✨", "我也想知道！一起去看看吧～": "I want to know too! Let's go look~",
+  "過來，我蹭蹭你… 難過的時候不用逞強喔": "Come here, let me snuggle you… You don't have to be strong when you're sad",
+  "辛苦了… 今天早點休息，我幫你暖被窩 💤": "You worked hard… Rest early today, I'll warm up the bed 💤",
+  "你已經很好了，不用對自己那麼兇喔": "You're already doing great — don't be so hard on yourself",
+  "沒有感覺也沒關係，我就安靜地陪著你": "It's okay not to feel anything. I'll just stay here quietly with you",
+  "平平靜靜的，真好，一起曬太陽吧 ☀️": "Nice and calm — let's sunbathe together ☀️", "這樣剛剛好呢，呼嚕呼嚕～": "Just right, purr purr~",
+  "被在乎的感覺，心會暖暖的對吧 💕": "Being cared for makes your heart warm, right? 💕",
+  "說不上來也沒關係，我們從身體的感覺開始慢慢想": "It's okay not to know. Let's start slowly with how your body feels",
+  "好多感覺混在一起，很正常喔，我都陪你": "Lots of feelings mixed together is normal. I'm with you for all of them",
+  "平平靜靜的一天也很好喔，一起曬太陽吧 ☀️": "A calm day is a good day. Let's sunbathe together ☀️",
+  "哈——！誰欺負你？我幫你哈他！": "Hiss! Who was mean to you? I'll hiss at them!",
+  "辛苦了… 今天早點睡，我幫你暖被窩 💤": "You worked hard… Sleep early tonight, I'll warm up the bed 💤",
+  "深呼吸～ 吸——吐——。我在這裡陪你": "Deep breath~ in… out… I'm right here with you",
+  // 配件
+  "對不起": "Sorry", "冒煙": "Steam puff", "打結的毛線球": "Tangled yarn", "青筋": "Anger mark", "想要的小魚乾": "The fish I want",
+  "頭頂著火": "Head on fire", "冷汗": "Cold sweat", "問號": "Question marks", "一團亂線": "Scribble cloud", "驚嘆號": "Exclamation mark",
+  "雙驚嘆號": "Double exclamation", "鬧鐘": "Alarm clock", "小閃電": "Little lightning", "一疊文件": "Pile of papers", "小花": "Little flower",
+  "音符": "Music notes", "派對帽": "Party hat", "墨鏡": "Sunglasses", "獎牌": "Medal", "皇冠": "Crown", "放大鏡": "Magnifier",
+  "運動頭帶": "Headband", "小嫩芽": "Sprout", "小雨雲": "Rain cloud", "枯萎的花": "Wilted flower", "OK 繃": "Bandage", "氣球": "Balloon",
+  "落葉": "Falling leaf", "睡帽": "Nightcap", "沒電的電池": "Low battery", "小白旗": "White flag", "燒完的蠟燭": "Burnt-out candle",
+  "臉紅": "Blush", "對不起牌子": "Sorry sign", "帽兜": "Hood", "小小的…": "A tiny…", "打哈欠泡泡": "Yawn bubble", "空心愛心": "Empty heart",
+  "冰塊": "Ice cube", "毛巾": "Towel", "光圈": "Halo", "花圈": "Flower crown", "小太陽": "Little sun", "小房子": "Little house",
+  "眼罩": "Sleep mask", "禮物": "Gift", "閃閃": "Sparkles", "愛心": "Hearts", "問號泡泡": "Question bubble",
+  // 草原
+  "今天": "Today", "毛線球": "Yarn ball",
+  "好吃！": "Yummy!", "喵嗚～ 謝謝你！": "Mew~ Thank you!", "（嚼嚼嚼）": "(munch munch)", "還有嗎？": "Any more?",
+  "今天天氣真好～": "What lovely weather~", "喵哈哈！": "Meow ha ha!", "想玩毛線球！": "I want to play with the yarn!", "好想翻滾一下": "I want to roll around",
+  "嘿嘿，心情好好": "Hehe, feeling good", "風吹起來好舒服": "The breeze feels so nice", "慢慢來也沒關係": "It's okay to take it slow",
+  "曬太陽中…": "Sunbathing…", "嗯～ 草好香": "Mm~ the grass smells nice", "今天也辛苦了": "You worked hard today too",
+  "…可以陪我一下嗎": "…can you stay with me a bit?", "嗚…": "Mew…", "抱抱就會好一點": "A hug would help", "沒關係，會過去的": "It's okay, it'll pass",
+  "（小聲）喵…": "(quietly) meow…", "哼！": "Hmph!", "不要惹我喔！": "Don't mess with me!", "我在生悶氣": "I'm sulking",
+  "…給我小魚乾就原諒你": "…give me a fish snack and I'll forgive you", "哈——！": "Hiss!", "好睏…": "So sleepy…", "再睡五分鐘…": "Five more minutes…",
+  "哈啊～（打哈欠）": "Haaah~ (yawn)", "不想動…": "Don't want to move…", "床在哪裡…": "Where's my bed…", "怎麼辦怎麼辦": "What do I do, what do I do",
+  "那是什麼聲音？！": "What was that sound?!", "深呼吸…": "Deep breath…", "有點緊張…": "A little nervous…", "你會一直在吧？": "You'll stay, right?",
+  "呼…嚕…": "Purr… purr…", "Zzz…": "Zzz…", "（夢到小魚乾）": "(dreaming of fish snacks)", "靠著你好溫暖～": "Leaning on you is so warm~",
+  "呼嚕呼嚕": "Purr purr", "最喜歡你了": "I love you the most", "看招！": "Take that!", "喵嗚！": "Mrrow!", "抓到你了！": "Got you!",
+  "別跑！": "Don't run!", "追到你了喔～": "Caught you~", "追不到～": "Can't catch me~", "嘿嘿嘿": "Hehehe", "等等我～": "Wait for me~",
+  "我們去散步": "Let's go for a walk", "毛線球！": "Yarn ball!", "我的！": "Mine!", "是小魚乾！": "A fish snack!", "我先的！": "I saw it first!",
+  "好、好可怕…": "S-so scary…", "躲起來就看不到我了…": "If I hide, they can't see me…", "（發抖）…": "(shivering)…", "不要過來…": "Don't come closer…",
+  "怎麼辦…怎麼辦…": "What do I do… what do I do…", "靜不下來…": "Can't settle down…", "耶～耶～！": "Yay~ yay~!", "轉圈圈！": "Spinning!",
+  "…": "…", "（看著遠方）": "(staring into the distance)", "我自己待一下就好…": "I just need some time alone…",
+  // 窗簾、天氣
+  "輕紗": "Sheer", "波浪短帘": "Valance", "格子布": "Gingham", "換一種窗簾": "Change curtains", "拉開窗簾": "Open curtains", "拉上窗簾": "Close curtains",
+  "窗簾（拖曳可以拉開或拉上）": "Curtain (drag to open or close)", "窗簾（往下拖可以拉下來）": "Curtain (drag down to close)",
+  "霧濛濛 🌫️": "Foggy 🌫️", "大雨 🌧️": "Heavy rain 🌧️", "小雨 🌦️": "Light rain 🌦️", "雷雨 ⛈️": "Thunderstorm ⛈️", "起風了 🌬️": "Windy 🌬️",
+  "晴朗 ☀️": "Sunny ☀️", "彩虹 🌈": "Rainbow 🌈", "微風晴空 🌤️": "Clear with a breeze 🌤️", "多雲 ☁️": "Cloudy ☁️",
+  // 寵物說的話
+  "早安！今天也一起加油吧 ☀️": "Good morning! Let's do our best today ☀️", "吃早餐了嗎？": "Did you have breakfast?", "早上的空氣好舒服～": "The morning air feels so nice~",
+  "午餐吃什麼呀？": "What's for lunch?", "吃飽了嗎？吃飽才有力氣喔": "Have you eaten? You need food for energy",
+  "下午有點想睡…要不要起來伸個懶腰？": "A bit sleepy this afternoon… want to get up and stretch?", "喝口水休息一下吧 💧": "Have some water and take a break 💧",
+  "今天過得怎麼樣？": "How was your day?", "晚餐吃了嗎？": "Did you have dinner?", "辛苦一整天了，放鬆一下吧": "Long day — time to relax",
+  "很晚了喔，早點休息好不好？": "It's late — how about getting some rest?", "我陪你到你睡著 🌙": "I'll stay with you until you fall asleep 🌙",
+  "今天也辛苦了，晚安前要不要記一下心情？": "You worked hard today. Want to log your mood before bed?", "記得喝水喔 💧": "Remember to drink water 💧",
+  "肩膀放鬆～ 深呼吸": "Relax your shoulders~ deep breath", "我在這裡喔": "I'm right here", "有你在我就很開心": "I'm happy when you're here",
+  "你已經很努力了": "You're already trying so hard", "要不要看看窗外？": "Want to look out the window?",
+  "今天心情不錯呢！是發生什麼好事了嗎？": "You're in a good mood today! Did something nice happen?", "看你開心，我尾巴都翹起來了": "Seeing you happy makes my tail stand up",
+  "平平靜靜的，真好": "Nice and calm", "這樣慢慢的也很好喔": "Taking it slow is good too", "還難過嗎？想哭也沒關係，我陪你": "Still sad? It's okay to cry, I'm here",
+  "不管怎樣，我都在你旁邊": "No matter what, I'm by your side", "氣消一點了嗎？要不要摸摸我": "Feeling less angry? Want to pet me?",
+  "生氣的時候，先深呼吸三次好不好": "When you're angry, try three deep breaths first", "累了就休息一下，不用勉強": "Rest when you're tired, don't push yourself",
+  "今天早點睡吧，我幫你暖被窩": "Go to bed early today, I'll warm up the bed", "一步一步來就好": "Just one step at a time",
+  "緊張的時候，摸摸我會好一點喔": "When you're nervous, petting me helps",
+  "床好軟，好好睡…": "The bed is so soft… so sleepy…", "（在床上伸懶腰）": "(stretching on the bed)", "被子有你的味道～": "The blanket smells like you~",
+  "沙發好軟～ 你也來坐！": "The sofa is so soft~ come sit too!", "（在沙發上窩成一團）": "(curled up on the sofa)",
+  "（坐在書桌上）你的筆電好溫暖喔": "(sitting on the desk) Your laptop is so warm", "我在書桌上陪你～": "I'll keep you company on the desk~",
+  "我的小窩最舒服了": "My little bed is the comfiest", "（在貓床裡踩踩）": "(kneading the cat bed)", "房間好好玩！": "The room is so fun!",
+  "（在地板上打滾）": "(rolling on the floor)", "（說夢話）小魚乾…還要…": "(sleep-talking) fish snacks… more…", "…（尾巴動了一下）": "…(tail twitches)",
+  "你還在嗎？我等你喔": "Are you still there? I'll wait for you", "（在旁邊安靜地陪著你）": "(quietly keeping you company)",
+  "今天還沒記錄心情喔，現在感覺怎麼樣？": "You haven't logged your mood today. How are you feeling?", "想跟我說說今天的事嗎？": "Want to tell me about your day?",
+  "剛剛說不上來的感覺，現在有比較清楚一點嗎？": "That feeling you couldn't name — is it any clearer now?",
+  "（舔舔）要把自己弄得香香的": "(lick lick) gotta keep myself clean", "（舔舔）你要不要也洗把臉？": "(lick lick) want to wash your face too?",
+  "（把腳收起來）這樣最舒服了": "(tucks paws in) this is the comfiest", "草原上的大家玩得好開心～": "Everyone in the meadow is having so much fun~",
+  "我也想玩毛線球！": "I want to play with the yarn too!",
+  "好一陣子沒備份了，要不要按下面的「下載備份檔」存一份？": "It's been a while since your last backup. Want to press \"Download backup\" below?",
+  "記錄越來越多了，存一份備份檔比較安心喔": "You have lots of entries now — a backup would be safer",
+  "呼嚕呼嚕～": "Purr purr~", "喵～ 再摸一下嘛": "Meow~ pet me a little more", "（用頭蹭蹭你的手）": "(rubs head against your hand)",
+  "最喜歡你了 💕": "I love you the most 💕", "（瞇起眼睛）呼嚕…": "(squints happily) purr…", "（被你摸醒了）喵…？": "(woken up by your petting) meow…?",
+  // 日曆、記錄
+  "日": "Sun", "一": "Mon", "二": "Tue", "三": "Wed", "四": "Thu", "五": "Fri", "六": "Sat",
+  "這個月出現過的情緒": "Feelings this month", "修改": "Edit", "刪除": "Delete", "確定刪除？": "Delete for sure?", "時間": "Time",
+  "儲存": "Save", "取消": "Cancel", "先選一個感覺喔": "Pick a feeling first", "這天還沒有記錄喔": "No entries on this day yet", "沒有記錄": "no entries",
+  "過午夜了，新的一天開始囉…不過該睡覺了喔 🌙": "It's past midnight, a new day has begun… but it's time to sleep 🌙",
+  "新的一天開始了！今天心情怎麼樣？": "A new day has begun! How are you feeling today?",
+  "喵？先選一個最接近現在的感覺喔！": "Meow? Pick the feeling closest to how you feel first!",
+  "記好了！謝謝你跟我分享 🐟": "Got it! Thanks for sharing with me 🐟", "記好了！心情變了隨時再來跟我說喔 🐟": "Got it! Come tell me again whenever your mood changes 🐟",
+  "記好了！看看草原，新的貓咪跑進來了～ 之後心情變了可以再記一次喔": "Got it! Look at the meadow — a new cat ran in~ You can log again if your mood changes",
+  "喵？這個好像不是喵記的備份檔耶…": "Meow? This doesn't look like a Meow Diary backup…", "讀取好了！這些記錄本來就都在了喔": "Loaded! All of these entries were already here",
+  "示範資料清掉了！接下來都是你自己的記錄囉": "Demo entries cleared! From now on it's all yours",
+  "真的要全部清除嗎？再按一次": "Really clear everything? Press again", "都清乾淨了。從今天開始，一起慢慢記錄吧 🐾": "All clear. Let's start logging together from today 🐾",
+  "走吧！一起去草原～": "Let's go! To the meadow together~", "出門囉！好多朋友在外面": "We're out! So many friends out here",
+  "風好舒服喔～": "The breeze feels so nice~", "回到家了～ 草原好好玩！": "Home again~ The meadow was so fun!",
+  "我們回來了，休息一下吧": "We're back, let's rest a bit", "外面的朋友都好可愛喔": "The friends outside are so cute",
+  "喵～今天過得怎麼樣？選一隻貓告訴我吧！": "Meow~ How was your day? Pick a cat and tell me!",
+  "（今天）": " (today)",
+  "語言": "Language", "這七天": "These 7 days", "選一個最接近的感覺": "Pick the closest feeling", "想說點什麼嗎？": "Anything to say?",
+  "發生了什麼事？": "What happened?", "可以選好幾個": "Pick as many as you like", "點一個最接近的詞": "Click the closest word", "先選一個區塊": "Pick an area first",
+  "記好了！看看草原～": "Got it! Look at the meadow~", "記錄只留在這個瀏覽器，七天後就會淡去": "Entries stay only in this browser and fade after 7 days",
+  "每天花幾秒鐘，跟貓咪說說現在的感覺。": "Take a few seconds each day to tell a cat how you feel.", "說出來，情緒會緩和一點": "Naming a feeling softens it",
+  "情緒會隨著時間變淡，記錄也只留七天": "Feelings fade with time, and entries only stay for 7 days",
+  "哇，是誰惹你？告訴我，我去把他的筆推下桌！": "Whoa, who upset you? Tell me — I'll knock their pen off the desk!",
+  "怕什麼？我先去偷看一下…你躲我後面！": "What's scary? Let me peek first… hide behind me!",
+  "好多事喔…要不要先讓我坐在鍵盤上，逼你休息一下？": "So much to do… shall I sit on your keyboard so you have to take a break?",
+  "哇！什麼好事？說嘛說嘛！": "Ooh! What happened? Tell me, tell me!", "你剛剛超厲害的！再做一次給我看！": "That was amazing! Do it again so I can watch!",
+  "你也好奇？我也是！我們一起去翻翻看！": "You're curious too? Me too! Let's go dig around together!",
+  "（偷偷靠過來）…這個難過是什麼形狀的？我陪你一起看看": "(sneaks closer) …What shape is this sadness? Let's look at it together",
+  "累了喔？那我們來比賽誰先睡著！": "Tired? Let's race to see who falls asleep first!",
+  "咦，你又在對自己很兇了？再這樣我要咬你喔（輕輕的）": "Huh, being hard on yourself again? Keep it up and I'll bite you (gently)",
+  "沒有感覺嗎？那我用尾巴搔你癢看看": "Can't feel anything? Let me tickle you with my tail",
+  "好安靜…我可以趴在旁邊研究你嗎？": "So quiet… can I lie here and study you?",
+  "剛剛好的感覺是什麼味道？像曬過太陽的棉被嗎？": "What does \"just right\" smell like? Like a sun-dried blanket?",
+  "被在乎的感覺暖暖的對吧！我也要！": "Being cared for feels warm, right? I want some too!",
+  "說不上來？那我們來當偵探，從身體的感覺開始找線索！": "Can't name it? Let's be detectives and look for clues in how your body feels!",
+  "好多感覺纏在一起，像打結的毛線球！我們慢慢拆": "So many feelings tangled up, like knotted yarn! Let's untangle it slowly",
+  "早安！窗外有鳥！你看到了嗎？": "Good morning! There's a bird outside! Did you see it?", "今天要去哪裡？可以帶我嗎？": "Where are you going today? Can I come?",
+  "（在你腳邊繞圈圈）早餐吃什麼？": "(circling your feet) What's for breakfast?", "午餐是什麼味道的？分我聞一下": "What does lunch smell like? Let me sniff",
+  "那個便當盒，我可以鑽進去嗎？": "That lunchbox — can I climb inside?", "下午好無聊…我們來玩！": "The afternoon is so boring… let's play!",
+  "（盯著窗外的蝴蝶）…": "(staring at the butterfly outside)…", "今天有什麼新鮮事？說給我聽！": "Anything new today? Tell me!",
+  "晚餐有魚嗎？": "Is there fish for dinner?", "你身上有新的味道，今天去了哪裡？": "You smell different — where did you go today?",
+  "好晚了…可是我好清醒！": "It's so late… but I'm wide awake!", "睡前要不要記一下今天的心情？我想看！": "Want to log today's mood before bed? I want to see!",
+  "（在棉被上跳來跳去）": "(bouncing on the blanket)", "你的杯子空了，要我幫你推倒嗎？…開玩笑的，去喝水吧": "Your cup is empty — want me to knock it over? …Just kidding, go drink some water",
+  "（把筆推下桌）…不是我。": "(pushes the pen off the desk) …wasn't me.", "（追自己的尾巴）": "(chasing my tail)", "你在看什麼？我也要看！": "What are you looking at? I want to see too!",
+  "（盯著你的手）…可以咬嗎？": "(staring at your hand) …can I bite it?", "要不要看看窗外？剛剛有東西在動！": "Want to look outside? Something just moved!",
+  "你今天笑好多！是發生什麼好事？說嘛說嘛！": "You're smiling a lot today! What happened? Tell me, tell me!", "開心的時候可以陪我玩嗎？": "Since you're happy, will you play with me?",
+  "好安靜…我可以趴你腿上嗎？": "So quiet… can I sit on your lap?", "你在想什麼？我猜…小魚乾？": "What are you thinking about? Let me guess… fish snacks?",
+  "難過的話…要不要摸摸我的肚子？只限今天喔": "If you're sad… want to rub my belly? Today only", "（把我最愛的毛線球推到你旁邊）給你": "(pushes my favorite yarn ball to you) for you",
+  "要不要一起去抓枕頭出氣？": "Want to go attack a pillow together?", "生氣的你，好像炸毛的我耶": "Angry you looks like puffed-up me",
+  "累了？我幫你暖被窩…順便占你的枕頭": "Tired? I'll warm up the bed… and steal your pillow", "我們一起躺平吧": "Let's just lie down together",
+  "緊張的時候，捏捏我的肉球會好一點喔，軟軟的": "When you're nervous, squeeze my paw pads — they're squishy", "怕什麼？我幫你去偷看！": "What's scary? I'll go peek for you!",
+  "（在床上跳來跳去）彈彈的！": "(bouncing on the bed) Boing!", "被子裡面有什麼？我要鑽進去看看": "What's under the blanket? I'm going in",
+  "床好軟…先睡一下再搗蛋": "The bed is so soft… nap first, mischief later", "沙發縫裡有寶藏！": "There's treasure in the sofa cushions!",
+  "（在沙發上磨爪…被你看到了）": "(scratching the sofa… you saw that)", "（坐在鍵盤上）你在打什麼？": "(sitting on the keyboard) What are you typing?",
+  "這個滑鼠會動耶！": "This mouse moves!", "我在小窩裡藏了一顆毛線球，不要說出去": "I hid a yarn ball in my bed — don't tell anyone",
+  "地板上有一根頭髮！是你的嗎？": "There's a hair on the floor! Is it yours?", "你還在嗎？我要去搗蛋囉～": "Are you still there? I'm going to make mischief~",
+  "（偷偷看你在做什麼）": "(sneakily watching what you're doing)", "你今天還沒跟我說心情耶，現在是什麼感覺？": "You haven't told me your mood today — how do you feel?",
+  "想跟我說說今天的事嗎？我好好奇！": "Want to tell me about your day? I'm so curious!", "剛剛說不上來的那個，有找到線索了嗎？": "That thing you couldn't name — found any clues yet?",
+  "（舔舔）…你要不要也舔舔看？": "(lick lick) …want to try licking too?", "（舔舔）剛剛踩到什麼了…": "(lick lick) what did I just step in…",
+  "（把腳收起來）我現在是一塊吐司": "(tucks paws in) I'm a loaf of bread now", "草原上那隻貓在追蝴蝶！我也要！": "That cat in the meadow is chasing a butterfly! Me too!",
+  "抓到你的手了！（輕咬）": "Got your hand! (nibble)", "再摸一下！不然我要咬囉～": "Pet me more! Or I'll bite~", "（翻肚子）…這是陷阱喔": "(shows belly) …it's a trap",
+  "呼嚕呼嚕～ 好啦再一下": "Purr purr~ okay, a little more", "（用頭撞你的手）": "(headbutts your hand)",
+  "記好了！下次也要跟我說喔，我很好奇 🐟": "Got it! Tell me next time too — I'm curious 🐟",
+  "（把橡皮擦撥下去）咦，掉了耶": "(swats the eraser off) oops, it fell", "（盯著筆，用爪子撥一下）…": "(stares at the pen, pokes it with a paw)…", "🍃 這七天": "🍃 These 7 days", "這七天": "These 7 days", "這七天的心情": "The past 7 days",
+  "這七天記錄了": "These 7 days you logged", "這七天出現過的情緒": "Feelings these 7 days",
+  "情緒會隨著時間慢慢變淡，記錄也只留七天。": "Feelings fade with time, and entries only stay for 7 days.",
+  "今天天氣不錯～": "Nice weather today~", "天空好藍": "The sky is so blue", "太陽好暖～": "The sun is so warm~", "適合曬肚肚": "Perfect for a belly sunbath",
+  "陽光把毛曬得暖暖的": "The sunshine makes my fur warm", "好想在太陽下睡午覺": "I want a nap in the sun", "微風好舒服～": "The breeze feels so nice~",
+  "風裡有花的味道": "The wind smells like flowers", "是彩虹耶！": "It's a rainbow!", "彩虹好漂亮～": "The rainbow is so pretty~",
+  "彩虹的另一邊有小魚乾嗎？": "Are there fish snacks at the end of the rainbow?", "雲好多喔": "So many clouds", "那朵雲好像一條魚": "That cloud looks like a fish",
+  "雲把太陽遮住了": "The clouds hid the sun", "下雨了…毛要濕了": "It's raining… my fur's getting wet", "雨滴答滴答～": "Drip, drop, drip~",
+  "我要找地方躲雨": "I need to find shelter", "（甩甩身上的水）": "(shakes off the water)", "花都被雨打彎了": "The rain is bending the flowers",
+  "雨好大！": "It's pouring!", "全身都濕透了…": "I'm soaked…", "想回家窩著…": "I want to go home and curl up…",
+  "風好大～ 鬍鬚都歪了": "So windy~ my whiskers are bent", "毛被吹亂了啦！": "The wind messed up my fur!", "差點被風吹走！": "I almost got blown away!",
+  "打雷了！好可怕": "Thunder! So scary", "（耳朵往後壓）": "(ears flatten)", "轟隆隆…快躲起來": "Rumble… hide, quick!",
+  "霧霧的，看不清楚": "It's foggy, I can't see", "大家在哪裡？": "Where is everyone?", "好像走進雲裡面了": "Feels like walking inside a cloud",
+  "這朵花好香～": "This flower smells so nice~", "蝴蝶！好想抓～": "A butterfly! I want to catch it~", "那棵樹好想爬上去": "I want to climb that tree",
+  "草地軟軟的": "The grass is so soft", "毛線球在那邊！": "The yarn ball is over there!", "花上面停了一隻蝴蝶": "A butterfly landed on a flower",
+  "山的那邊有什麼呢？": "What's beyond the hills?", "記錄只會留 7 天，這天的已經變成回憶了": "Entries are only kept for 7 days — this day is just a memory now", "、": ", ", "。": ".", "：": ": ", "，": ", ",
+};
+const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const MON3 = MONTHS_EN.map(m => m.slice(0, 3));
+// 有變數的句子
+const EN_PATTERNS = [
+  [/^(\d+) 年 (\d+) 月$/, (_, y, m) => `${MONTHS_EN[m - 1]} ${y}`],
+  [/^(\d+) 年 (\d+) 月 (\d+) 日(（今天）)?$/, (_, y, m, d, t) => `${MON3[m - 1]} ${d}, ${y}${t ? " (today)" : ""}`],
+  [/^(\d+) 月 (\d+) 日，(\d+) 筆記錄$/, (_, m, d, n) => `${MON3[m - 1]} ${d}, ${n} ${n == 1 ? "entry" : "entries"}`],
+  [/^(\d+) 月 (\d+) 日，沒有記錄$/, (_, m, d) => `${MON3[m - 1]} ${d}, no entries`],
+  [/^今天 (\d+) 次$/, (_, n) => `${n} today`],
+  [/^今天的記錄（(\d+)）$/, (_, n) => `Today's entries (${n})`],
+  [/^(.+) 出現 (\d+) 次$/, (_, e, n) => `${tr(e)} ×${n}`],
+  [/^這個月記錄了$/, () => "This month you logged"], [/^這七天記錄了$/, () => "These 7 days you logged"], [/^次$/, () => "times"],
+  [/^和(.+)一起生活的第 (\d+) 天 🐾$/, (_, nm, n) => `Day ${n} with ${tr(nm)} 🐾`],
+  [/^我們一起生活 (\d+) 天了耶，謝謝你養我 💕$/, (_, n) => `We've been together ${n} days — thank you for taking care of me 💕`],
+  [/^今天已經跟我說了 (\d+) 次心情了，謝謝你願意告訴我 💕$/, (_, n) => `You've told me how you feel ${n} times today — thank you 💕`],
+  [/^剛剛的「(.+)」，現在有好一點嗎？$/, (_, e) => `Are you feeling better than "${tr(e)}" now?`],
+  [/^「(.+)」的時候，對自己溫柔一點喔$/, (_, e) => `When you feel "${tr(e)}", be gentle with yourself`],
+  [/^「(.+)」的感覺真好，多待一會兒吧$/, (_, e) => `"${tr(e)}" feels nice — stay in it a while`],
+  [/^你剛剛說「(.+)」，我有記住喔$/, (_, t) => `You said "${t}" — I remember`],
+  [/^關於「(.+)」，現在感覺怎麼樣？$/, (_, t) => `About "${t}" — how do you feel now?`],
+  [/^備份好了！(\d+) 筆記錄都在檔案裡，要好好收著喔 💾$/, (_, n) => `Backed up! All ${n} entries are in the file — keep it safe 💾`],
+  [/^讀取好了！多了 (\d+) 筆記錄，歡迎回來 🐾$/, (_, n) => `Loaded! ${n} new entries — welcome back 🐾`],
+  [/^目前有 (\d+) 筆你自己的記錄(?:，和 (\d+) 筆示範資料)?。$/, (_, n, d) => `You have ${n} entries of your own` + (d ? ` and ${d} demo entries.` : ".")],
+  [/^你好！我是(.+)，以後我陪你喔 🐾$/, (_, nm) => `Hi! I'm ${tr(nm)}. I'll be with you from now on 🐾`],
+  [/^你好！我是(.+)！這個房間有好多東西可以玩耶 🐾$/, (_, nm) => `Hi! I'm ${tr(nm)}! This room has so much to play with 🐾`],
+  [/^「(.+)」是什麼樣的感覺？可以跟我說說嗎？$/, (_, e) => `What does "${tr(e)}" feel like? Can you tell me?`],
+  [/^剛剛的「(.+)」，現在有變小一點嗎？$/, (_, e) => `Has that "${tr(e)}" gotten any smaller?`],
+  [/^「(.+)」！我也想要！怎麼做到的？$/, (_, e) => `"${tr(e)}"! I want that too! How'd you do it?`],
+  [/^「(.+)」…然後呢？然後呢？$/, (_, t) => `"${t}"… and then? And then?`],
+  [/^我一直在想你剛剛說的「(.+)」耶$/, (_, t) => `I keep thinking about what you said: "${t}"`],
+  [/^今天已經跟我說了 (\d+) 次心情了！今天好精彩$/, (_, n) => `You've told me your mood ${n} times today! What a day`],
+  [/^我們一起生活 (\d+) 天了！每天都有新發現$/, (_, n) => `We've been together ${n} days! Something new every day`],
+  [/^心情天氣：(.+)$/, (_, w) => `Mood weather: ${tr(w)}`],
+  [/^摸摸(.+)$/, (_, nm) => `Pet ${tr(nm)}`],
+  [/^移除 (.+)$/, (_, e) => `Remove ${tr(e)}`],
+  [/^現在：(.+)　選好了就按下面的按鈕記錄吧～$/, (_, e) => `Now: ${tr(e)}　When you're ready, press the button below to log it~`],
+  [/^現在：(.+)$/, (_, e) => `Now: ${tr(e)}`],
+  [/^(.+) ×(\d+)$/, (_, e, n) => `${tr(e)} ×${n}`],
+  [/^(.+) 的(.+)貓$/, (_, k, e) => `${tr(e)} cat (${k})`],
+  [/^喵記備份-(.+)$/, (_, d) => `meow-diary-backup-${d}`],
+  [/^選 (.+)$/, (_, nm) => `Choose ${tr(nm)}`],
+  [/^(.+?) (\d+%)$/, (_, q, pct) => `${tr(q)} ${pct}`],
+  [/^([^：]{1,12})：(.+)$/s, (_, who, t) => `${tr(who)}: ${tr(t)}`],
+];
+// 中文標點換成英文的
+const EN_PUNCT = { "・": " · ", "：": ": ", "，": ", ", "、": ", ", "（": " (", "）": ")", "「": "\"", "」": "\"", "。": ". ", "？": "? ", "！": "! " };
+const hasCJK = s => /[　-〿㐀-鿿！-？]/.test(s);
+let LANG = "zh";
+try { LANG = localStorage.getItem("meow-lang") === "en" ? "en" : "zh"; } catch (e) {}
+// 情緒詞、象限、家族：用 mood.json 裡的英文
+function buildEmotionEN() {
+  const add = (o) => { if (o?.label?.zh && o.label.en && !EN[o.label.zh]) EN[o.label.zh] = o.label.en; };
+  EMO_DATA.quadrants.forEach(q => { q.families.forEach(f => f.emotions.forEach(add)); });
+  EMO_DATA.quadrants.forEach(q => { add(q); q.families.forEach(add); });
+  (EMO_DATA.special_options || []).forEach(add);
+}
+function tr(s) {
+  if (LANG !== "en" || !s || !hasCJK(s)) return s;
+  if (EN[s] != null) return EN[s];
+  const t = s.trim();
+  if (EN[t] != null) return s.replace(t, EN[t]);
+  // 前後的表情符號、空白先拿掉再查
+  const m = t.match(/^([^㐀-鿿\w]*)(.*?)([^㐀-鿿\w]*)$/su);
+  if (m && m[2] && EN[m[2]] != null) return s.replace(t, m[1] + EN[m[2]] + m[3]);
+  for (const [re, fn] of EN_PATTERNS) { const r = t.match(re); if (r) return s.replace(t, fn(...r)); }
+  // 用逗號隔開的好幾段：每段各自翻
+  if (/[，、]/.test(t)) {
+    const segs = t.split(/[，、]/).map(x => tr(x.trim()));
+    if (!segs.some(hasCJK)) return s.replace(t, segs.join(", "));
+  }
+  // 一段一段翻：用標點切開，認得的換成英文，不認得的（例如自己寫的心情）照原樣
+  const parts = t.split(/(・|：|，|、|（|）|「|」|。|？|！|\s+)/);
+  let changed = false;
+  const out = parts.map(p => {
+    if (EN_PUNCT[p] != null) return EN_PUNCT[p];
+    if (EN[p] != null) { changed = true; return EN[p]; }
+    const r = EN_PATTERNS.find(([re]) => re.test(p));
+    if (r) { changed = true; return p.replace(r[0], r[1]); }
+    return p;
+  }).join("").replace(/ {2,}/g, " ").trim();
+  return changed && !hasCJK(out) ? s.replace(t, out) : s;
+}
+
 const INK = "#4a3439";
 const MOODS = {
   happy:   { name: "開心", fur: "#F4B07E", stripe: "#DE8A55", chest: "#FCE6D2", eye: "#8CC46B", tail: "up",
@@ -1652,16 +1982,31 @@ const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")
 let TODAY = iso(today);
 // 第一次打開時放一些示範資料（之後清空也不會再跑出來）
 if (firstVisit && !Object.keys(entries).length) {
-  const demo = ["happy","calm","tired","happy","sad","calm","happy","anxious","tired","calm","happy","angry","calm","happy","tired","happy","calm","sad","happy","calm","happy","tired","calm","happy","anxious","happy","calm"];
+  const demo = ["happy", "calm", "tired", "sad", "happy", "anxious", "calm", "happy", "angry", "calm"];
   const times = ["09:10", "13:30", "21:45"];
-  for (let d = 1; d < today.getDate(); d++) {
-    if (d % 6 === 0) continue;
-    const n = d % 7 === 0 ? 3 : d % 4 === 0 ? 2 : 1;
-    entries[iso(new Date(today.getFullYear(), today.getMonth(), d))] = Array.from({ length: n }, (_, i) =>
-      ({ mood: demo[(d + i * 5) % demo.length], text: "", t: n === 1 ? "21:00" : times[i], demo: true }));
+  for (let d = 1; d < 7; d++) {   // 前幾天（保留期限內）
+    if (d === 4) continue;
+    const n = d === 2 ? 2 : 1;
+    entries[iso(new Date(today.getFullYear(), today.getMonth(), today.getDate() - d))] = Array.from({ length: n }, (_, i) =>
+      ({ mood: demo[(d * 3 + i * 5) % demo.length], text: "", t: n === 1 ? "21:00" : times[i], demo: true }));
   }
 }
 function persist() { try { localStorage.setItem(KEY, JSON.stringify(entries)); } catch (e) {} }
+// 記錄只留最近 7 天（含今天），比較舊的會自動清掉；草原上的貓也會隨著記錄變舊慢慢變淡
+const KEEP_DAYS = 7;
+const keepFrom = () => iso(new Date(today.getFullYear(), today.getMonth(), today.getDate() - (KEEP_DAYS - 1)));
+function pruneOld() {
+  const from = keepFrom(); let n = 0;
+  for (const k of Object.keys(entries)) if (k < from) { delete entries[k]; n++; }
+  if (n) persist();
+  return n;
+}
+pruneOld();
+// 記錄有多舊（0 = 剛記，1 = 快要消失了）
+const ageOf = (date, t) => {
+  const when = new Date(`${date}T${/^\d\d:\d\d$/.test(t || "") ? t : "12:00"}`);
+  return Math.min(1, Math.max(0, (Date.now() - when) / (KEEP_DAYS * 864e5)));
+};
 const nowTime = () => { const d = new Date(); return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; };
 // 所有記錄（到今天為止），依時間排好
 const allRecords = () => Object.keys(entries).sort().filter(k => k <= TODAY)
@@ -1986,14 +2331,16 @@ function makeCat(key, entry, enter) {
   el.style.setProperty("--step", (0.36 * 45 / P.speed).toFixed(2) + "s");
   el.setAttribute("role", "button");
   el.setAttribute("aria-label", `${key} 的${emoNames(entry)}貓`);
+  if (!entry.pet) el.style.setProperty("--fade", (1 - ageOf(key.slice(0, 10), entry.t) * .7).toFixed(2));
   meadow.appendChild(el);
   const W = meadow.clientWidth || 800;
   const c = { key, entry, el, dir: 1, mode: "sit", timer: 1 + Math.random() * 3, partner: null, ...P,
     x: enter ? -CAT_W : Math.random() * (W - CAT_W), y: Y_MIN + Math.random() * (Y_MAX - Y_MIN), tx: 0, ty: 0 };
   el.onclick = () => {
     const date = key.slice(0, 10), [, mo, d] = date.split("-");
-    const who = (date === TODAY ? "今天" : `${+mo}/${+d}`) + (entry.t ? " " + entry.t : "");
-    say(c, `${who}・${emoNames(entry)}：${entry.text || sayFor(emoOf(entry))}`, 4, entry.mood);   // 說起那天的心情時，露出那天的表情
+    const who = (date === TODAY ? tr("今天") : `${+mo}/${+d}`) + (entry.t ? " " + entry.t : "");
+    const sep = LANG === "en" ? [" · ", ": "] : ["・", "："];
+    say(c, `${who}${sep[0]}${tr(emoNames(entry))}${sep[1]}${entry.text || tr(sayFor(emoOf(entry)))}`, 4, entry.mood, true);   // 說起那天的心情時，露出那天的表情
     meow(1.08 * (COAT_PITCH[entry.mood] ?? 1), .8, .7);
     if (c.partner) endPair(c);
     setMode(c, "hop");
@@ -2090,6 +2437,8 @@ function arriveSpecial(c) {
 }
 
 function pickMode(c) {
+  if (WET.includes(weatherKind) && Math.random() < .35) return setMode(c, Math.random() < .5 ? "loaf" : "sit");
+  if ((weatherKind === "sunny" || weatherKind === "rainbow") && Math.random() < .12) return setMode(c, "roll");
   // 有專屬動作的情緒，有時候會做牠的招牌動作
   if (c.special && Math.random() < .3) {
     if (c.special === "rub") { if (rubSomeone(c)) return; }
@@ -2330,12 +2679,19 @@ function chatter() {
   const c = pick(here);
   if (c.entry.pet) return;   // 寵物說的話由寵物自己決定
   const asleep = c.el.classList.contains("sleep");
+  if (!asleep && !c.partner && Math.random() < .45) {
+    const env = envLine();
+    say(c, env.text, 3, env.face);
+    if (env.act && isFree(c)) setMode(c, env.act);
+    return;
+  }
   const key = asleep ? "sleep" : DOING[c.partner ? c.act : c.mode] ? (c.partner ? c.act : c.mode) : DOING[c.mode] ? c.mode : null;
   const lines = key ? DOING[key] : CHATTER[c.base || c.entry.mood];
   say(c, pick(lines), 3, asleep ? null : key ? DOING_FACE[key] : c.base || c.entry.mood);
 }
 
-function say(c, text, secs = 4, face = null) {
+function say(c, text, secs = 4, face = null, raw = false) {
+  sayEl.toggleAttribute("data-noi18n", raw);   // 已經翻好、或有自己寫的內容：不要再翻
   if (face && c) {   // 說話的時候露出跟話語一樣的表情，說完再回到原本的表情
     c.sayFace = face; c.sayUntil = performance.now() + secs * 1000; updateFace(c);
     clearTimeout(c.faceT); c.faceT = setTimeout(() => updateFace(c), secs * 1000 + 50);
@@ -2580,8 +2936,8 @@ function emotionPicker(root, opts = {}) {
   };
   const defaultDesc = () => st.unsure ? EMO.unsure.desc
     : st.sel.length ? `${EMO[st.sel.at(-1)].name}：${EMO[st.sel.at(-1)].desc}`
-    : st.quad ? (st.multi ? "可以點好幾個詞，選完就記錄吧" : "點一個最接近的詞，看看說明")
-    : "先選一個最接近現在感覺的區塊";
+    : st.quad ? (st.multi ? "可以選好幾個" : "點一個最接近的詞")
+    : "";
   const toggleIn = (list, v) => list.includes(v) ? list.splice(list.indexOf(v), 1) : list.push(v);
 
   function render() {
@@ -2711,9 +3067,8 @@ function renderMoods() {
       showAccPreview();
       updateWeather();
       if (ids.length && ids.join() !== before) buddyReact(picked, ids);
-      $("text").placeholder = st.unsure ? "發生了什麼事？身體有什麼感覺？（可以不寫喔）" : "想說點什麼嗎？（可以不寫喔）";
-      $("hint").textContent = ids.length ? `現在：${ids.map(id => EMO[id].name).join("・")}　選好了就按下面的按鈕記錄吧～`
-        : "先選一個最接近的區塊，再挑一個詞；記錄之後貓咪會跑進草原裡玩喔！";
+      $("text").placeholder = st.unsure ? "發生了什麼事？身體有什麼感覺？（可以不寫喔）" : "想說點什麼嗎？";
+      $("hint").textContent = ids.length ? `現在：${ids.map(id => EMO[id].name).join("・")}` : "選一個最接近的感覺";
     },
   });
 }
@@ -2879,7 +3234,41 @@ function moodPoint(ids) {
   if (!es.length) return null;
   return { v: es.reduce((s, e) => s + e.valence, 0) / es.length, a: es.reduce((s, e) => s + e.arousal, 0) / es.length };
 }
-let lastWeather = "";
+let lastWeather = "", weatherKind = "";
+// 草原上的貓對天氣、風景的反應
+const WEATHER_TALK = {
+  clear:     ["今天天氣不錯～", "天空好藍"],
+  sunny:     ["太陽好暖～", "適合曬肚肚", "陽光把毛曬得暖暖的", "好想在太陽下睡午覺"],
+  breeze:    ["微風好舒服～", "風裡有花的味道"],
+  rainbow:   ["是彩虹耶！", "彩虹好漂亮～", "彩虹的另一邊有小魚乾嗎？"],
+  cloudy:    ["雲好多喔", "那朵雲好像一條魚", "雲把太陽遮住了"],
+  rain:      ["下雨了…毛要濕了", "雨滴答滴答～", "我要找地方躲雨", "（甩甩身上的水）", "花都被雨打彎了"],
+  heavyrain: ["雨好大！", "全身都濕透了…", "想回家窩著…"],
+  windy:     ["風好大～ 鬍鬚都歪了", "毛被吹亂了啦！", "差點被風吹走！"],
+  thunder:   ["打雷了！好可怕", "（耳朵往後壓）", "轟隆隆…快躲起來"],
+  fog:       ["霧霧的，看不清楚", "大家在哪裡？", "好像走進雲裡面了"],
+};
+const WEATHER_FACE = { sunny: "happy", rainbow: "happy", breeze: "calm", clear: "calm", cloudy: "calm", rain: "sad", heavyrain: "sad", windy: "anxious", thunder: "anxious", fog: "calm" };
+const SCENERY_TALK = [["這朵花好香～", "happy"], ["蝴蝶！好想抓～", "happy", "hop"], ["那棵樹好想爬上去", "happy"], ["草地軟軟的", "calm"],
+  ["毛線球在那邊！", "happy"], ["花上面停了一隻蝴蝶", "happy"], ["山的那邊有什麼呢？", "calm"]];
+const WET = ["rain", "heavyrain", "thunder"];
+function envLine() {
+  const wet = WET.includes(weatherKind) || weatherKind === "windy";
+  if (wet || Math.random() < .6) { const k = weatherKind || "clear"; return { text: pick(WEATHER_TALK[k]), face: WEATHER_FACE[k] }; }
+  const [text, face, act] = pick(SCENERY_TALK);
+  return { text, face, act };
+}
+// 天氣一變：有一隻貓先說說看，下雨的話大家趴低、窩起來
+function reactWeather() {
+  setTimeout(() => {
+    const free = cats.filter(c => !c.entry.pet && isFree(c) && c.mode !== "sleep");
+    if (!free.length) return;
+    const c = pick(free), k = weatherKind;
+    say(c, pick(WEATHER_TALK[k]), 3, WEATHER_FACE[k]);
+    if (WET.includes(k)) free.forEach(o => { if (Math.random() < .5) setMode(o, Math.random() < .5 ? "loaf" : "sit"); });
+    else if (k === "sunny" || k === "rainbow") { if (Math.random() < .5) setMode(pick(free), "roll"); }
+  }, 900);
+}
 function updateWeather() {
   const last = (entries[TODAY] || []).at(-1);
   const ids = pickedEmo.length ? pickedEmo : last ? emoOf(last) : [];
@@ -2911,6 +3300,9 @@ function updateWeather() {
     : v > .3 ? (a > .1 ? "晴朗 ☀️" : v > .55 ? "彩虹 🌈" : "微風晴空 🌤️") : "多雲 ☁️";
   $("weather").textContent = name ? `心情天氣：${name}` : "";   // 畫面上不顯示，只留給螢幕閱讀器
   lastWeather = stormy && a > .7 ? "thunder" : "";
+  const kind = !p ? "clear" : p.unsure ? "fog" : rainy ? (v < -.6 ? "heavyrain" : "rain") : stormy ? (a > .7 ? "thunder" : "windy")
+    : v > .3 ? (a > .1 ? "sunny" : v > .55 ? "rainbow" : "breeze") : "cloudy";
+  if (kind !== weatherKind) { const first = !weatherKind; weatherKind = kind; if (!first) reactWeather(); }
 }
 // 下雨、起風的粒子（產生一次就好，用透明度控制要不要看得到）
 (function makeWeatherBits() {
@@ -2930,6 +3322,8 @@ function updateWeather() {
 setInterval(() => {
   if (lastWeather !== "thunder" || reduceMotion || Math.random() < .5) return;
   const m = $("meadow"); m.classList.remove("flash"); void m.offsetWidth; m.classList.add("flash");
+  const awake = cats.filter(c => !c.entry.pet && c.el.className.indexOf("sleep") < 0);
+  if (awake.length && !sayCat && Math.random() < .5) { const c = pick(awake); say(c, pick(WEATHER_TALK.thunder), 2.5, "anxious"); if (isFree(c)) setMode(c, "hop"); }
   setTimeout(() => m.classList.remove("flash"), 600);
 }, 6000);
 
@@ -3051,7 +3445,7 @@ function dockLook(pose, secs) {
 }
 
 // ---------- 說話泡泡：跟著寵物 ----------
-let typing = null, bubbleHide = null, lastTalk = Date.now(), lastUser = Date.now();
+let typing = null, bubbleHide = null, lastTalk = Date.now();
 function placeBubble() {
   const b = $("bubble");
   if (!b.classList.contains("show")) return;
@@ -3061,6 +3455,7 @@ function placeBubble() {
   requestAnimationFrame(placeBubble);
 }
 function buddySay(text) {
+  text = tr(text);
   lastTalk = Date.now();
   if (outside && petCat) { say(petCat, text, 5); $("bubbleSr").textContent = `${buddyName()}：${text}`; return; }
   const b = $("bubble");
@@ -3204,7 +3599,7 @@ async function roomLife() {
       const last = (entries[TODAY] || []).at(-1);
       const P = persona({ mood: buddyFace(), emo: pickedEmo.length ? pickedEmo : last ? emoOf(last) : undefined });
       const e = P.energy;
-      const acts = { play: .3 + 3.2 * e * P.warmth, groom: 1.5, walk: .5 + 2 * e };
+      const acts = { play: .3 + 3.2 * e * P.warmth, groom: 1.5, walk: .5 + 2 * e, zoom: .4 + 1.6 * e, tail: .6 + e };
       if (S.home) acts.home = 1 + 4 * (1 - e);
       if (S.bed) acts.bed = 1 + 4.5 * (1 - e);
       if (S.sofa) acts.sofa = 2;
@@ -3216,6 +3611,17 @@ async function roomLife() {
         const g = pick(S.gutters);
         await rbMove(g[0] + Math.random() * (g[1] - g[0]), S.floorY + (Math.random() - .5) * 14);
         await rbStay("sit", 2 + Math.random() * 3);
+      } else if (act === "zoom") {
+        // 突然暴衝：跑到另一邊再衝回來
+        await toFloor(S);
+        const g = pick(S.gutters), x0 = rb.x;
+        await rbMove(rb.x < (g[0] + g[1]) / 2 ? g[1] : g[0], S.floorY, 260);
+        await rbMove(Math.min(Math.max(x0, g[0]), g[1]), S.floorY, 260);
+        await rbStay("sit", 2 + Math.random() * 2);
+      } else if (act === "tail") {
+        // 追自己的尾巴
+        await toFloor(S);
+        await rbStay("spin", 1.65); await rbStay("hop", .75); await rbStay("sit", 2);
       } else if (act === "play") {
         await toFloor(S);
         await rbStay("hop", .75); await rbStay("roll", 1.15); await rbStay("hop", .75); await rbStay("sit", 2);
@@ -3227,6 +3633,12 @@ async function roomLife() {
         await rbMove(S.home.x, S.home.y);
         rbPlace = "home";
         await rbStay(pick(["loaf", "sleep", "sit", "loaf"]), 12 + Math.random() * 16);
+      } else if (act === "desk" && Math.random() < .5) {
+        // 到書桌上搗蛋：把筆推下去
+        await goUp(S, "desk");
+        await rbStay("sit", 1.2);
+        await rbStay("hop", .75);
+        await rbStay(pick(["sit", "loaf"]), 6 + Math.random() * 6);
       } else {
         await goUp(S, act);
         await rbStay(act === "bed" ? "sleep" : pick(["loaf", "sit", "groom"]), act === "bed" ? 20 + Math.random() * 20 : 8 + Math.random() * 8);
@@ -3274,73 +3686,9 @@ addEventListener("resize", () => { clearTimeout(placeTimer); placeTimer = setTim
   }
 }, 300); });
 
-// ---------- 寵物主動聊天 ----------
-const TIME_TALK = [
-  [5, 11, ["早安！今天也一起加油吧 ☀️", "吃早餐了嗎？", "早上的空氣好舒服～"]],
-  [11, 14, ["午餐吃什麼呀？", "吃飽了嗎？吃飽才有力氣喔"]],
-  [14, 18, ["下午有點想睡…要不要起來伸個懶腰？", "喝口水休息一下吧 💧"]],
-  [18, 22, ["今天過得怎麼樣？", "晚餐吃了嗎？", "辛苦一整天了，放鬆一下吧"]],
-  [22, 29, ["很晚了喔，早點休息好不好？", "我陪你到你睡著 🌙", "今天也辛苦了，晚安前要不要記一下心情？"]],
-];
-const CARE = ["記得喝水喔 💧", "肩膀放鬆～ 深呼吸", "我在這裡喔", "有你在我就很開心", "你已經很努力了", "要不要看看窗外？"];
-const MOOD_TALK = {
-  happy:   ["今天心情不錯呢！是發生什麼好事了嗎？", "看你開心，我尾巴都翹起來了"],
-  calm:    ["平平靜靜的，真好", "這樣慢慢的也很好喔"],
-  sad:     ["還難過嗎？想哭也沒關係，我陪你", "不管怎樣，我都在你旁邊"],
-  angry:   ["氣消一點了嗎？要不要摸摸我", "生氣的時候，先深呼吸三次好不好"],
-  tired:   ["累了就休息一下，不用勉強", "今天早點睡吧，我幫你暖被窩"],
-  anxious: ["一步一步來就好", "緊張的時候，摸摸我會好一點喔"],
-};
-const PLACE_TALK = {
-  bed: ["床好軟，好好睡…", "（在床上伸懶腰）", "被子有你的味道～"],
-  sofa: ["沙發好軟～ 你也來坐！", "（在沙發上窩成一團）"],
-  desk: ["（坐在書桌上）你的筆電好溫暖喔", "我在書桌上陪你～"],
-  home: ["我的小窩最舒服了", "（在貓床裡踩踩）"],
-  floor: ["房間好好玩！", "（在地板上打滾）"],
-};
-function buddyLine() {
-  if (curPose() === "sleep") return pick(["呼…嚕…", "（說夢話）小魚乾…還要…", "Zzz…（尾巴動了一下）"]);
-  if (Date.now() - lastUser > 120000) return pick(["你還在嗎？我等你喔", "（在旁邊安靜地陪著你）"]);
-  const h = new Date().getHours(), hh = h < 5 ? h + 24 : h;
-  const pool = [...TIME_TALK.find(([a, b]) => hh >= a && hh < b)[2], ...CARE];
-  const list = entries[TODAY] || [], last = list.at(-1);
-  if (!last) pool.push("今天還沒記錄心情喔，現在感覺怎麼樣？", "想跟我說說今天的事嗎？");
-  else {
-    // 會記得你今天的心情和說過的話
-    pool.push(...MOOD_TALK[last.mood], ...MOOD_TALK[last.mood]);
-    const nm = emoNames(last), v = EMO[emoOf(last)[0]]?.valence ?? 0;
-    if (emoOf(last)[0] === "unsure") pool.push("剛剛說不上來的感覺，現在有比較清楚一點嗎？");
-    else if (v < 0) pool.push(`剛剛的「${nm}」，現在有好一點嗎？`, `「${nm}」的時候，對自己溫柔一點喔`);
-    else pool.push(`「${nm}」的感覺真好，多待一會兒吧`);
-    if (last.text) {
-      const t = [...last.text].length > 14 ? [...last.text].slice(0, 14).join("") + "…" : last.text;
-      pool.push(`你剛剛說「${t}」，我有記住喔`, `關於「${t}」，現在感覺怎麼樣？`);
-    }
-    if (list.length >= 3) pool.push(`今天已經跟我說了 ${list.length} 次心情了，謝謝你願意告訴我 💕`);
-  }
-  if (curPose() === "groom") pool.push("（舔舔）要把自己弄得香香的", "（舔舔）你要不要也洗把臉？");
-  if (curPose() === "loaf") pool.push("（把腳收起來）這樣最舒服了");
-  if (inRoom) pool.push(...PLACE_TALK[rbPlace], ...PLACE_TALK[rbPlace]);
-  pool.push("草原上的大家玩得好開心～", "我也想玩毛線球！");
-  if (petDays() > 1) pool.push(`我們一起生活 ${petDays()} 天了耶，謝謝你養我 💕`);
-  if (needBackup()) pool.push("好一陣子沒備份了，要不要按下面的「下載備份檔」存一份？", "記錄越來越多了，存一份備份檔比較安心喔");
-  return pick(pool);
-}
-["click", "keydown"].forEach(ev => document.addEventListener(ev, () => lastUser = Date.now()));
-let talkGap = 15000;
-setInterval(() => {
-  if (document.hidden || Date.now() - lastTalk < talkGap) return;
-  talkGap = 20000 + Math.random() * 20000;
-  buddySay(buddyLine());
-  // 說話時輕輕動一下
-  if (curPose() !== "sleep") activeCat().querySelector(".hopper")?.animate?.(
-    [{ transform: "none" }, { transform: "translateY(-6px) rotate(-2deg)" }, { transform: "none" }], { duration: 500 });
-}, 1000);
-
 // ---------- 互動：選心情、摸摸 ----------
 function buddyReact(k, ids = []) {
   drawBuddy();
-  buddySay(ids.length ? sayFor(ids) : MOODS[k].say);
   const love = k === "sad" || k === "happy" || ids.some(id => EMO[id]?.family === "connection");
   if (inRoom) {
     rbLook(rbPose);
@@ -3356,16 +3704,14 @@ function buddyReact(k, ids = []) {
     if (love) { buddyHeart(); setTimeout(buddyHeart, 400); }
   }
 }
-const PET = ["呼嚕呼嚕～", "喵～ 再摸一下嘛", "（用頭蹭蹭你的手）", "最喜歡你了 💕", "（瞇起眼睛）呼嚕…"];
 const COAT_PITCH = { happy: 1, calm: 1.05, sad: .92, angry: .85, tired: 1.1, anxious: 1.15, goldie: 1, siamese: 1.12, orangewhite: 1.05, graywhite: .95, silver: .98, tortie: .9, brown: .94, black: .88 };   // 每隻貓的聲音高低不太一樣
 function petBuddy() {
-  const line = curPose() === "sleep" ? "（被你摸醒了）喵…？" : pick(PET);
+  const woke = curPose() === "sleep";
   if (!outside) {
-    petFaceTemp = line.includes("醒") ? "calm" : "happy"; refreshPetFace();
+    petFaceTemp = woke ? "calm" : "happy"; refreshPetFace();
     clearTimeout(petFaceT); petFaceT = setTimeout(() => { petFaceTemp = null; refreshPetFace(); }, 3500);
   }
-  buddySay(line);
-  if (line.includes("呼嚕")) purr(); else meow((COAT_PITCH[buddy.coat] ?? 1), line.includes("醒") ? .7 : 1);
+  if (!woke && Math.random() < .5) purr(); else meow((COAT_PITCH[buddy.coat] ?? 1), woke ? .7 : 1);
   buddyHeart(); setTimeout(buddyHeart, 300);
   if (inRoom) roomInterrupt(async () => { await rbStay("hop", .75); await rbStay("sit", 3); });
   else dockLook("hop", .75);
@@ -3397,7 +3743,6 @@ function renderCoats() {
       if (!renamed) buddy.name = "";
       $("buddyName").value = buddyName();
       saveBuddy(); renderCoats(); drawBuddy(); updateBuddyBtn();
-      buddySay("你好！我是" + buddyName() + "，以後我陪你喔 🐾");
       if (inRoom) roomInterrupt(() => rbStay("hop", .75)); else dockLook("hop", .75);
     };
     $("coats").appendChild(b);
@@ -3414,31 +3759,30 @@ $("buddyBtn").onclick = () => { updateBuddyBtn(); $("buddyDlg").showModal?.(); }
 $("buddyDlgClose").onclick = () => $("buddyDlg").close();
 
 
+// 這七天：情緒本來就會隨著時間變淡，越早的那天越淡，超過七天就不留了
 function renderCal() {
-  const y = view.getFullYear(), mo = view.getMonth();
-  $("month").textContent = `${y} 年 ${mo + 1} 月`;
+  $("month").textContent = "這七天";
   const cal = $("cal");
   cal.innerHTML = "";
-  "日一二三四五六".split("").forEach(d => cal.insertAdjacentHTML("beforeend", `<div class="dow">${d}</div>`));
-  const first = new Date(y, mo, 1).getDay(), days = new Date(y, mo + 1, 0).getDate();
-  for (let i = 0; i < first; i++) cal.insertAdjacentHTML("beforeend", `<div class="day empty"></div>`);
+  const days = [...Array(KEEP_DAYS)].map((_, i) => new Date(today.getFullYear(), today.getMonth(), today.getDate() - (KEEP_DAYS - 1 - i)));
   const count = {}, byQuad = {};
   let records = 0;
-  for (let d = 1; d <= days; d++) {
-    const key = iso(new Date(y, mo, d)), list = entries[key] || [];
+  days.forEach((dt, i) => {
+    const key = iso(dt), list = entries[key] || [], mo = dt.getMonth() + 1, d = dt.getDate();
     const cell = document.createElement("div");
     cell.className = "day" + (key === TODAY ? " today" : "");
+    cell.style.setProperty("--fade", (1 - (KEEP_DAYS - 1 - i) / (KEEP_DAYS - 1) * .65).toFixed(2));
     let heads = "";
     if (list.length === 1) heads = headSVG(list[0].mood, recCoat(list[0]), accOf(list[0], key));
     else if (list.length > 1) heads = `<div class="heads">${list.slice(-4).map(r => headSVG(r.mood, recCoat(r), accOf(r, key))).join("")}</div>`
       + (list.length > 4 ? `<span class="more">+${list.length - 4}</span>` : "");
-    cell.innerHTML = `<span class="n">${d}</span>` + heads;
+    cell.innerHTML = heads;
     cell.tabIndex = 0;
     cell.setAttribute("role", "button");
-    cell.setAttribute("aria-label", `${mo + 1} 月 ${d} 日，${list.length ? list.length + " 筆記錄" : "沒有記錄"}`);
+    cell.setAttribute("aria-label", `${mo} 月 ${d} 日，${list.length ? list.length + " 筆記錄" : "沒有記錄"}`);
     cell.onclick = () => openDay(key);
     cell.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDay(key); } };
-    if (list.length) cell.title = list.map(r => `${r.t || ""} ${emoNames(r)}${r.text ? "：" + r.text : ""}`.trim()).join("\n");
+    if (list.length) cell.title = list.map(r => `${r.t || ""} ${tr(emoNames(r))}${r.text ? "：" + r.text : ""}`.trim()).join("\n");
     // count：每個情緒出現幾次；byQuad：照「筆數」算的比例，混合情緒那一筆平均分給裡面的情緒
     list.forEach(r => {
       const ids = emoOf(r);
@@ -3450,24 +3794,19 @@ function renderCal() {
       records++;
     });
     cal.appendChild(cell);
-  }
-  // 這個月：記了幾次、四個象限的比例（照筆數）、最常出現的情緒
+  });
+  // 這七天：記了幾次、四個象限的比例（照筆數）、出現過的情緒
   const parts = [...QUADS.map(q => [q.id, q.label.zh, q.soft]), ["unsure", EMO.unsure.name, "#d6c8cc"]].filter(([id]) => byQuad[id]);
   // 四捨五入後加起來剛好 100%：把差額補給最大的那一塊
   const pct = Object.fromEntries(parts.map(([id]) => [id, Math.round(byQuad[id] / records * 100)]));
   if (parts.length) { const diff = 100 - Object.values(pct).reduce((a, b) => a + b, 0), big = parts.reduce((m, [id]) => byQuad[id] > byQuad[m] ? id : m, parts[0][0]); pct[big] += diff; }
   $("summary").innerHTML = !records ? "" : `<div style="width:100%">
-    <p class="month-total">這個月記錄了 <b>${records}</b> 次</p>
     <div class="mood-bar" role="img" aria-label="${parts.map(([id, name]) => `${name} ${pct[id]}%`).join("，")}">
-      ${parts.map(([id, name, color]) => `<span style="width:${byQuad[id] / records * 100}%;background:${color}" title="${name} ${pct[id]}%"></span>`).join("")}</div>
-    <div class="mood-legend">${parts.map(([id, name, color]) => `<span><i style="background:${color}"></i>${name} ${pct[id]}%</span>`).join("")}</div>
-    <p class="month-total">這個月出現過的情緒</p></div>`
+      ${parts.map(([id, name, color]) => `<span style="width:${byQuad[id] / records * 100}%;background:${color}" title="${name} ${pct[id]}%"></span>`).join("")}</div></div>`
     + Object.entries(count).sort((a, b) => b[1] - a[1])
-      .map(([id, n]) => `<span class="chip">${headSVG(EMO[id].face, emoCoat(id), { id, hue: hashHue(id) })} ${EMO[id].name} 出現 ${n} 次</span>`).join("");
+      .map(([id, n]) => `<span class="chip">${headSVG(EMO[id].face, emoCoat(id), { id, hue: hashHue(id) })} ${EMO[id].name}${n > 1 ? ` ×${n}` : ""}</span>`).join("");
 }
 
-$("prev").onclick = () => { view.setMonth(view.getMonth() - 1); renderCal(); };
-$("next").onclick = () => { view.setMonth(view.getMonth() + 1); renderCal(); };
 // ---------- 抽屜：記錄心情、心情日曆 ----------
 // 抽屜移到最外層，才會蓋在寵物和牠的說話泡泡上面
 document.querySelectorAll(".drawer").forEach(d => document.body.appendChild(d));
@@ -3562,10 +3901,10 @@ function renderDlg() {
   $("dlgTitle").textContent = `${y} 年 ${m} 月 ${d} 日` + (dlgDate === TODAY ? "（今天）" : "");
   const box = $("dlgList");
   box.innerHTML = "";
-  if (!list.length && editing !== "new") box.innerHTML = `<p class="dlg-empty">這天還沒有記錄喔</p>`;
+  if (!list.length && editing !== "new") box.innerHTML = `<p class="dlg-empty">${dlgDate < keepFrom() ? "記錄只會留 7 天，這天的已經變成回憶了" : "這天還沒有記錄喔"}</p>`;
   list.forEach((r, i) => box.appendChild(editing === i ? editorRow(dlgDate, r, i) : recRow(dlgDate, r, i)));
   if (editing === "new") box.appendChild(editorRow(dlgDate, { mood: null, text: "", t: dlgDate === TODAY ? nowTime() : "21:00" }, "new"));
-  $("dlgAdd").hidden = editing !== null || dlgDate > TODAY;
+  $("dlgAdd").hidden = editing !== null || dlgDate > TODAY || dlgDate < keepFrom();
 }
 $("dlgAdd").onclick = () => { editing = "new"; renderDlg(); };
 $("dlgClose").onclick = () => dlg.close();
@@ -3600,11 +3939,12 @@ function checkNewDay() {
   if (key === TODAY) return;
   const viewingThisMonth = view.getFullYear() === today.getFullYear() && view.getMonth() === today.getMonth();
   today = now; TODAY = key;
+  if (pruneOld()) renderMeadow();
   if (viewingThisMonth) view = new Date(today.getFullYear(), today.getMonth(), 1);
   renderCal(); renderToday(); drawBuddy(); updateWeather();
-  buddySay(now.getHours() < 5 ? "過午夜了，新的一天開始囉…不過該睡覺了喔 🌙" : "新的一天開始了！今天心情怎麼樣？");
 }
 setInterval(checkNewDay, 30000);
+setInterval(() => cats.forEach(c => { if (!c.entry.pet) c.el.style.setProperty("--fade", (1 - ageOf(c.key.slice(0, 10), c.entry.t) * .7).toFixed(2)); }), 600000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) checkNewDay(); });
 // 離開網頁時，瀏覽器會把計時器拖慢，但 CSS 的移動照常進行，兩邊對不起來就會「原地走路」或「用滑的」。
 // 所以離開時先讓寵物停在原地坐好，回來再接著過日子
@@ -3633,7 +3973,6 @@ $("save").onclick = () => {
   const c = makeCat(`${TODAY}#${entries[TODAY].length - 1}`, rec, !reduceMotion);
   draw(c);
   say(c, "記好了！謝謝你跟我分享 🐟");
-  buddySay("記好了！心情變了隨時再來跟我說喔 🐟");
   if (inRoom) roomInterrupt(() => rbStay("hop", .75)); else dockLook("hop", .75);
   buddyHeart();
   picked = null; pickedEmo = []; pendingHue = randHue();
@@ -3642,7 +3981,7 @@ $("save").onclick = () => {
   updateWeather();
   $("text").value = "";
   $("text").placeholder = "想說點什麼嗎？（可以不寫喔）";
-  $("hint").textContent = "記好了！看看草原，新的貓咪跑進來了～ 之後心情變了可以再記一次喔";
+  $("hint").textContent = "記好了！看看草原～";
   setTimeout(closeDrawers, 700);
 };
 
@@ -3889,11 +4228,6 @@ if (music.on) document.addEventListener("pointerdown", () => { if (music.on) sta
 
 // ---------- 備份：下載成檔案、從檔案讀回來 ----------
 const realCount = () => Object.values(entries).flat().filter(r => !r.demo).length;
-function needBackup() {
-  let lastBackup = 0;
-  try { lastBackup = +localStorage.getItem("meow-last-backup") || 0; } catch (e) {}
-  return realCount() >= 5 && Date.now() - lastBackup > 7 * 864e5;
-}
 function removeDemo() {
   for (const k in entries) {
     entries[k] = entries[k].filter(r => !r.demo);
@@ -3938,7 +4272,7 @@ $("importFile").onchange = e => {
     removeDemo();
     let added = 0;
     for (const [date, list] of Object.entries(data.entries)) {
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Array.isArray(list)) continue;
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Array.isArray(list) || date < keepFrom()) continue;   // 超過 7 天的不讀進來
       for (const r of list) {
         if (!r) continue;
         const ids = Array.isArray(r.emo) ? r.emo.filter(id => EMO[id]) : [];
@@ -3969,7 +4303,7 @@ $("importFile").onchange = e => {
 };
 
 // ---------- 清除資料 ----------
-const SETTING_KEYS = ["meow-room", "meow-theme", "meow-theme-cafe", "meow-buddy", "meow-music", "meow-sfx", "meow-sfx-vol", "meow-curtain", "meow-curtain-shut", "meow-last-backup"];
+const SETTING_KEYS = ["meow-room", "meow-theme", "meow-theme-cafe", "meow-lang", "meow-buddy", "meow-music", "meow-sfx", "meow-sfx-vol", "meow-curtain", "meow-curtain-shut", "meow-last-backup"];
 function openClear() {
   const real = realCount(), demo = Object.values(entries).flat().filter(r => r.demo).length;
   $("clearInfo").textContent = `目前有 ${real} 筆你自己的記錄` + (demo ? `，和 ${demo} 筆示範資料。` : "。");
@@ -4020,9 +4354,7 @@ function addPetCat(enter) {
     e.stopPropagation();
     if (c.partner) endPair(c);
     setMode(c, "hop");
-    const line = pick(PET);
-    say(c, line, 4, "happy"); $("bubbleSr").textContent = `${buddyName()}：${line}`;
-    line.includes("呼嚕") ? purr() : meow((COAT_PITCH[buddy.coat] ?? 1));
+    Math.random() < .5 ? purr() : meow((COAT_PITCH[buddy.coat] ?? 1));
     buddyHeart(); setTimeout(buddyHeart, 300);
   };
   petCat = c;
@@ -4046,7 +4378,6 @@ function goOut() {
     sizeMeadow();
     renderMeadow(!reduceMotion);
     ball.x = meadow.clientWidth * .6; moveBall(0, meadow.clientWidth);
-    say(petCat, pick(["走吧！一起去草原～", "出門囉！好多朋友在外面", "風好舒服喔～"]), 4, "happy");
     $("homeBtn").focus();
   });
 }
@@ -4061,7 +4392,6 @@ function goHome() {
     ball.x = meadow.clientWidth * .6; moveBall(0, meadow.clientWidth);
     inRoom = false; $("dock").hidden = true;   // 讓寵物重新回到房間
     placeBuddy();
-    buddySay(pick(["回到家了～ 草原好好玩！", "我們回來了，休息一下吧", "外面的朋友都好可愛喔"]));
     $("goOut").focus();
   });
 }
@@ -4074,7 +4404,6 @@ renderCoats();
 $("buddyName").value = buddyName();
 updateBuddyBtn();
 drawBuddy();
-buddySay(todayMood() ? MOODS[todayMood()].say : "喵～今天過得怎麼樣？選一隻貓告訴我吧！");
 renderCal();
 renderToday();
 moveBall(0, meadow.clientWidth);
@@ -4087,6 +4416,61 @@ updateWeather();
 renderCurtains();
 moveBall(0, meadow.clientWidth);
 if (!reduceMotion) requestAnimationFrame(tick);
+
+// 把畫面上的中文換成英文（記住原本的中文，切回中文時還原）
+const zhText = new Map(), zhAttr = new Map();
+const I18N_ATTRS = ["title", "aria-label", "placeholder"];
+let i18nBusy = false;
+function i18nNode(n) {
+  if (n.nodeType === 3) {
+    const p = n.parentNode;
+    if (!p || /^(SCRIPT|STYLE|TEXTAREA)$/.test(p.nodeName) || p.closest?.("[data-noi18n]")) return;
+    if (!hasCJK(n.nodeValue)) return;
+    const en = tr(n.nodeValue);
+    if (en !== n.nodeValue) { zhText.set(n, n.nodeValue); n.nodeValue = en; }
+  } else if (n.nodeType === 1) {
+    if (/^(SCRIPT|STYLE)$/.test(n.nodeName) || n.hasAttribute("data-noi18n")) return;
+    for (const a of I18N_ATTRS) {
+      const v = n.getAttribute(a);
+      if (v && hasCJK(v)) { const en = tr(v); if (en !== v) { const m = zhAttr.get(n) || {}; m[a] = v; zhAttr.set(n, m); n.setAttribute(a, en); } }
+    }
+    n.childNodes.forEach(i18nNode);
+  }
+}
+const i18nObserver = new MutationObserver(list => {
+  if (LANG !== "en" || i18nBusy) return;
+  i18nBusy = true;
+  for (const m of list) {
+    if (m.type === "childList") m.addedNodes.forEach(i18nNode);
+    else if (m.type === "characterData") i18nNode(m.target);
+    else if (m.type === "attributes") i18nNode(m.target);
+  }
+  i18nBusy = false;
+});
+function applyLang(lang, save = true) {
+  LANG = lang === "en" ? "en" : "zh";
+  document.documentElement.lang = LANG === "en" ? "en" : "zh-Hant";
+  if (save) try { localStorage.setItem("meow-lang", LANG); } catch (e) {}
+  i18nBusy = true;
+  if (LANG === "en") {
+    i18nNode(document.body);
+    document.title = "Meow Diary";
+    i18nObserver.observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: I18N_ATTRS });
+  } else {
+    i18nObserver.disconnect();
+    zhText.forEach((zh, n) => { if (n.isConnected) n.nodeValue = zh; });
+    zhAttr.forEach((m, el) => { if (el.isConnected) for (const a in m) el.setAttribute(a, m[a]); });
+    zhText.clear(); zhAttr.clear();
+    document.title = "喵記 Meow Diary";
+  }
+  i18nBusy = false;
+  const b = $("langBtn");
+  if (b) { b.textContent = LANG === "en" ? "中文" : "EN"; b.setAttribute("aria-label", LANG === "en" ? "切換成中文" : "Switch to English"); b.setAttribute("data-noi18n", ""); }
+  if (typeof refreshAll === "function") refreshAll();   // 日曆、今天的記錄重新畫一次
+}
+buildEmotionEN();
+$("langBtn").onclick = () => applyLang(LANG === "en" ? "zh" : "en");
+applyLang(LANG, false);
 </script>
 </body>
 </html>
