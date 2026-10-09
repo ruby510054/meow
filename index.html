@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>喵記 Meow Diary</title>
+<title>心情草原 Mood Meadow</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
 <style>
@@ -774,7 +774,7 @@
 
 <main class="wrap">
   <header>
-    <h1>🐾 喵記 <small>今天的心情是哪隻貓？</small></h1>
+    <h1>🐾 心情草原 <small>今天的心情是哪隻貓？</small></h1>
     <button class="buddy-btn" id="langBtn" data-noi18n>EN</button>
     <button class="buddy-btn" id="roomBtn">🏠 房間</button>
     <button class="buddy-btn" id="buddyBtn" title="我的寵物">🐱 寵物</button>
@@ -872,7 +872,7 @@
     <button id="exportBtn">💾 下載備份檔</button>
     <button id="importBtn">📂 從備份檔讀取</button>
     <button id="clearBtn">🧹 清除資料</button>
-    <button id="aboutBtn">🐾 關於喵記</button>
+    <button id="aboutBtn">🐾 關於心情草原</button>
     <input type="file" id="importFile" accept=".json,application/json" hidden>
   </div>
   <p class="note">記錄只留在這個瀏覽器，七天後就會淡去</p>
@@ -886,14 +886,14 @@
 <div class="buddy-bubble" id="bubble" aria-hidden="true"></div><p class="sr-only" id="bubbleSr" aria-live="polite"></p>
 
 <dialog class="card day-dlg about-dlg" id="aboutDlg" aria-labelledby="aboutTitle">
-  <div class="dlg-head"><h2 id="aboutTitle">關於喵記</h2><button class="dlg-x" data-close-about aria-label="關閉">×</button></div>
+  <div class="dlg-head"><h2 id="aboutTitle">關於心情草原</h2><button class="dlg-x" data-close-about aria-label="關閉">×</button></div>
   <p>每天花幾秒鐘，跟貓咪說說現在的感覺。</p>
   <ul>
     <li>說出來，情緒會緩和一點</li>
     <li>分得越細，越能好好面對</li>
     <li>情緒會隨著時間變淡，記錄也只留七天</li>
   </ul>
-  <p class="about-help">喵記是陪你練習的小工具，不能取代專業的協助。如果最近常常覺得撐不住，或是有傷害自己的念頭，請找信任的人聊聊，或撥打<br><b>安心專線 1925</b>（24 小時，免付費）、<b>生命線 1995</b>、<b>張老師 1980</b>。</p>
+  <p class="about-help">心情草原是陪你練習的小工具，不能取代專業的協助。如果最近常常覺得撐不住，或是有傷害自己的念頭，請找信任的人聊聊，或撥打<br><b>安心專線 1925</b>（24 小時，免付費）、<b>生命線 1995</b>、<b>張老師 1980</b>。</p>
   <p class="dlg-empty">研究出處和更多說明，請看 <a href="https://github.com/ruby510054/meow#為什麼做這個" target="_blank" rel="noopener">GitHub 上的介紹</a>。<br>喵叫聲錄音來自 Wikimedia Commons：Tsester、freemaster2（CC0）、PantheraLeo1359531（<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>），已剪輯並調高音調</p>
 </dialog>
 
@@ -1122,7 +1122,7 @@ const MEOW_CLIPS = [
 // 情緒詞的英文直接用 mood.json 裡的 label.en；你自己寫的心情內容不會被翻譯。
 const EN = {
   // 標題、按鈕
-  "喵記 Meow Diary": "Meow Diary", "喵記": "Meow Diary", "今天的心情是哪隻貓？": "Which cat is your mood today?",
+  "心情草原 Mood Meadow": "Mood Meadow", "心情草原": "Mood Meadow", "今天的心情是哪隻貓？": "Which cat is your mood today?",
   "房間": "Room", "我的寵物": "My pet", "寵物": "Pet", "音效開": "Sound on", "音效關": "Sound off", "音效音量": "Sound volume",
   "音樂開": "Music on", "音樂關": "Music off", "音量": "Volume", "顏色": "Color",
   "櫻花粉": "Sakura", "蜜桃": "Peach", "薰衣草": "Lavender", "薄荷": "Mint", "天空": "Sky", "檸檬": "Lemon", "莓果": "Berry", "可可": "Cocoa",
@@ -1134,7 +1134,7 @@ const EN = {
   "想說點什麼嗎？": "Anything you want to say? (optional)",
   "發生了什麼事？": "What happened? How does your body feel? (optional)",
   "記錄下來 🐟": "Log it 🐟", "上個月": "Previous month", "下個月": "Next month",
-  "下載備份檔": "Download backup", "從備份檔讀取": "Load from backup", "清除資料": "Clear data", "關於喵記": "About Meow Diary",
+  "下載備份檔": "Download backup", "從備份檔讀取": "Load from backup", "清除資料": "Clear data", "關於心情草原": "About Mood Meadow",
   "記錄只存在這個瀏覽器裡，而且只留最近七天 · 想換瀏覽器或電腦，可以先下載備份檔": "Entries stay only in this browser, and only for the last 7 days · To move to another browser or computer, download a backup first",
   "喵叫聲錄音來自 Wikimedia Commons：Tsester、freemaster2（CC0）、PantheraLeo1359531（": "Meow recordings from Wikimedia Commons: Tsester, freemaster2 (CC0), PantheraLeo1359531 (",
   "），已剪輯並調高音調": "), trimmed and pitched up",
@@ -1142,14 +1142,14 @@ const EN = {
   "牠平常住在你的房間裡，最喜歡書桌下的貓床。點牠可以摸摸喔": "It lives in your room and loves the cat bed under the desk. Click it to pet it",
   "補記一筆": "Add an entry",
   // 關於
-  "喵記是一個讓人練習": "Meow Diary is a little place to practice ", "覺察和表達情緒": "noticing and expressing your feelings",
+  "心情草原是一個讓人練習": "Mood Meadow is a little place to practice ", "覺察和表達情緒": "noticing and expressing your feelings",
   "的小地方。每天花幾秒鐘，跟貓咪說說現在的感覺吧。": ". Take a few seconds each day to tell a cat how you feel.",
   "練習說出情緒，有什麼好處？": "Why put feelings into words?",
   "說出來，情緒會緩和一點": "Naming a feeling softens it", "：替情緒命名，本身就是一種調節情緒的方式": ": putting a name to a feeling is itself a way of regulating it",
-  "分得越細，越能好好面對": "Finer words, better coping", "：比較容易找到適合的方法照顧自己。喵記準備了很多情緒詞，希望讓人比較容易分辨自己的情緒": ": it's easier to find the right way to look after yourself. Meow Diary has lots of feeling words to help you tell your feelings apart",
+  "分得越細，越能好好面對": "Finer words, better coping", "：比較容易找到適合的方法照顧自己。心情草原準備了很多情緒詞，希望讓人比較容易分辨自己的情緒": ": it's easier to find the right way to look after yourself. Mood Meadow has lots of feeling words to help you tell your feelings apart",
   "寫下來，對身心都有幫助": "Writing it down helps", "：把感受寫下來，是很多人整理心情的方式": ": writing down how you feel is how many people sort out their emotions",
   "情緒會隨著時間變淡": "Feelings fade with time", "：所以記錄只留七天，草原上的貓咪身影也會慢慢變淡": ": so entries only stay for 7 days, and the cats in the meadow slowly fade too",
-  "喵記是陪你練習的小工具，不能取代專業的協助。如果最近常常覺得撐不住，或是有傷害自己的念頭，請找信任的人聊聊，或撥打": "Meow Diary is a small practice tool and can't replace professional help. If you often feel you can't cope, or have thoughts of hurting yourself, please talk to someone you trust, or call ",
+  "心情草原是陪你練習的小工具，不能取代專業的協助。如果最近常常覺得撐不住，或是有傷害自己的念頭，請找信任的人聊聊，或撥打": "Mood Meadow is a small practice tool and can't replace professional help. If you often feel you can't cope, or have thoughts of hurting yourself, please talk to someone you trust, or call ",
   "安心專線 1925": "Taiwan Mental Health Hotline 1925", "（24 小時，免付費）、": " (24 hours, free), ", "GitHub 上的介紹": "the GitHub page", "生命線 1995": "Lifeline 1995", "張老師 1980": "Teacher Chang 1980",
   "研究出處和更多說明，請看": "For sources and more details, see ",
   // 清除
@@ -1293,7 +1293,7 @@ const EN = {
   "喵？先選一個最接近現在的感覺喔！": "Meow? Pick the feeling closest to how you feel first!",
   "記好了！謝謝你跟我分享 🐟": "Got it! Thanks for sharing with me 🐟", "記好了！心情變了隨時再來跟我說喔 🐟": "Got it! Come tell me again whenever your mood changes 🐟",
   "記好了！看看草原，新的貓咪跑進來了～ 之後心情變了可以再記一次喔": "Got it! Look at the meadow — a new cat ran in~ You can log again if your mood changes",
-  "喵？這個好像不是喵記的備份檔耶…": "Meow? This doesn't look like a Meow Diary backup…", "讀取好了！這些記錄本來就都在了喔": "Loaded! All of these entries were already here",
+  "喵？這個好像不是心情草原的備份檔耶…": "Meow? This doesn't look like a Mood Meadow backup…", "讀取好了！這些記錄本來就都在了喔": "Loaded! All of these entries were already here",
   "示範資料清掉了！接下來都是你自己的記錄囉": "Demo entries cleared! From now on it's all yours",
   "真的要全部清除嗎？再按一次": "Really clear everything? Press again", "都清乾淨了。從今天開始，一起慢慢記錄吧 🐾": "All clear. Let's start logging together from today 🐾",
   "走吧！一起去草原～": "Let's go! To the meadow together~", "出門囉！好多朋友在外面": "We're out! So many friends out here",
@@ -1403,7 +1403,7 @@ const EN_PATTERNS = [
   [/^現在：(.+)$/, (_, e) => `Now: ${tr(e)}`],
   [/^(.+) ×(\d+)$/, (_, e, n) => `${tr(e)} ×${n}`],
   [/^(.+) 的(.+)貓$/, (_, k, e) => `${tr(e)} cat (${k})`],
-  [/^喵記備份-(.+)$/, (_, d) => `meow-diary-backup-${d}`],
+  [/^心情草原備份-(.+)$/, (_, d) => `mood-meadow-backup-${d}`],
   [/^選 (.+)$/, (_, nm) => `Choose ${tr(nm)}`],
   [/^(.+?) (\d+%)$/, (_, q, pct) => `${tr(q)} ${pct}`],
   [/^([^：]{1,12})：(.+)$/s, (_, who, t) => `${tr(who)}: ${tr(t)}`],
@@ -4249,7 +4249,7 @@ $("exportBtn").onclick = () => {
                  entries: real, buddy, theme: document.documentElement.dataset.theme };
   const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
   const a = document.createElement("a");
-  a.href = url; a.download = `喵記備份-${TODAY}.json`;
+  a.href = url; a.download = `心情草原備份-${TODAY}.json`;
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
   try { localStorage.setItem("meow-last-backup", Date.now()); } catch (e) {}
@@ -4265,7 +4265,7 @@ $("importFile").onchange = e => {
     let data;
     try { data = JSON.parse(reader.result); } catch (err) { data = null; }
     if (!data || data.app !== "meow-diary" || typeof data.entries !== "object") {
-      buddySay("喵？這個好像不是喵記的備份檔耶…");
+      buddySay("喵？這個好像不是心情草原的備份檔耶…");
       return;
     }
     // 合併：不會刪掉現有的記錄，重複的不會再加一次
@@ -4454,14 +4454,14 @@ function applyLang(lang, save = true) {
   i18nBusy = true;
   if (LANG === "en") {
     i18nNode(document.body);
-    document.title = "Meow Diary";
+    document.title = "Mood Meadow";
     i18nObserver.observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: I18N_ATTRS });
   } else {
     i18nObserver.disconnect();
     zhText.forEach((zh, n) => { if (n.isConnected) n.nodeValue = zh; });
     zhAttr.forEach((m, el) => { if (el.isConnected) for (const a in m) el.setAttribute(a, m[a]); });
     zhText.clear(); zhAttr.clear();
-    document.title = "喵記 Meow Diary";
+    document.title = "心情草原 Mood Meadow";
   }
   i18nBusy = false;
   const b = $("langBtn");

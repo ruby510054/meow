@@ -1,32 +1,32 @@
-# Meow Diary 喵記
+# Mood Meadow 心情草原
 
 [中文](README.md) | **English**
 
 A small web page for practicing noticing and expressing your feelings. Pick the feeling closest to how you feel right now, and a cat runs into the meadow outside the window while the sky changes with your mood. There's also a cat of your own living in the room.
 
-Meow Diary only keeps the last 7 days: the older an entry gets, the fainter its cat becomes in the meadow, and after 7 days it's gone.
+Mood Meadow only keeps the last 7 days: the older an entry gets, the fainter its cat becomes in the meadow, and after 7 days it's gone.
 
 No install, no sign-up — just open the page. Everything stays in your own browser.
 
 **Try it online: <https://ruby510054.github.io/meow/>** (switch to English with the "EN" button in the top right)
 
-![Meow Diary: the meadow outside the window, the room and the pet](docs/main.png)
+![Mood Meadow: the meadow outside the window, the room and the pet](docs/main.png)
 
 > The screenshots show the Chinese interface; everything is also available in English.
 
 ## Why
 
-Meow Diary tries to make noticing and naming your feelings a little easier and a little cuter: take a few seconds each day to tell a cat how you feel.
+Mood Meadow tries to make noticing and naming your feelings a little easier and a little cuter: take a few seconds each day to tell a cat how you feel.
 
 Practicing recognizing and writing down feelings has some research-backed benefits:
 
 - **Naming a feeling softens it**: putting feelings into words is itself a way of regulating them (Lieberman et al., 2007)
-- **Finer words, better coping**: people who can tell subtle feelings apart find it easier to cope with unpleasant emotions (Kashdan, Barrett & McKnight, 2015). Meow Diary has 47 feeling words to help you tell your feelings apart
+- **Finer words, better coping**: people who can tell subtle feelings apart find it easier to cope with unpleasant emotions (Kashdan, Barrett & McKnight, 2015). Mood Meadow has 47 feeling words to help you tell your feelings apart
 - **Writing it down helps**: writing about emotional experiences has positive effects on physical and mental health (Pennebaker, 1997)
 
 The four areas sort feelings by how pleasant they are (valence) and how much energy they carry (arousal), based on the circumplex model of affect (Russell, 1980).
 
-> Meow Diary is a small practice tool and can't replace professional help. If you often feel you can't cope, or have thoughts of hurting yourself, please talk to someone you trust or contact a local helpline. In Taiwan:
+> Mood Meadow is a small practice tool and can't replace professional help. If you often feel you can't cope, or have thoughts of hurting yourself, please talk to someone you trust or contact a local helpline. In Taiwan:
 > - **Taiwan Mental Health Hotline 1925** (24 hours, free)
 > - **Lifeline 1995**
 > - **Teacher Chang 1980**
