@@ -167,6 +167,12 @@
     cursor: pointer; padding: 0; transition: transform .15s;
   }
   .themes button:hover { transform: scale(1.15) rotate(-8deg); }
+  .ic { width: 1.2em; height: 1.2em; vertical-align: -.24em; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+  .ic .s { fill: color-mix(in srgb, var(--accent) 24%, var(--card)); }
+  .ic .a { fill: var(--accent); stroke: none; }
+  .ic .k { fill: currentColor; stroke: none; }
+  h1 .ic { width: 1em; height: 1em; vertical-align: -.1em; }
+  .room-list button span .ic { width: 34px; height: 34px; }
   .themes button.on { outline: 2px dashed var(--line); outline-offset: 3px; }
   body[data-room="cafe"] .themes button[data-for="cozy"], body:not([data-room="cafe"]) .themes button[data-for="cafe"] { display: none; }
 
@@ -787,14 +793,14 @@
 
 <main class="wrap">
   <header>
-    <h1>🐾 心情草原</h1>
+    <h1><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><ellipse class="a" cx="12" cy="15.5" rx="4.6" ry="3.8"/><circle class="a" cx="5.6" cy="10.6" r="2"/><circle class="a" cx="9.2" cy="6.6" r="2"/><circle class="a" cx="14.8" cy="6.6" r="2"/><circle class="a" cx="18.4" cy="10.6" r="2"/></svg> 心情草原</h1>
     <button class="buddy-btn" id="langBtn" data-noi18n>EN</button>
-    <button class="buddy-btn" id="roomBtn">🏠 房間</button>
-    <button class="buddy-btn" id="buddyBtn" title="我的寵物">🐱 寵物</button>
+    <button class="buddy-btn" id="roomBtn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M6 10.5 V19.5 H18 V10.5"/><path d="M3.8 11.6 L12 4.5 L20.2 11.6"/><path d="M10 19.5 V14.5 Q10 13.5 11 13.5 H13 Q14 13.5 14 14.5 V19.5"/></svg> 房間</button>
+    <button class="buddy-btn" id="buddyBtn" title="我的寵物"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M5.2 9.5 L5.8 3.8 L10 7 Q12 6.4 14 7 L18.2 3.8 L18.8 9.5 Q20.4 13.4 18 16.6 Q15.6 19.6 12 19.6 Q8.4 19.6 6 16.6 Q3.6 13.4 5.2 9.5Z"/><circle class="k" cx="9.3" cy="12.2" r="1"/><circle class="k" cx="14.7" cy="12.2" r="1"/><path d="M11 14.6 Q12 15.6 13 14.6" stroke-width="1.3"/></svg> 寵物</button>
     <div class="music">
-      <button id="sfxBtn" aria-pressed="true">🔔 音效開</button>
+      <button id="sfxBtn" aria-pressed="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M6.2 16.5 V11.2 A5.8 5.8 0 0 1 17.8 11.2 V16.5 L19.4 18 H4.6Z"/><path d="M10.2 18.4 A1.9 1.9 0 0 0 13.8 18.4 M12 3.8 V5.4"/></svg> 音效開</button>
       <input type="range" id="sfxVol" min="0" max="1" step="0.05" aria-label="音效音量">
-      <button id="musicBtn" aria-pressed="false">🔇 音樂關</button>
+      <button id="musicBtn" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 17.5 V6.2 L18 4.2 V15.5 M9 9.2 L18 7.2"/><ellipse class="s" cx="6.8" cy="17.6" rx="2.4" ry="2"/><ellipse class="s" cx="15.8" cy="15.6" rx="2.4" ry="2"/><path d="M4 4 L20 20"/></svg> 音樂關</button>
       <input type="range" id="musicVol" min="0" max="1" step="0.05" aria-label="音量" hidden>
     </div>
     <div class="themes" id="themes">顏色
@@ -845,7 +851,7 @@
     <div class="shine a" aria-hidden="true"></div><div class="shine b" aria-hidden="true"></div>
   </div>
   <div class="curtain-btns"><button class="curtain-btn" id="curtainBtn"></button><button class="curtain-btn" id="curtainToggle"></button></div>
-  <button class="home-btn" id="homeBtn">🏠 回家</button>
+  <button class="home-btn" id="homeBtn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M6 10.5 V19.5 H18 V10.5"/><path d="M3.8 11.6 L12 4.5 L20.2 11.6"/><path d="M10 19.5 V14.5 Q10 13.5 11 13.5 H13 Q14 13.5 14 14.5 V19.5"/></svg> 回家</button>
   <div class="sill" aria-hidden="true"><svg class="sill-pot" viewBox="0 0 40 44"><g stroke="#4a3439" stroke-width="2" stroke-linejoin="round">
     <path d="M20 22 C12 20 6 12 9 4 C15 8 18 14 20 22 C20 12 24 6 31 3 C33 11 28 18 20 22" fill="#9fd07f"/>
     <path d="M7 22 H33 L30 42 H10Z" fill="#f4a7bd"/><path d="M7 22 H33 V27 H7Z" fill="#fde3ea"/></g></svg></div>
@@ -853,16 +859,16 @@
 
 
   <div class="toolbar">
-    <button class="tool-btn" id="openRecord" aria-controls="recordDrawer">📝 記錄心情<small id="todayCount"></small></button>
-    <button class="tool-btn" id="openCal" aria-controls="calDrawer">🍃 最近</button>
-    <button class="tool-btn" id="goOut">🚪 出門走走</button>
+    <button class="tool-btn" id="openRecord" aria-controls="recordDrawer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M6.5 3.8 H15.5 Q18 3.8 18 6.3 V20.2 H9 Q6.5 20.2 6.5 17.7Z"/><path d="M9.6 8.4 H15 M9.6 11.6 H15 M9.6 14.8 H12.8"/></svg> 記錄心情<small id="todayCount"></small></button>
+    <button class="tool-btn" id="openCal" aria-controls="calDrawer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M5 19 C5 10.5 10 5 19.2 4.8 C19 13.8 13.5 19 5 19Z"/><path d="M5 19 L13.6 10.4 M9.4 14.6 L9.2 11.4 M11.6 12.4 L14.6 12.6"/></svg> 最近</button>
+    <button class="tool-btn" id="goOut"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M7 20 V5.4 Q7 4.4 8 4.4 H16 Q17 4.4 17 5.4 V20"/><circle class="k" cx="14.4" cy="12.6" r="1"/><path d="M4.2 20 H19.8"/></svg> 出門走走</button>
     <details class="data-bar" id="dataBar">
       <summary aria-label="更多" title="更多">⋯</summary>
       <div class="data-menu">
-        <button id="exportBtn">💾 下載備份檔</button>
-        <button id="importBtn">📂 從備份檔讀取</button>
-        <button id="clearBtn">🧹 清除資料</button>
-        <button id="aboutBtn">🐾 關於心情草原</button>
+        <button id="exportBtn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 14.5 V18.5 Q4.5 19.6 5.6 19.6 H18.4 Q19.5 19.6 19.5 18.5 V14.5 M12 4.2 V14 M8.2 10.4 L12 14.2 L15.8 10.4"/></svg> 下載備份檔</button>
+        <button id="importBtn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M3.8 7 Q3.8 5.6 5.2 5.6 H9.4 L11.4 7.8 H18.8 Q20.2 7.8 20.2 9.2 V17.6 Q20.2 19 18.8 19 H5.2 Q3.8 19 3.8 17.6Z"/><path d="M12 16.4 V10.6 M9.6 13 L12 10.6 L14.4 13"/></svg> 從備份檔讀取</button>
+        <button id="clearBtn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.4 3.6 L12.4 11.8"/><path class="s" d="M9.4 10.6 L14.8 13.6 L12.4 20.2 Q8.2 20.6 4.8 17.6Z"/><path d="M8.4 17.8 L10.4 13.4 M11 19 L12.4 14.6"/></svg> 清除資料</button>
+        <button id="aboutBtn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><ellipse class="a" cx="12" cy="15.5" rx="4.6" ry="3.8"/><circle class="a" cx="5.6" cy="10.6" r="2"/><circle class="a" cx="9.2" cy="6.6" r="2"/><circle class="a" cx="14.8" cy="6.6" r="2"/><circle class="a" cx="18.4" cy="10.6" r="2"/></svg> 關於心情草原</button>
       </div>
       <input type="file" id="importFile" accept=".json,application/json" hidden>
     </details>
@@ -876,7 +882,7 @@
       <div id="picker"></div>
       <div class="acc-preview" id="accPreview" hidden></div>
       <textarea id="text" placeholder="想說點什麼嗎？"></textarea>
-      <button class="save" id="save">記錄下來 🐟</button>
+      <button class="save" id="save">記錄下來 <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M3.2 12 C6 7.2 12 7 15.6 10.8 L19.8 7.8 V16.2 L15.6 13.2 C12 17 6 16.8 3.2 12Z"/><circle class="k" cx="7.6" cy="11.2" r="1"/></svg></button>
       <div class="today" id="today"></div>
     </section>
   </aside>
@@ -924,7 +930,7 @@
   </div>
   <div class="clear-opt danger-box">
     <p class="warn">清除之後就找不回來了，建議先下載一份備份檔。</p>
-    <button class="btn" id="clearBackup">💾 先下載備份檔</button>
+    <button class="btn" id="clearBackup"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 14.5 V18.5 Q4.5 19.6 5.6 19.6 H18.4 Q19.5 19.6 19.5 18.5 V14.5 M12 4.2 V14 M8.2 10.4 L12 14.2 L15.8 10.4"/></svg> 先下載備份檔</button>
     <label class="clear-reset"><input type="checkbox" id="clearReset"> 寵物和設定也一起重設（名字、花色、一起生活的天數、主題色、窗簾、音樂和音效）</label>
     <button class="btn danger" id="clearAll">清除所有心情記錄</button>
   </div>
@@ -1319,7 +1325,7 @@ const EN = {
   "我們回來了，休息一下吧": "We're back, let's rest a bit", "外面的朋友都好可愛喔": "The friends outside are so cute",
   "喵～今天過得怎麼樣？選一隻貓告訴我吧！": "Meow~ How was your day? Pick a cat and tell me!",
   "（今天）": " (today)",
-  "語言": "Language", "更多": "More",
+  "語言": "Language", "記錄下來": "Log it", "更多": "More",
   "「當別人問，今天海上天氣好嗎？妳聽到了，妳聽到，都要回答很晴朗。」": "\"When someone asks you, 'How's the weather out at sea today?' — whenever you hear it, you must answer: 'Clear and sunny.'\"",
   "「即使下這麼大的雨也要這樣回答嗎？」": "\"Even when it's raining this hard?\"", "「是。」": "\"Yes.\"",
   "「即使不想回答也要這樣回答嗎？」": "\"Even when I don't want to answer?\"",
@@ -2140,10 +2146,40 @@ document.addEventListener("pointerdown", e => {
 });
 const reduceMotionPref = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+// ---------- 小圖示：跟家具同一種手繪線條（線條跟著文字顏色、填色跟著主題色）----------
+const ICON = {
+  paw: `<ellipse class="a" cx="12" cy="15.5" rx="4.6" ry="3.8"/><circle class="a" cx="5.6" cy="10.6" r="2"/><circle class="a" cx="9.2" cy="6.6" r="2"/><circle class="a" cx="14.8" cy="6.6" r="2"/><circle class="a" cx="18.4" cy="10.6" r="2"/>`,
+  house: `<path class="s" d="M6 10.5 V19.5 H18 V10.5"/><path d="M3.8 11.6 L12 4.5 L20.2 11.6"/><path d="M10 19.5 V14.5 Q10 13.5 11 13.5 H13 Q14 13.5 14 14.5 V19.5"/>`,
+  cat: `<path class="s" d="M5.2 9.5 L5.8 3.8 L10 7 Q12 6.4 14 7 L18.2 3.8 L18.8 9.5 Q20.4 13.4 18 16.6 Q15.6 19.6 12 19.6 Q8.4 19.6 6 16.6 Q3.6 13.4 5.2 9.5Z"/><circle class="k" cx="9.3" cy="12.2" r="1"/><circle class="k" cx="14.7" cy="12.2" r="1"/><path d="M11 14.6 Q12 15.6 13 14.6" stroke-width="1.3"/>`,
+  bell: `<path class="s" d="M6.2 16.5 V11.2 A5.8 5.8 0 0 1 17.8 11.2 V16.5 L19.4 18 H4.6Z"/><path d="M10.2 18.4 A1.9 1.9 0 0 0 13.8 18.4 M12 3.8 V5.4"/>`,
+  belloff: `<path class="s" d="M6.2 16.5 V11.2 A5.8 5.8 0 0 1 17.8 11.2 V16.5 L19.4 18 H4.6Z"/><path d="M10.2 18.4 A1.9 1.9 0 0 0 13.8 18.4 M12 3.8 V5.4 M4 4 L20 20"/>`,
+  note: `<path d="M9 17.5 V6.2 L18 4.2 V15.5 M9 9.2 L18 7.2"/><ellipse class="s" cx="6.8" cy="17.6" rx="2.4" ry="2"/><ellipse class="s" cx="15.8" cy="15.6" rx="2.4" ry="2"/>`,
+  noteoff: `<path d="M9 17.5 V6.2 L18 4.2 V15.5 M9 9.2 L18 7.2"/><ellipse class="s" cx="6.8" cy="17.6" rx="2.4" ry="2"/><ellipse class="s" cx="15.8" cy="15.6" rx="2.4" ry="2"/><path d="M4 4 L20 20"/>`,
+  note2: `<path class="s" d="M6.5 3.8 H15.5 Q18 3.8 18 6.3 V20.2 H9 Q6.5 20.2 6.5 17.7Z"/><path d="M9.6 8.4 H15 M9.6 11.6 H15 M9.6 14.8 H12.8"/>`,
+  leaf: `<path class="s" d="M5 19 C5 10.5 10 5 19.2 4.8 C19 13.8 13.5 19 5 19Z"/><path d="M5 19 L13.6 10.4 M9.4 14.6 L9.2 11.4 M11.6 12.4 L14.6 12.6"/>`,
+  door: `<path class="s" d="M7 20 V5.4 Q7 4.4 8 4.4 H16 Q17 4.4 17 5.4 V20"/><circle class="k" cx="14.4" cy="12.6" r="1"/><path d="M4.2 20 H19.8"/>`,
+  download: `<path d="M4.5 14.5 V18.5 Q4.5 19.6 5.6 19.6 H18.4 Q19.5 19.6 19.5 18.5 V14.5 M12 4.2 V14 M8.2 10.4 L12 14.2 L15.8 10.4"/>`,
+  folder: `<path class="s" d="M3.8 7 Q3.8 5.6 5.2 5.6 H9.4 L11.4 7.8 H18.8 Q20.2 7.8 20.2 9.2 V17.6 Q20.2 19 18.8 19 H5.2 Q3.8 19 3.8 17.6Z"/><path d="M12 16.4 V10.6 M9.6 13 L12 10.6 L14.4 13"/>`,
+  broom: `<path d="M17.4 3.6 L12.4 11.8"/><path class="s" d="M9.4 10.6 L14.8 13.6 L12.4 20.2 Q8.2 20.6 4.8 17.6Z"/><path d="M8.4 17.8 L10.4 13.4 M11 19 L12.4 14.6"/>`,
+  fish: `<path class="s" d="M3.2 12 C6 7.2 12 7 15.6 10.8 L19.8 7.8 V16.2 L15.6 13.2 C12 17 6 16.8 3.2 12Z"/><circle class="k" cx="7.6" cy="11.2" r="1"/>`,
+  palette: `<path class="s" d="M12 3.6 C7 3.6 3.6 7.2 3.6 11.6 C3.6 16.2 7.2 20.2 11.2 20.2 C13.2 20.2 13.2 18.6 12.6 17.6 C12 16.4 12.8 15 14.4 15 H17 C19 15 20.4 13.6 20.4 11.6 C20.4 7.2 16.6 3.6 12 3.6Z"/><circle class="a" cx="8" cy="10.4" r="1.3"/><circle class="a" cx="11.6" cy="7.4" r="1.3"/><circle class="a" cx="15.6" cy="8.6" r="1.3"/>`,
+  ask: `<path class="s" d="M12 3.8 C16.8 3.8 20.2 7 20.2 11 C20.2 15 16.8 18.2 12 18.2 C11 18.2 10.2 18 9.4 17.8 L5.4 20 L6.4 16.4 C4.8 15 3.8 13.2 3.8 11 C3.8 7 7.2 3.8 12 3.8Z"/><path d="M9.8 9.4 A2.3 2.3 0 1 1 13.2 11.4 C12.5 11.8 12 12.3 12 13.2"/><circle class="k" cx="12" cy="15.4" r=".9"/>`,
+  dice: `<rect class="s" x="4.4" y="4.4" width="15.2" height="15.2" rx="3.4"/><circle class="k" cx="8.6" cy="8.6" r="1.1"/><circle class="k" cx="12" cy="12" r="1.1"/><circle class="k" cx="15.4" cy="15.4" r="1.1"/>`,
+  window: `<rect class="s" x="4.4" y="4.4" width="15.2" height="15.2" rx="1.6"/><path d="M12 4.4 V19.6 M4.4 12 H19.6"/>`,
+  flower: `<circle class="s" cx="12" cy="6.6" r="3"/><circle class="s" cx="17.2" cy="10.4" r="3"/><circle class="s" cx="15.2" cy="16.4" r="3"/><circle class="s" cx="8.8" cy="16.4" r="3"/><circle class="s" cx="6.8" cy="10.4" r="3"/><circle class="a" cx="12" cy="12" r="2.4"/>`,
+  cup: `<path class="s" d="M5 9.6 H16 V14.2 A5 5 0 0 1 11 19.2 H10 A5 5 0 0 1 5 14.2Z"/><path d="M16 10.8 H17.4 A2.4 2.4 0 0 1 17.4 15.6 H15.8 M8.8 6.6 Q7.8 5.2 8.8 3.8 M12.4 6.6 Q11.4 5.2 12.4 3.8"/>`,
+};
+const icon = name => `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${ICON[name]}</svg>`;
+// 按鈕：小圖示＋文字（文字用 textNode 放，名字可能是使用者取的）
+function iconLabel(el, name, text, after = false) {
+  el.innerHTML = icon(name);
+  const t = document.createTextNode(after ? text + " " : " " + text);
+  after ? el.prepend(t) : el.append(t);
+}
 // ---------- 房間主題 ----------
 const ROOMS = {
-  cozy:    { icon: "🌸", name: "粉色小屋", desc: "跟著顏色主題變化" },
-  cafe:    { icon: "☕", name: "貓咪咖啡廳", desc: "黑板菜單、貓跳台" },
+  cozy:    { icon: "flower", name: "粉色小屋", desc: "跟著顏色主題變化" },
+  cafe:    { icon: "cup", name: "貓咪咖啡廳", desc: "黑板菜單、貓跳台" },
 };
 function applyRoom(r) {
   if (!ROOMS[r]) r = "cozy";
@@ -2155,7 +2191,7 @@ function applyRoom(r) {
 }
 (function () {
   const list = document.getElementById("roomList");
-  list.innerHTML = Object.entries(ROOMS).map(([k, v]) => `<button data-r="${k}"><span>${v.icon}</span>${v.name}<small>${v.desc}</small></button>`).join("");
+  list.innerHTML = Object.entries(ROOMS).map(([k, v]) => `<button data-r="${k}"><span>${icon(v.icon)}</span>${v.name}<small>${v.desc}</small></button>`).join("");
   list.querySelectorAll("button").forEach(b => b.onclick = () => applyRoom(b.dataset.r));
   document.getElementById("roomBtn").onclick = () => document.getElementById("roomDlg").showModal?.();
   document.querySelector("[data-close-room]").onclick = () => document.getElementById("roomDlg").close();
@@ -2305,7 +2341,12 @@ for (let i = 0; i < 12; i++) addDeco(flower(flowerColors[i % 5]), rand() * 95, r
 
 // ---------- 草原上的貓咪 ----------
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-let CAT_W = 100, Y_MIN = 2, Y_MAX = 72, MS = 1;   // MS：草原的縮放倍數（以 290px 高為 1 倍）
+let CAT_W = 100, Y_MIN = 2, Y_MAX = 72, MS = 1;
+const ROAM = .3;   // 草原比窗戶寬：左右各多出窗戶寬度的 30%，不會隨時看到所有的貓
+// 出門走走時，自己的寵物一直留在看得到的地方
+const roamRange = (c) => { const W = meadow.clientWidth, r = c?.entry?.pet ? 0 : ROAM; return [-W * r, W - CAT_W + W * r]; };
+const randX = (c) => { const [lo, hi] = roamRange(c); return lo + Math.random() * (hi - lo); };
+const inView = c => c.x + CAT_W * .7 > 0 && c.x + CAT_W * .3 < meadow.clientWidth;   // MS：草原的縮放倍數（以 290px 高為 1 倍）
 function sizeMeadow() {
   const h = meadow.clientHeight || 290;
   MS = Math.min(h / 290, 2.2, Math.max(1, meadow.clientWidth / 330));   // 全螢幕時不要大得太誇張，窄螢幕再小一點
@@ -2357,7 +2398,7 @@ function makeCat(key, entry, enter) {
   meadow.appendChild(el);
   const W = meadow.clientWidth || 800;
   const c = { key, entry, el, dir: 1, mode: "sit", timer: 1 + Math.random() * 3, partner: null, ...P,
-    x: enter ? -CAT_W : Math.random() * (W - CAT_W), y: Y_MIN + Math.random() * (Y_MAX - Y_MIN), tx: 0, ty: 0 };
+    x: enter ? -CAT_W : randX(), y: Y_MIN + Math.random() * (Y_MAX - Y_MIN), tx: 0, ty: 0 };
   el.onclick = () => {
     const date = key.slice(0, 10), [, mo, d] = date.split("-");
     const who = (date === TODAY ? tr("今天") : `${+mo}/${+d}`) + (entry.t ? " " + entry.t : "");
@@ -2405,7 +2446,7 @@ function setMode(c, mode) {
   look(c, mode);
   const W = meadow.clientWidth;
   if (mode === "walk") {
-    c.tx = Math.random() * (W - CAT_W);
+    c.tx = randX(c);
     c.ty = Y_MIN + Math.random() * (Y_MAX - Y_MIN);
     c.timer = 12;
     // 大約五次有一次，直接走出畫面，等一下從另一邊走回來（草原比畫面大）
@@ -2530,7 +2571,8 @@ function pairUp(a, b, act) {
 function flee(b, pace) {
   const W = meadow.clientWidth;
   b.mode = "flee"; b.pace = pace; look(b, "walk");
-  b.tx = b.x < W / 2 ? W * (.5 + Math.random() * .4) : W * (.05 + Math.random() * .35);
+  const [lo, hi] = roamRange();
+  b.tx = b.x < W / 2 ? W * .5 + Math.random() * (hi - W * .5) : lo + Math.random() * (W * .5 - lo);
   b.ty = Y_MIN + Math.random() * (Y_MAX - Y_MIN);
 }
 
@@ -2696,7 +2738,7 @@ const DOING_FACE = { cuddle: "calm", wrestle: "happy", chase: "happy", flee: "ha
   hide: "anxious", cower: "anxious", pace: "anxious", spin: "happy", alone: "sad", edge: "sad" };
 const pick = list => list[Math.floor(Math.random() * list.length)];
 function chatter() {
-  const here = cats.filter(c => !c.wrap);
+  const here = cats.filter(c => !c.wrap && inView(c));
   if (sayCat || !here.length) return;
   const c = pick(here);
   if (c.entry.pet) return;   // 寵物說的話由寵物自己決定
@@ -2756,8 +2798,8 @@ function stepTo(c, tx, ty, speed, dt) {
   c.v = speed;
   // 目的地限制在畫面內（走出畫面的散步除外），走到邊邊就算到了，不會在邊界原地踏步
   if (!c.wrap) {
-    const W = meadow.clientWidth, bodyW = CAT_W * scaleOf(c.y);
-    tx = Math.min(Math.max(tx, -(CAT_W - bodyW) / 2), W - CAT_W + (CAT_W - bodyW) / 2);
+    const [lo, hi] = roamRange(c);
+    tx = Math.min(Math.max(tx, lo), hi);
     ty = Math.min(Math.max(ty, Y_MIN), Y_MAX);
   }
   const dx = tx - c.x, dy = ty - c.y, dist = Math.hypot(dx, dy), step = speed * dt;
@@ -2850,13 +2892,12 @@ function tick(now) {
       else if (c.mode === "bat" && --c.bats > 0) { c.mode = "toball"; look(c, "walk"); c.timer = 20; }
       else pickMode(c);
     }
-    const bodyW = CAT_W * scaleOf(c.y);   // 貓是以腳底中間為準縮放的，左右各縮掉一點
-    const lo = -(CAT_W - bodyW) / 2, hi = W - CAT_W + (CAT_W - bodyW) / 2;
+    const [lo, hi] = roamRange(c);   // 草原比窗戶寬，兩邊看不到的地方也可以走
     if (c.wrap && c.mode !== "walk") c.wrap = null;            // 被叫去做別的事了
     if (c.wrap === "in" && c.x >= lo && c.x <= hi) c.wrap = null;   // 已經走進畫面
     if (!c.wrap) {
       c.x = Math.min(Math.max(c.x, lo), hi);
-      if (c.tx < lo || c.tx > hi) c.tx = Math.min(Math.max(c.tx, 0), W - CAT_W);
+      if (c.tx < lo || c.tx > hi) c.tx = Math.min(Math.max(c.tx, lo), hi);
     }
     if (c.v) { syncStep(c.el, c.v, CAT_W * scaleOf(c.y)); c.v = 0; }
     draw(c);
@@ -2984,7 +3025,8 @@ function emotionPicker(root, opts = {}) {
     root.append(quads);
 
     const sp = el("div", "specials");
-    const mixed = el("button", "special" + (st.multi ? " on" : ""), `🎨 ${SPECIAL.mixed?.name || "混合情緒"}`);
+    const mixed = el("button", "special" + (st.multi ? " on" : ""));
+    iconLabel(mixed, "palette", SPECIAL.mixed?.name || "混合情緒");
     mixed.title = SPECIAL.mixed?.desc || "";
     mixed.setAttribute("aria-pressed", st.multi);
     mixed.onclick = () => {
@@ -2992,7 +3034,8 @@ function emotionPicker(root, opts = {}) {
       if (!st.multi && st.sel.length > 1) st.sel = st.sel.slice(-1);
       render(); changed();
     };
-    const unsure = el("button", "special" + (st.unsure ? " on" : ""), `❔ ${EMO.unsure.name}`);
+    const unsure = el("button", "special" + (st.unsure ? " on" : ""));
+    iconLabel(unsure, "ask", EMO.unsure.name);
     unsure.title = EMO.unsure.desc;
     unsure.setAttribute("aria-pressed", st.unsure);
     unsure.onclick = () => {
@@ -3074,7 +3117,7 @@ function showAccPreview() {
   box.hidden = !pickedEmo.length;
   if (!pickedEmo.length) return;
   const acc = { id: pickedEmo[0], hue: pendingHue };
-  box.innerHTML = `${headSVG(picked, emoCoat(pickedEmo[0]), acc)}<span>這次的配件：<b></b></span><button class="special" id="rerollHue">🎲 換個顏色</button>`;
+  box.innerHTML = `${headSVG(picked, emoCoat(pickedEmo[0]), acc)}<span>這次的配件：<b></b></span><button class="special" id="rerollHue">${icon("dice")} 換個顏色</button>`;
   box.querySelector("b").textContent = accName(acc.id);
   $("rerollHue").onclick = () => { pendingHue = randHue(); showAccPreview(); drawBuddy(); meow(1.15, .5, .6); };
 }
@@ -3180,7 +3223,7 @@ function renderCurtains() {
   const win = document.querySelector(".big-window");
   win.dataset.curtain = curtainStyle;
   $("curtains").innerHTML = curtainHTML();
-  $("curtainBtn").textContent = `🪟 ${CURTAINS[curtainStyle]}`;
+  iconLabel($("curtainBtn"), "window", CURTAINS[curtainStyle]);
   $("curtainBtn").title = "換一種窗簾";
   $("curtainToggle").textContent = curtainShut > .5 ? "拉開窗簾" : "拉上窗簾";
   $("curtains").querySelectorAll("svg").forEach(bindCurtainDrag);
@@ -3283,7 +3326,7 @@ function envLine() {
 // 天氣一變：有一隻貓先說說看，下雨的話大家趴低、窩起來
 function reactWeather() {
   setTimeout(() => {
-    const free = cats.filter(c => !c.entry.pet && isFree(c) && c.mode !== "sleep");
+    const free = cats.filter(c => !c.entry.pet && isFree(c) && c.mode !== "sleep" && inView(c));
     if (!free.length) return;
     const c = pick(free), k = weatherKind;
     say(c, pick(WEATHER_TALK[k]), 3, WEATHER_FACE[k]);
@@ -3344,7 +3387,7 @@ function updateWeather() {
 setInterval(() => {
   if (lastWeather !== "thunder" || reduceMotion || Math.random() < .5) return;
   const m = $("meadow"); m.classList.remove("flash"); void m.offsetWidth; m.classList.add("flash");
-  const awake = cats.filter(c => !c.entry.pet && c.el.className.indexOf("sleep") < 0);
+  const awake = cats.filter(c => !c.entry.pet && c.el.className.indexOf("sleep") < 0 && inView(c));
   if (awake.length && !sayCat && Math.random() < .5) { const c = pick(awake); say(c, pick(WEATHER_TALK.thunder), 2.5, "anxious"); if (isFree(c)) setMode(c, "hop"); }
   setTimeout(() => m.classList.remove("flash"), 600);
 }, 6000);
@@ -3771,7 +3814,7 @@ function renderCoats() {
   }
 }
 function updateBuddyBtn() {
-  $("buddyBtn").textContent = `🐱 ${buddyName()}`;
+  iconLabel($("buddyBtn"), "cat", buddyName());
   $("petDays").textContent = `和${buddyName()}一起生活的第 ${petDays()} 天 🐾`;
 }
 $("buddyName").oninput = e => { buddy.name = e.target.value.trim(); saveBuddy(); updateBuddyBtn(); };
@@ -4128,7 +4171,7 @@ function purr(secs = 1.6) {
 function setSfx(on) {
   sfx.on = on;
   $("sfxVol").hidden = !on;
-  $("sfxBtn").textContent = on ? "🔔 音效開" : "🔕 音效關";
+  iconLabel($("sfxBtn"), on ? "bell" : "belloff", on ? "音效開" : "音效關");
   $("sfxBtn").setAttribute("aria-pressed", on);
   try { localStorage.setItem("meow-sfx", JSON.stringify(on)); } catch (e) {}
   if (on) meow(1, .8, .8);
@@ -4142,7 +4185,7 @@ $("sfxVol").oninput = e => {
   try { localStorage.setItem("meow-sfx-vol", sfx.vol); } catch (e) {}
 };
 $("sfxVol").onchange = () => meow(1, .7);   // 放開時喵一聲，聽聽看大小
-$("sfxBtn").textContent = sfx.on ? "🔔 音效開" : "🔕 音效關";
+iconLabel($("sfxBtn"), sfx.on ? "bell" : "belloff", sfx.on ? "音效開" : "音效關");
 $("sfxBtn").setAttribute("aria-pressed", sfx.on);
 
 // ---------- 背景音樂：用瀏覽器即時彈奏的音樂盒 ----------
@@ -4235,7 +4278,7 @@ function setMusic(on) {
   music.on = on;
   on ? startMusic() : stopMusic();
   $("musicBtn").setAttribute("aria-pressed", on);
-  $("musicBtn").textContent = on ? "🎵 音樂開" : "🔇 音樂關";
+  iconLabel($("musicBtn"), on ? "note" : "noteoff", on ? "音樂開" : "音樂關");
   $("musicVol").hidden = !on;
   saveMusic();
 }
@@ -4247,7 +4290,7 @@ $("musicVol").oninput = e => {
   saveMusic();
 };
 // 瀏覽器規定要先點過網頁才能出聲：上次有開音樂的話，點一下任何地方就會繼續播
-$("musicBtn").textContent = music.on ? "🎵 音樂開" : "🔇 音樂關";
+iconLabel($("musicBtn"), music.on ? "note" : "noteoff", music.on ? "音樂開" : "音樂關");
 $("musicBtn").setAttribute("aria-pressed", music.on);
 $("musicVol").hidden = !music.on;
 if (music.on) document.addEventListener("pointerdown", () => { if (music.on) startMusic(); }, { once: true });
