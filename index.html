@@ -2251,10 +2251,12 @@ function addDeco(html, left, bottom, w) {
 });
 // 三片尖尖葉子的草叢（實心），fill 是顏色、tilt 讓每叢草歪的方向不太一樣
 // 插畫風草叢：每片葉子左半邊深一點、右半邊淺一點，再加一道亮光
-const grass = (fill, tilt = 0) => `<svg viewBox="0 0 30 24" style="transform:rotate(${tilt}deg)"><path d="M3 24 Q6 13 4 4 Q10 13 11.5 24Z M10 24 Q13.5 9 15 0 Q18 10 20 24Z M18.5 24 Q22 13 26.5 5 Q25 15 27 24Z"
-  fill="${fill}"/>
+// 草叢：葉尖磨圓一點（同色的圓角描邊）；dew = 葉子上掛一顆圓圓的小露珠
+const grass = (fill, tilt = 0, dew = false) => `<svg viewBox="0 0 30 24" overflow="visible" style="transform:rotate(${tilt}deg)"><path d="M3 24 Q6 13 4 4 Q10 13 11.5 24Z M10 24 Q13.5 9 15 0 Q18 10 20 24Z M18.5 24 Q22 13 26.5 5 Q25 15 27 24Z"
+  fill="${fill}" stroke="${fill}" stroke-width="1.6" stroke-linejoin="round"/>
   <path d="M3 24 Q6 13 4 4 Q6.6 14 7.6 24Z M10 24 Q13.5 9 15 0 Q14.4 12 15 24Z M18.5 24 Q22 13 26.5 5 Q22.6 15 22.6 24Z" fill="#000" fill-opacity=".1"/>
-  <path d="M15.6 5 Q16.6 12 16.8 19 M5.4 9 Q7.6 15 8.6 21" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1" stroke-linecap="round"/></svg>`;
+  <path d="M15.6 5 Q16.6 12 16.8 19 M5.4 9 Q7.6 15 8.6 21" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1" stroke-linecap="round"/>
+  ${dew ? `<ellipse cx="14.6" cy="6.6" rx="1.4" ry="1.7" fill="#f4fbff" opacity=".55"/><circle cx="14.3" cy="6.1" r=".45" fill="#fff" opacity=".7"/>` : ""}</svg>`;
 // 算出草地分界線在某個水平位置的高度（照背景 SVG 裡的曲線，M → Q → T… 的寫法）
 function curveY(d) {
   const nums = d.match(/-?[\d.]+/g).map(Number), pts = [];
@@ -2311,10 +2313,10 @@ for (let x = 4 + rand() * 8; x < 100; x += 16 + rand() * 12) {   // 中間山丘
   t.innerHTML = grass("#9fc887", rand() * 16 - 8);
   farTufts.appendChild(t);
 }
-for (let x = 2 + rand() * 10; x < 100; x += 15 + rand() * 12) addDeco(grass("#7fb164", rand() * 16 - 8), x, (nearEdge(x) - 2.4) * 2.9, 17 + rand() * 6);    // 近處草地的邊緣
-for (let i = 0; i < 4; i++) addDeco(grass("#729f58", rand() * 16 - 8), rand() * 97, (5 + rand() * 22) * 2.9, 20 + rand() * 7);   // 散在草地上
-for (let x = 6 + rand() * 10; x < 100; x += 20 + rand() * 14) addDeco(grass("#5f9448", rand() * 14 - 7), x, (frontEdge(x) - 3.2) * 2.9, 24 + rand() * 6);   // 最前面那條草地的邊緣
-for (let x = 3 + rand() * 12; x < 100; x += 24 + rand() * 16) addDeco(grass("#54893f", rand() * 12 - 6), x, -6, 30 + rand() * 8);   // 最底下、最靠近你的一排
+for (let x = 2 + rand() * 10; x < 100; x += 15 + rand() * 12) addDeco(grass("#7fb164", rand() * 16 - 8, rand() < .25), x, (nearEdge(x) - 2.4) * 2.9, 17 + rand() * 6);    // 近處草地的邊緣
+for (let i = 0; i < 4; i++) addDeco(grass("#729f58", rand() * 16 - 8, rand() < .25), rand() * 97, (5 + rand() * 22) * 2.9, 20 + rand() * 7);   // 散在草地上
+for (let x = 6 + rand() * 10; x < 100; x += 20 + rand() * 14) addDeco(grass("#5f9448", rand() * 14 - 7, rand() < .25), x, (frontEdge(x) - 3.2) * 2.9, 24 + rand() * 6);   // 最前面那條草地的邊緣
+for (let x = 3 + rand() * 12; x < 100; x += 24 + rand() * 16) addDeco(grass("#54893f", rand() * 12 - 6, rand() < .25), x, -6, 30 + rand() * 8);   // 最底下、最靠近你的一排
 const flowerColors = ["#f7a8c0", "#ffffff", "#d7c2f2", "#f7a8c0", "#ffc2d4"];
 for (let i = 0; i < 12; i++) addDeco(flower(flowerColors[i % 5]), rand() * 95, rand() * 90, 16 + rand() * 6);
 [0, -30, -58].forEach((delay, i) => {
