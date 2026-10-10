@@ -14,33 +14,34 @@ No install, no sign-up — just open the page. Everything stays in your own brow
 
 > The screenshots show the Chinese interface; everything is also available in English.
 
-## Why
+## Excerpt
 
-Mood Meadow tries to make noticing and naming your feelings a little easier and a little cuter: take a few seconds each day to tell a cat how you feel.
+> 「當別人問，今天海上天氣好嗎？妳聽到了，妳聽到，都要回答很晴朗。」
+> 「即使下這麼大的雨也要這樣回答嗎？」
+> 「是。」
+> 「即使不想回答也要這樣回答嗎？」
+> 「是。」
+>
+> — Wu Ming-Yi, *The Man with the Compound Eyes* (《複眼人》)
 
-Practicing recognizing and writing down feelings has some research-backed benefits:
-
-- **Naming a feeling softens it**: putting feelings into words is itself a way of regulating them (Lieberman et al., 2007)
-- **Finer words, better coping**: people who can tell subtle feelings apart find it easier to cope with unpleasant emotions (Kashdan, Barrett & McKnight, 2015). Mood Meadow has 47 feeling words to help you tell your feelings apart
-- **Writing it down helps**: writing about emotional experiences has positive effects on physical and mental health (Pennebaker, 1997)
-
-The four areas sort feelings by how pleasant they are (valence) and how much energy they carry (arousal), based on the circumplex model of affect (Russell, 1980).
+> "When someone asks you, 'How's the weather out at sea today?' — whenever you hear it, you must answer: 'Clear and sunny.'"
+> "Even when it's raining this hard?"
+> "Yes."
+> "Even when I don't want to answer?"
+> "Yes."
+>
+> (our translation)
 
 > Mood Meadow is a small practice tool and can't replace professional help. If you often feel you can't cope, or have thoughts of hurting yourself, please talk to someone you trust or contact a local helpline. In Taiwan:
 > - **Taiwan Mental Health Hotline 1925** (24 hours, free)
 > - **Lifeline 1995**
 > - **Teacher Chang 1980**
 
-### References
-- Lieberman, M. D., Eisenberger, N. I., Crockett, M. J., Tom, S. M., Pfeifer, J. H., & Way, B. M. (2007). Putting feelings into words: Affect labeling disrupts amygdala activity in response to affective stimuli. *Psychological Science, 18*(5), 421–428.
-- Kashdan, T. B., Barrett, L. F., & McKnight, P. E. (2015). Unpacking emotion differentiation: Transforming unpleasant experience by perceiving distinctions in negativity. *Current Directions in Psychological Science, 24*(1), 10–16.
-- Pennebaker, J. W. (1997). Writing about emotional experiences as a therapeutic process. *Psychological Science, 8*(3), 162–166.
-- Russell, J. A. (1980). A circumplex model of affect. *Journal of Personality and Social Psychology, 39*(6), 1161–1178.
-
 ## Features
 
 ### Log your mood
 - Pick one of four areas (energy × pleasantness), then the closest of 47 feeling words — each comes with a short description
+- The four areas sort feelings by pleasantness (valence) and energy (arousal), based on the circumplex model of affect (Russell, 1980)
 - Choose "Mixed" to pick several words; if you're "Not sure", you can log how your body feels and what it's about instead
 - Log as many times a day as you like, and edit, delete, or add entries for any of the last 7 days
 
@@ -146,6 +147,19 @@ So the page works as a single file, `index.html` contains an identical copy (ins
 ├── LICENSE        # MIT license
 └── docs/          # screenshots for the README
 ```
+
+## References
+
+Research that informed the design:
+
+- Putting feelings into words is itself a way of regulating them (Lieberman et al., 2007)
+- People who can tell subtle feelings apart cope better with unpleasant emotions (Kashdan, Barrett & McKnight, 2015)
+- Writing about emotional experiences has positive effects on physical and mental health (Pennebaker, 1997)
+
+- Lieberman, M. D., Eisenberger, N. I., Crockett, M. J., Tom, S. M., Pfeifer, J. H., & Way, B. M. (2007). Putting feelings into words: Affect labeling disrupts amygdala activity in response to affective stimuli. *Psychological Science, 18*(5), 421–428.
+- Kashdan, T. B., Barrett, L. F., & McKnight, P. E. (2015). Unpacking emotion differentiation: Transforming unpleasant experience by perceiving distinctions in negativity. *Current Directions in Psychological Science, 24*(1), 10–16.
+- Pennebaker, J. W. (1997). Writing about emotional experiences as a therapeutic process. *Psychological Science, 8*(3), 162–166.
+- Russell, J. A. (1980). A circumplex model of affect. *Journal of Personality and Social Psychology, 39*(6), 1161–1178.
 
 ## Credits
 

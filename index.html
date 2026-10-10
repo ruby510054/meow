@@ -580,6 +580,9 @@
   .about-dlg h3 { font-size: 16px; margin: 14px 0 4px; }
   .about-dlg ul { margin: 0; padding-left: 1.2em; }
   .about-dlg li { margin-bottom: 4px; }
+  .about-quote { margin: 4px 0 16px; padding: 4px 0 4px 16px; border-left: 3px solid var(--accent); color: var(--ink); }
+  .about-quote p { margin: 0 0 2px; }
+  .about-quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 13px; color: var(--muted); }
   .about-help { background: var(--accent-soft); border: 1.5px dashed var(--line); border-radius: var(--wobble2); padding: 10px 14px; font-size: 14px; }
   .clear-dlg { font-size: 15px; line-height: 1.6; }
   .clear-opt { border: 1.5px dashed color-mix(in srgb, var(--ink) 30%, transparent); border-radius: var(--wobble2); padding: 10px 14px; margin: 10px 0; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
@@ -774,7 +777,7 @@
 
 <main class="wrap">
   <header>
-    <h1>🐾 心情草原 <small>今天的心情是哪隻貓？</small></h1>
+    <h1>🐾 心情草原 <small>今天心情如何？</small></h1>
     <button class="buddy-btn" id="langBtn" data-noi18n>EN</button>
     <button class="buddy-btn" id="roomBtn">🏠 房間</button>
     <button class="buddy-btn" id="buddyBtn" title="我的寵物">🐱 寵物</button>
@@ -887,14 +890,16 @@
 
 <dialog class="card day-dlg about-dlg" id="aboutDlg" aria-labelledby="aboutTitle">
   <div class="dlg-head"><h2 id="aboutTitle">關於心情草原</h2><button class="dlg-x" data-close-about aria-label="關閉">×</button></div>
-  <p>每天花幾秒鐘，跟貓咪說說現在的感覺。</p>
-  <ul>
-    <li>說出來，情緒會緩和一點</li>
-    <li>分得越細，越能好好面對</li>
-    <li>情緒會隨著時間變淡，記錄也只留七天</li>
-  </ul>
+  <blockquote class="about-quote">
+    <p>「當別人問，今天海上天氣好嗎？妳聽到了，妳聽到，都要回答很晴朗。」</p>
+    <p>「即使下這麼大的雨也要這樣回答嗎？」</p>
+    <p>「是。」</p>
+    <p>「即使不想回答也要這樣回答嗎？」</p>
+    <p>「是。」</p>
+    <cite>——吳明益《複眼人》</cite>
+  </blockquote>
   <p class="about-help">心情草原是陪你練習的小工具，不能取代專業的協助。如果最近常常覺得撐不住，或是有傷害自己的念頭，請找信任的人聊聊，或撥打<br><b>安心專線 1925</b>（24 小時，免付費）、<b>生命線 1995</b>、<b>張老師 1980</b>。</p>
-  <p class="dlg-empty">研究出處和更多說明，請看 <a href="https://github.com/ruby510054/meow#為什麼做這個" target="_blank" rel="noopener">GitHub 上的介紹</a>。<br>喵叫聲錄音來自 Wikimedia Commons：Tsester、freemaster2（CC0）、PantheraLeo1359531（<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>），已剪輯並調高音調</p>
+  <p class="dlg-empty">更多說明，請看 <a href="https://github.com/ruby510054/meow" target="_blank" rel="noopener">GitHub 上的介紹</a>。<br>喵叫聲錄音來自 Wikimedia Commons：Tsester、freemaster2（CC0）、PantheraLeo1359531（<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>），已剪輯並調高音調</p>
 </dialog>
 
 <dialog class="card day-dlg clear-dlg" id="clearDlg" aria-labelledby="clearTitle">
@@ -1122,7 +1127,7 @@ const MEOW_CLIPS = [
 // 情緒詞的英文直接用 mood.json 裡的 label.en；你自己寫的心情內容不會被翻譯。
 const EN = {
   // 標題、按鈕
-  "心情草原 Mood Meadow": "Mood Meadow", "心情草原": "Mood Meadow", "今天的心情是哪隻貓？": "Which cat is your mood today?",
+  "心情草原 Mood Meadow": "Mood Meadow", "心情草原": "Mood Meadow", "今天心情如何？": "How are you today?",
   "房間": "Room", "我的寵物": "My pet", "寵物": "Pet", "音效開": "Sound on", "音效關": "Sound off", "音效音量": "Sound volume",
   "音樂開": "Music on", "音樂關": "Music off", "音量": "Volume", "顏色": "Color",
   "櫻花粉": "Sakura", "蜜桃": "Peach", "薰衣草": "Lavender", "薄荷": "Mint", "天空": "Sky", "檸檬": "Lemon", "莓果": "Berry", "可可": "Cocoa",
@@ -1151,7 +1156,7 @@ const EN = {
   "情緒會隨著時間變淡": "Feelings fade with time", "：所以記錄只留七天，草原上的貓咪身影也會慢慢變淡": ": so entries only stay for 7 days, and the cats in the meadow slowly fade too",
   "心情草原是陪你練習的小工具，不能取代專業的協助。如果最近常常覺得撐不住，或是有傷害自己的念頭，請找信任的人聊聊，或撥打": "Mood Meadow is a small practice tool and can't replace professional help. If you often feel you can't cope, or have thoughts of hurting yourself, please talk to someone you trust, or call ",
   "安心專線 1925": "Taiwan Mental Health Hotline 1925", "（24 小時，免付費）、": " (24 hours, free), ", "GitHub 上的介紹": "the GitHub page", "生命線 1995": "Lifeline 1995", "張老師 1980": "Teacher Chang 1980",
-  "研究出處和更多說明，請看": "For sources and more details, see ",
+  "更多說明，請看": "For more details, see ",
   // 清除
   "只清除示範資料": "Only clear the demo entries", "你自己記的心情會留著": "Your own entries will stay",
   "清除之後就找不回來了，建議先下載一份備份檔。": "This can't be undone. Download a backup first.", "先下載備份檔": "Download a backup first",
@@ -1301,7 +1306,11 @@ const EN = {
   "我們回來了，休息一下吧": "We're back, let's rest a bit", "外面的朋友都好可愛喔": "The friends outside are so cute",
   "喵～今天過得怎麼樣？選一隻貓告訴我吧！": "Meow~ How was your day? Pick a cat and tell me!",
   "（今天）": " (today)",
-  "語言": "Language", "這七天": "These 7 days", "選一個最接近的感覺": "Pick the closest feeling", "想說點什麼嗎？": "Anything to say?",
+  "語言": "Language",
+  "「當別人問，今天海上天氣好嗎？妳聽到了，妳聽到，都要回答很晴朗。」": "\"When someone asks you, 'How's the weather out at sea today?' — whenever you hear it, you must answer: 'Clear and sunny.'\"",
+  "「即使下這麼大的雨也要這樣回答嗎？」": "\"Even when it's raining this hard?\"", "「是。」": "\"Yes.\"",
+  "「即使不想回答也要這樣回答嗎？」": "\"Even when I don't want to answer?\"",
+  "——吳明益《複眼人》": "— Wu Ming-Yi, The Man with the Compound Eyes (our translation)", "這七天": "These 7 days", "選一個最接近的感覺": "Pick the closest feeling", "想說點什麼嗎？": "Anything to say?",
   "發生了什麼事？": "What happened?", "可以選好幾個": "Pick as many as you like", "點一個最接近的詞": "Click the closest word", "先選一個區塊": "Pick an area first",
   "記好了！看看草原～": "Got it! Look at the meadow~", "記錄只留在這個瀏覽器，七天後就會淡去": "Entries stay only in this browser and fade after 7 days",
   "每天花幾秒鐘，跟貓咪說說現在的感覺。": "Take a few seconds each day to tell a cat how you feel.", "說出來，情緒會緩和一點": "Naming a feeling softens it",

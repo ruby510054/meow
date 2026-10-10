@@ -12,33 +12,26 @@
 
 ![心情草原主畫面：窗外的草原、房間和寵物](docs/main.png)
 
-## 為什麼做這個
+## 節錄
 
-心情草原想讓「覺察和說出自己的情緒」這件事變得輕鬆一點、可愛一點：每天花幾秒鐘，跟一隻貓說說現在的感覺。
-
-練習辨認和記錄情緒，有一些研究上的好處：
-
-- **說出情緒的名字，情緒會緩和一點**：研究發現，把感受用文字說出來，本身就是一種調節情緒的方式（Lieberman 等人，2007）
-- **分得越細，越能好好面對**：能分辨細微情緒差別的人，面對不舒服的情緒時，比較能找到合適的方法應對（Kashdan、Barrett 與 McKnight，2015）。心情草原準備了 47 個情緒詞，希望讓人比較容易分辨自己的情緒
-- **寫下來，對身心都有幫助**：把情緒經驗寫下來，對身心健康有正面的影響（Pennebaker，1997）
-
-心情草原的四個區塊，是用「舒不舒服（愉悅度）」和「能量高低」來分類情緒，這個做法來自心理學的情緒環狀模型（Russell，1980）。
+> 「當別人問，今天海上天氣好嗎？妳聽到了，妳聽到，都要回答很晴朗。」
+> 「即使下這麼大的雨也要這樣回答嗎？」
+> 「是。」
+> 「即使不想回答也要這樣回答嗎？」
+> 「是。」
+>
+> ——吳明益《複眼人》
 
 > 心情草原是陪你練習覺察情緒的小工具，不能取代專業的協助。如果你最近常常覺得撐不住，或是有傷害自己的念頭，請找信任的人聊聊，或撥打專線：
 > - **安心專線 1925**（24 小時，免付費）
 > - **生命線 1995**
 > - **張老師 1980**
 
-### 參考資料
-- Lieberman, M. D., Eisenberger, N. I., Crockett, M. J., Tom, S. M., Pfeifer, J. H., & Way, B. M. (2007). Putting feelings into words: Affect labeling disrupts amygdala activity in response to affective stimuli. *Psychological Science, 18*(5), 421–428.
-- Kashdan, T. B., Barrett, L. F., & McKnight, P. E. (2015). Unpacking emotion differentiation: Transforming unpleasant experience by perceiving distinctions in negativity. *Current Directions in Psychological Science, 24*(1), 10–16.
-- Pennebaker, J. W. (1997). Writing about emotional experiences as a therapeutic process. *Psychological Science, 8*(3), 162–166.
-- Russell, J. A. (1980). A circumplex model of affect. *Journal of Personality and Social Psychology, 39*(6), 1161–1178.
-
 ## 有什麼
 
 ### 記錄心情
 - 先選「能量高低 × 舒不舒服」四個區塊之一，再從 47 個情緒詞裡挑一個最接近的，每個詞都有一句說明
+- 四個區塊用「舒不舒服（愉悅度）」和「能量高低」來分類情緒，這個做法來自心理學的情緒環狀模型（Russell，1980）
 - 可以複選「混合情緒」；說不上來的時候，也可以改記身體的感覺和跟什麼有關
 - 一天可以記很多次，之後也能修改、刪除，或補記這七天內的心情
 
@@ -144,6 +137,19 @@ special_options：mixed（混合情緒）、unsure（說不上來）
 ├── LICENSE        # MIT 授權
 └── docs/          # README 用的截圖
 ```
+
+## 參考資料
+
+設計時參考的研究：
+
+- 把感受用文字說出來，本身就是一種調節情緒的方式（Lieberman 等人，2007）
+- 能分辨細微情緒差別的人，面對不舒服的情緒時，比較能找到合適的方法應對（Kashdan、Barrett 與 McKnight，2015）
+- 把情緒經驗寫下來，對身心健康有正面的影響（Pennebaker，1997）
+
+- Lieberman, M. D., Eisenberger, N. I., Crockett, M. J., Tom, S. M., Pfeifer, J. H., & Way, B. M. (2007). Putting feelings into words: Affect labeling disrupts amygdala activity in response to affective stimuli. *Psychological Science, 18*(5), 421–428.
+- Kashdan, T. B., Barrett, L. F., & McKnight, P. E. (2015). Unpacking emotion differentiation: Transforming unpleasant experience by perceiving distinctions in negativity. *Current Directions in Psychological Science, 24*(1), 10–16.
+- Pennebaker, J. W. (1997). Writing about emotional experiences as a therapeutic process. *Psychological Science, 8*(3), 162–166.
+- Russell, J. A. (1980). A circumplex model of affect. *Journal of Personality and Social Psychology, 39*(6), 1161–1178.
 
 ## 素材來源
 
