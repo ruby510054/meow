@@ -12,8 +12,6 @@
 
 ![心情草原主畫面：窗外的草原、房間和寵物](docs/main.png)
 
-## 節錄
-
 > 「當別人問，今天海上天氣好嗎？妳聽到了，妳聽到，都要回答很晴朗。」
 >
 > 「即使下這麼大的雨也要這樣回答嗎？」
@@ -26,16 +24,12 @@
 >
 > ——吳明益《複眼人》
 
-> 心情草原是陪你練習覺察情緒的小工具，不能取代專業的協助。如果你最近常常覺得撐不住，或是有傷害自己的念頭，請找信任的人聊聊，或撥打專線：
-> - **安心專線 1925**（24 小時，免付費）
-> - **生命線 1995**
-> - **張老師 1980**
+心情草原是陪你練習覺察情緒的小工具，不能取代專業的協助。如果你最近常常覺得撐不住，或是有傷害自己的念頭，請找信任的人聊聊，或撥打專線：**安心專線 1925**（24 小時，免付費）、**生命線 1995**、**張老師 1980**。
 
 ## 有什麼
 
 ### 記錄心情
-- 先選「能量高低 × 舒不舒服」四個區塊之一，再從 47 個情緒詞裡挑一個最接近的，每個詞都有一句說明
-- 四個區塊用「舒不舒服（愉悅度）」和「能量高低」來分類情緒，這個做法來自心理學的情緒環狀模型（Russell，1980）
+- 先選「能量高低 × 舒不舒服」四個區塊之一（這個分法來自心理學的情緒環狀模型），再從 47 個情緒詞裡挑一個最接近的，每個詞都有一句說明
 - 可以複選「混合情緒」；說不上來的時候，也可以改記身體的感覺和跟什麼有關
 - 一天可以記很多次，之後也能修改、刪除，或補記這七天內的心情
 
@@ -56,7 +50,8 @@
 ![所有情緒的配件](docs/accessories.png)
 
 ### 房間和寵物
-- 房間裡住著一隻你養的貓，會在房間裡跑來跑去、追自己的尾巴、跳上床和沙發睡覺，偶爾還會去書桌上搗蛋；表情會跟著你的心情變，摸摸牠會飄出愛心
+- 房間裡住著一隻你養的貓，會跑來跑去、追自己的尾巴、跳上床和沙發睡覺，偶爾還會去書桌上搗蛋
+- 牠的表情會跟著你的心情變，摸摸牠會飄出愛心
 - 可以幫牠取名字、選花色
 - 有兩種房間可以切換：粉色小屋和貓咪咖啡廳，各有自己的家具和擺設
 - 窗簾有三種樣式，可以拖曳拉開、拉上
@@ -70,10 +65,10 @@
 
 ![出門走走：寵物跟著一起到草原上](docs/outside.png)
 
-### 這七天
-按「這七天」可以看最近七天的貓咪，越早的越淡；下面是這幾天的心情顏色，和出現過的情緒。
+### 最近
+按「最近」可以看最近七天的貓咪，越早的越淡，下面還有這幾天的心情顏色和出現過的情緒。
 
-![這七天的心情](docs/calendar.png)
+![最近的心情](docs/calendar.png)
 
 ### 其他
 - 鋼琴背景音樂、摸貓咪時的喵喵叫和呼嚕聲，都可以分開開關
@@ -146,14 +141,10 @@ special_options：mixed（混合情緒）、unsure（說不上來）
 
 設計時參考的研究：
 
-- 把感受用文字說出來，本身就是一種調節情緒的方式（Lieberman 等人，2007）
-- 能分辨細微情緒差別的人，面對不舒服的情緒時，比較能找到合適的方法應對（Kashdan、Barrett 與 McKnight，2015）
-- 把情緒經驗寫下來，對身心健康有正面的影響（Pennebaker，1997）
-
-- Lieberman, M. D., Eisenberger, N. I., Crockett, M. J., Tom, S. M., Pfeifer, J. H., & Way, B. M. (2007). Putting feelings into words: Affect labeling disrupts amygdala activity in response to affective stimuli. *Psychological Science, 18*(5), 421–428.
-- Kashdan, T. B., Barrett, L. F., & McKnight, P. E. (2015). Unpacking emotion differentiation: Transforming unpleasant experience by perceiving distinctions in negativity. *Current Directions in Psychological Science, 24*(1), 10–16.
-- Pennebaker, J. W. (1997). Writing about emotional experiences as a therapeutic process. *Psychological Science, 8*(3), 162–166.
-- Russell, J. A. (1980). A circumplex model of affect. *Journal of Personality and Social Psychology, 39*(6), 1161–1178.
+- 把感受用文字說出來，本身就是一種調節情緒的方式：Lieberman, M. D., Eisenberger, N. I., Crockett, M. J., Tom, S. M., Pfeifer, J. H., & Way, B. M. (2007). Putting feelings into words: Affect labeling disrupts amygdala activity in response to affective stimuli. *Psychological Science, 18*(5), 421–428.
+- 能分辨細微情緒差別的人，比較能好好面對不舒服的情緒：Kashdan, T. B., Barrett, L. F., & McKnight, P. E. (2015). Unpacking emotion differentiation: Transforming unpleasant experience by perceiving distinctions in negativity. *Current Directions in Psychological Science, 24*(1), 10–16.
+- 把情緒經驗寫下來，對身心健康有幫助：Pennebaker, J. W. (1997). Writing about emotional experiences as a therapeutic process. *Psychological Science, 8*(3), 162–166.
+- 四個區塊的分法（情緒環狀模型）：Russell, J. A. (1980). A circumplex model of affect. *Journal of Personality and Social Psychology, 39*(6), 1161–1178.
 
 ## 素材來源
 

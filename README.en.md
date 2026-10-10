@@ -14,8 +14,6 @@ No install, no sign-up — just open the page. Everything stays in your own brow
 
 > The screenshots show the Chinese interface; everything is also available in English.
 
-## Excerpt
-
 > 「當別人問，今天海上天氣好嗎？妳聽到了，妳聽到，都要回答很晴朗。」
 >
 > 「即使下這麼大的雨也要這樣回答嗎？」
@@ -40,16 +38,12 @@ No install, no sign-up — just open the page. Everything stays in your own brow
 >
 > (our translation)
 
-> Mood Meadow is a small practice tool and can't replace professional help. If you often feel you can't cope, or have thoughts of hurting yourself, please talk to someone you trust or contact a local helpline. In Taiwan:
-> - **Taiwan Mental Health Hotline 1925** (24 hours, free)
-> - **Lifeline 1995**
-> - **Teacher Chang 1980**
+Mood Meadow is a small practice tool and can't replace professional help. If you often feel you can't cope, or have thoughts of hurting yourself, please talk to someone you trust or contact a local helpline. In Taiwan: **Taiwan Mental Health Hotline 1925** (24 hours, free), **Lifeline 1995**, **Teacher Chang 1980**.
 
 ## Features
 
 ### Log your mood
-- Pick one of four areas (energy × pleasantness), then the closest of 47 feeling words — each comes with a short description
-- The four areas sort feelings by pleasantness (valence) and energy (arousal), based on the circumplex model of affect (Russell, 1980)
+- Pick one of four areas (energy × pleasantness, based on the circumplex model of affect), then the closest of 47 feeling words — each comes with a short description
 - Choose "Mixed" to pick several words; if you're "Not sure", you can log how your body feels and what it's about instead
 - Log as many times a day as you like, and edit, delete, or add entries for any of the last 7 days
 
@@ -70,7 +64,8 @@ The sky outside follows your mood: happy is sunny, calm brings a rainbow, irrita
 ![All feeling accessories](docs/accessories.png)
 
 ### The room and your pet
-- A cat of your own lives in the room. It runs around, chases its tail, naps on the bed and sofa, and now and then makes mischief on the desk. Its expression follows your mood, and petting it makes hearts float up
+- A cat of your own lives in the room. It runs around, chases its tail, naps on the bed and sofa, and now and then makes mischief on the desk
+- Its expression follows your mood, and petting it makes hearts float up
 - Give it a name and pick its coat
 - Two rooms to choose from: the pink cottage and the cat café, each with its own furniture
 - Three curtain styles, which you can drag open and closed
@@ -84,10 +79,10 @@ Press "Go outside" to take your pet out to the meadow and play with the other ca
 
 ![Going outside: your pet comes along to the meadow](docs/outside.png)
 
-### These 7 days
-"These 7 days" shows the cats from the last week, fainter the further back they are, along with the mood colors and the feelings that came up.
+### Recent
+"Recent" shows the cats from the last 7 days, fainter the further back they are, along with the mood colors and the feelings that came up.
 
-![These 7 days](docs/calendar.png)
+![Recent moods](docs/calendar.png)
 
 ### More
 - Piano background music, and meows and purrs when you pet a cat — each can be turned on or off
@@ -160,14 +155,10 @@ So the page works as a single file, `index.html` contains an identical copy (ins
 
 Research that informed the design:
 
-- Putting feelings into words is itself a way of regulating them (Lieberman et al., 2007)
-- People who can tell subtle feelings apart cope better with unpleasant emotions (Kashdan, Barrett & McKnight, 2015)
-- Writing about emotional experiences has positive effects on physical and mental health (Pennebaker, 1997)
-
-- Lieberman, M. D., Eisenberger, N. I., Crockett, M. J., Tom, S. M., Pfeifer, J. H., & Way, B. M. (2007). Putting feelings into words: Affect labeling disrupts amygdala activity in response to affective stimuli. *Psychological Science, 18*(5), 421–428.
-- Kashdan, T. B., Barrett, L. F., & McKnight, P. E. (2015). Unpacking emotion differentiation: Transforming unpleasant experience by perceiving distinctions in negativity. *Current Directions in Psychological Science, 24*(1), 10–16.
-- Pennebaker, J. W. (1997). Writing about emotional experiences as a therapeutic process. *Psychological Science, 8*(3), 162–166.
-- Russell, J. A. (1980). A circumplex model of affect. *Journal of Personality and Social Psychology, 39*(6), 1161–1178.
+- Putting feelings into words is itself a way of regulating them: Lieberman, M. D., Eisenberger, N. I., Crockett, M. J., Tom, S. M., Pfeifer, J. H., & Way, B. M. (2007). Putting feelings into words: Affect labeling disrupts amygdala activity in response to affective stimuli. *Psychological Science, 18*(5), 421–428.
+- People who can tell subtle feelings apart cope better with unpleasant ones: Kashdan, T. B., Barrett, L. F., & McKnight, P. E. (2015). Unpacking emotion differentiation: Transforming unpleasant experience by perceiving distinctions in negativity. *Current Directions in Psychological Science, 24*(1), 10–16.
+- Writing about emotional experiences is good for body and mind: Pennebaker, J. W. (1997). Writing about emotional experiences as a therapeutic process. *Psychological Science, 8*(3), 162–166.
+- How the four areas are divided (circumplex model of affect): Russell, J. A. (1980). A circumplex model of affect. *Journal of Personality and Social Psychology, 39*(6), 1161–1178.
 
 ## Credits
 
