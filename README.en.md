@@ -17,17 +17,25 @@ No install, no sign-up — just open the page. Everything stays in your own brow
 ## Excerpt
 
 > 「當別人問，今天海上天氣好嗎？妳聽到了，妳聽到，都要回答很晴朗。」
+>
 > 「即使下這麼大的雨也要這樣回答嗎？」
+>
 > 「是。」
+>
 > 「即使不想回答也要這樣回答嗎？」
+>
 > 「是。」
 >
 > — Wu Ming-Yi, *The Man with the Compound Eyes* (《複眼人》)
 
 > "When someone asks you, 'How's the weather out at sea today?' — whenever you hear it, you must answer: 'Clear and sunny.'"
+>
 > "Even when it's raining this hard?"
+>
 > "Yes."
+>
 > "Even when I don't want to answer?"
+>
 > "Yes."
 >
 > (our translation)
