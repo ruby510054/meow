@@ -327,12 +327,13 @@
   .cat.walk .leg.b { animation-delay: calc(var(--step, .36s) * -1); }
   .cat.walk .hopper-inner { animation: bob var(--step, .36s) ease-in-out infinite alternate; }
   /* 0%：腳在前面踩地 → 55%：推到後面 → 抬起來往前跨 */
+  /* 短短的腳：擺動小一點、抬腳低一點 */
   @keyframes step {
-    0% { transform: rotate(-15deg); }
-    55% { transform: rotate(15deg); }
-    72% { transform: rotate(3deg) translateY(-3px); }
-    88% { transform: rotate(-12deg) translateY(-2px); }
-    100% { transform: rotate(-15deg); }
+    0% { transform: rotate(-11deg); }
+    55% { transform: rotate(11deg); }
+    72% { transform: rotate(2deg) translateY(-2px); }
+    88% { transform: rotate(-9deg) translateY(-1.4px); }
+    100% { transform: rotate(-11deg); }
   }
   @keyframes bob { to { transform: translateY(-1.5px); } }
   .cat .eyes { transform-box: fill-box; transform-origin: center; animation: blink 5s infinite; }
@@ -355,8 +356,8 @@
   .cat.loaf .p-loaf, .cat.sleep .p-loaf, .cat.roll .p-loaf { opacity: 1; }
   .cat .head { transition: transform .35s; transform-origin: 100px 42px; }
   .cat.sit .head { transform: translate(-10px, -6px); }
-  .cat.loaf .head, .cat.roll .head { transform: translate(-4px, 22px); }
-  .cat.sleep .head { transform: translate(-4px, 25px) rotate(10deg); }
+  .cat.loaf .head, .cat.roll .head { transform: translate(-4px, 14px); }
+  .cat.sleep .head { transform: translate(-4px, 18px) rotate(10deg); }
   .cat.groom .head { animation: lick .45s ease-in-out infinite alternate; }
   @keyframes lick { from { transform: translate(-9px, -3px) rotate(15deg); } to { transform: translate(-9px, -1px) rotate(21deg); } }
   .cat.groom .lick-paw { display: inline; animation: paw .45s ease-in-out infinite alternate; }
@@ -1548,12 +1549,14 @@ const FAMILY_COAT = { joy: "happy", confidence: "goldie", engagement: "siamese",
   sadness: "sad", exhaustion: "tired", self_conscious: "graywhite", numbness: "silver", anger: "angry", fear: "tortie", stress: "brown", unsure: "black" };
 
 // 頭的位置（各個姿勢）：x, y 位移與旋轉角度（以頭中心 100,42 為軸）
+// 胖胖版的頭：以下巴 (100, 58) 為中心放大 1.16 倍，再往下 7
+const CHUB_HEAD = "translate(0 7) translate(100 58) scale(1.16) translate(-100 -58)";
 const HEAD_POSE = {
   stand: { x: 0, y: 0, r: 0 },
   sit:   { x: -10, y: -6, r: 0 },
   groom: { x: -9, y: -3, r: 18 },
-  loaf:  { x: -4, y: 22, r: 0 },
-  sleep: { x: -4, y: 25, r: 10 },
+  loaf:  { x: -4, y: 14, r: 0 },
+  sleep: { x: -4, y: 18, r: 10 },
 };
 // 耳朵：難過會垂下、生氣會壓平（飛機耳）
 const EARS = { happy: [0, 0], calm: [0, 0], tired: [12, 1], sad: [36, 5], angry: [52, 7], anxious: [16, 1] };
@@ -1656,40 +1659,35 @@ function tail(d, m, puff) {
 // 胸前的一撮蓬毛
 const fluff = (x, y, color) => `<path d="M${x} ${y} C${x - 4.5} ${y + 2} ${x - 5} ${y + 9} ${x - 2.5} ${y + 13} L${x - 1} ${y + 11.5} L${x} ${y + 14} L${x + 1.2} ${y + 11.8} L${x + 2.5} ${y + 13.5} C${x + 4.5} ${y + 9} ${x + 4} ${y + 2} ${x} ${y}Z" fill="${color}" stroke="none"/>`;
 
+// 胖胖短腳：身體圓一點、放低一點，腿短短的
 function poseArt(mood, pose, coat = mood) {
   const m = coatOf(coat), tailType = MOODS[mood].tail;
-  const legC = m.point || m.paw || m.fur;
-  const far = shade(legC);
-  const near = legC;
-  const puff = tailType === "puff";
+  const legC = m.point || m.paw || m.fur, far = shade(legC), near = legC, puff = tailType === "puff";
   const stripes = d => m.stripe !== m.fur ? `<path d="${d}" stroke="${m.stripe}" stroke-width="2" fill="none" opacity=".85"/>` : "";
   if (pose === "stand") {
-    const tailD = { up: "M39 58 C27 54 22 43 25 32 C26.5 26 32 24.5 33 30", low: "M38 61 C29 65 26 74 28.5 83 C29.5 87 33 88 34.5 85",
-                    puff: "M39 58 C29 51 27 41 29.5 31" }[tailType];
-    return `<g class="tail" style="transform-origin:39px 59px">${tail(tailD, m, puff)}</g>
-      ${paw(45, 67, far, "leg b", "back")}${paw(80, 68, far, "leg a")}
-      ${paw(53, 68, near, "leg a", "back")}${paw(86.5, 70, near, "leg b")}
-      <path d="M92 60 C92 50 85 45 75 45 C64 44 54 45 46 48 C36 51 32 59 34 67 C36 75 43 78.5 52 78.5 C62 79.5 72 79.5 82 77.5 C90 75.5 92 68 92 60Z" fill="${m.fur}"/>
-      ${m.patches ? `<path d="M50 48 C57 45.5 64 47.5 63 55 C57 60 50 58 50 48Z" fill="${m.patches[1]}" stroke="none"/><path d="M68 64 C75 61 81 66 78.5 72 C73 74 69 70 68 64Z" fill="${m.patches[0]}" stroke="none"/>` : ""}
-      ${stripes("M56 46.5 C57 50.5 56 53.5 54 55.5 M64 45.5 C65 49.5 64 52.5 62 54.5 M72 45.5 C73 49.5 72 52.5 70 54.5")}
-      ${fluff(87, 58, m.chest)}`;
+    const tailD = { up: "M37 66 C29 63 26 55 28.5 48.5 C30 45 34 45 34.5 48.5", low: "M36 70 C29 73 27.5 80 29.5 86 C30.5 89 33.5 89.6 35 87", puff: "M37 66 C30 61 28.5 54 30.5 47" }[tailType];
+    return `<g class="tail" style="transform-origin:37px 67px">${tail(tailD, m, puff)}</g>
+      ${paw(46, 80, far, "leg b", "back")}${paw(78, 80, far, "leg a")}
+      ${paw(54, 81, near, "leg a", "back")}${paw(85, 81.5, near, "leg b")}
+      <path d="M95 67 C95 55 87 50.5 75 50.5 C62 50 50 50.5 42 54.5 C32 59 30 67 32 74 C34 82 43 86.5 56 86.6 C66 87 77 87 85 85 C93 83 95 76 95 67Z" fill="${m.fur}"/>
+      ${m.patches ? `<path d="M48 54 C56 51 63 53 62 61 C56 66 48 64 48 54Z" fill="${m.patches[1]}" stroke="none"/><path d="M68 71 C75 68 82 73 79.5 79 C74 81 69 77 68 71Z" fill="${m.patches[0]}" stroke="none"/>` : ""}
+      ${stripes("M55 52 C56 56 55 59 53 61 M63 51 C64 55 63 58 61 60 M71 51 C72 55 71 58 69 60")}
+      ${fluff(89, 64, m.chest)}`;
   }
   if (pose === "sit") {
-    return `<path d="M87 92 C94 86 96.5 72 92.5 60 C89.5 52 82 48 75 50 C66 53 60 60 57 67 C47 69 41 77 42 85 C43 91 50 93 58 92 Z" fill="${m.fur}"/>
-      ${m.patches ? `<path d="M59 66 C65 60 73 62 73 69 C68 74 61 73 59 66Z" fill="${m.patches[1]}" stroke="none"/><path d="M47 79 C50 74 57 75 57 81 C53 85 48 84 47 79Z" fill="${m.patches[0]}" stroke="none"/>` : ""}
-      ${stripes("M69 55 C70 59 68 62 66 64 M77 52 C78 56 76 59 74 61")}
-      ${sitPaw(81.5, 66, near)}
-      ${fluff(87.5, 55, m.chest)}
-      <g class="stay-paw">${sitPaw(89.5, 67, near)}</g>
-      <g class="tail" style="transform-origin:45px 86px">${tail("M45 85.5 C40 93 52 94.6 66 94 C74 93.8 78 93.4 80 91.5", m, puff)}</g>`;
+    return `<path d="M89 92.5 C98 87 100 73 95 64.5 C91 58 83 55.5 75 57.5 C65 60.5 58 66 55 72 C45 74 39 81 40 87 C41 92 48 93.6 58 93 Z" fill="${m.fur}"/>
+      ${m.patches ? `<path d="M58 71 C64 65 73 67 73 74 C68 79 60 78 58 71Z" fill="${m.patches[1]}" stroke="none"/><path d="M46 82 C49 77 56 78 56 84 C52 88 47 87 46 82Z" fill="${m.patches[0]}" stroke="none"/>` : ""}
+      ${stripes("M70 60 C71 64 69 67 67 69 M78 58 C79 62 77 65 75 67")}
+      ${sitPaw(82, 76, near)}
+      ${fluff(88.5, 63, m.chest)}
+      <g class="stay-paw">${sitPaw(90, 77, near)}</g>
+      <g class="tail" style="transform-origin:44px 87px">${tail("M44 86.5 C39 93.4 52 94.8 66 94.2 C74 94 78 93.6 80 92", m, puff)}</g>`;
   }
-  // 趴著（母雞蹲、睡覺）
-  return `<path d="M28 85 C26 72 40 63 62 63 C82 63 98 70 99 83 C99.5 89 95 92.5 88 92.5 L38 92.5 C31 92.5 28 90 28 85Z" fill="${m.fur}"/>
-    ${m.patches ? `<path d="M44 67 C52 63 60 66 57 74 C51 77 45 74 44 67Z" fill="${m.patches[1]}" stroke="none"/><path d="M70 68 C78 66 85 71 81 78 C75 79 71 75 70 68Z" fill="${m.patches[0]}" stroke="none"/>` : ""}
-    ${stripes("M52 65 C53 69 52 72 50 74 M62 63.5 C63 67 62 70 60 72 M72 64.5 C73 68 72 71 70 73")}
-    <g class="tail" style="transform-origin:31px 86px">${tail("M31 85.5 C26 93 46 94.6 64 94.4 C72 94.2 77 93.8 80 92.5", m, puff)}</g>
-    <ellipse cx="87" cy="91" rx="5.2" ry="3" fill="${near}"/><ellipse cx="95" cy="90.6" rx="5.2" ry="3" fill="${near}"/>
-    <path d="M89 93.4 L89 91.6 M97 93 L97 91.2" stroke-width=".9" opacity=".55"/>`;
+  return `<path d="M27 86 C25 71 41 61 62 61 C84 61 100 70 100.5 84 C101 90 96.5 93 88 93 L37 93 C30 93 27 91 27 86Z" fill="${m.fur}"/>
+    ${m.patches ? `<path d="M43 66 C51 62 59 65 56 73 C50 76 44 73 43 66Z" fill="${m.patches[1]}" stroke="none"/><path d="M70 67 C78 65 85 70 81 77 C75 78 71 74 70 67Z" fill="${m.patches[0]}" stroke="none"/>` : ""}
+    ${stripes("M51 63.5 C52 67.5 51 70.5 49 72.5 M61 62 C62 65.5 61 68.5 59 70.5 M71 62.5 C72 66 71 69 69 71")}
+    <g class="tail" style="transform-origin:30px 87px">${tail("M30 86.5 C25 93.4 46 94.8 64 94.6 C72 94.4 77 94 80 92.8", m, puff)}</g>
+    <ellipse cx="87" cy="91.4" rx="5.6" ry="3" fill="${near}"/><ellipse cx="95.4" cy="91" rx="5.6" ry="3" fill="${near}"/>`;
 }
 
 // 理毛時舉起來舔的前腳（畫在頭前面）
@@ -1697,9 +1695,9 @@ function lickPaw(color) {
   // 填色往下延伸到胸口裡，外框只畫上半段，看起來像從胸前舉起來
   const fill = "M77.8 72 C77.8 66 79.5 61.5 82.8 58.2 C82.6 55 84.8 52.2 87.8 52 C91 51.8 93 54.4 92 57.4 C91.2 59.4 89.4 60.4 87.8 61.6 C86 64 85.8 68 86.2 72 Z";
   const line = "M78.3 64.5 C79 62 80.6 59.8 82.8 58.2 C82.6 55 84.8 52.2 87.8 52 C91 51.8 93 54.4 92 57.4 C91.2 59.4 89.4 60.4 87.8 61.6 C87 62.6 86.5 63.6 86.3 64.5";
-  return `<g class="lick-paw" style="transform-origin:82px 70px">
+  return `<g class="lick-paw" style="transform-origin:82px 77px"><g transform="translate(0 7)">
     <path d="${fill}" fill="${color}" stroke="none"/><path d="${line}" fill="none"/>
-    <path d="M89.2 52.2 L88.8 54.2" stroke-width=".9" opacity=".5"/></g>`;
+    <path d="M89.2 52.2 L88.8 54.2" stroke-width=".9" opacity=".5"/></g></g>`;
 }
 
 function shade(hex) {
@@ -1719,7 +1717,7 @@ function bodySVGRaw(mood, pose, coat = mood, acc = null) {
   const headAttr = pose ? `transform="translate(${hp.x} ${hp.y}) rotate(${hp.r} 100 42)"` : "";
   return `${svgOpen("0 0 130 100")}<g ${ATTRS}>
     <g class="hopper-inner">${poses.map(p => `<g class="pose p-${p}">${poseArt(mood, p, coat)}</g>`).join("")}
-    <g class="head" ${headAttr}>${headArt(mood, coat, acc)}</g>
+    <g class="head" ${headAttr}><g transform="${CHUB_HEAD}">${headArt(mood, coat, acc)}</g></g>
     ${poses.includes("sit") ? lickPaw(coatOf(coat).point || coatOf(coat).paw || coatOf(coat).fur) : ""}</g></g></svg>`;
 }
 // 小圖示：只有頭
@@ -2856,7 +2854,7 @@ function tick(now) {
   if (chatTimer <= 0) { chatTimer = 5 + Math.random() * 6; chatter(); }
 
   for (const c of cats) {
-    const speed = c.speed * MS * scaleOf(c.y), p = c.partner;   // 越遠看起來走得越慢
+    const speed = c.speed * .75 * MS * scaleOf(c.y), p = c.partner;   // 越遠看起來走得越慢；短腳的胖貓整體慢一點
     c.timer -= dt;
     if (c.mode === "pace" || c.mode === "hide" || c.mode === "edge") {
       if (stepTo(c, c.tx, c.ty, c.mode === "pace" ? speed * 1.25 : speed, dt)) arriveSpecial(c);
