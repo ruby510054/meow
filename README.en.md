@@ -52,6 +52,8 @@ Mood Meadow is a small practice tool and can't replace professional help. If you
 ### Mood weather
 The sky outside follows your mood: happy is sunny, calm brings a rainbow, irritated gets windy, sad brings rain.
 
+It follows the time of day too: a light mist in the early morning, sunset colors in the evening, and stars and a moon at night.
+
 ![Four kinds of mood weather: sunny, rainbow, windy, rain](docs/weather.png)
 
 ### The meadow

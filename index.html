@@ -277,6 +277,24 @@
   @keyframes drift { from { left: -140px; } to { left: 105%; } }
   @keyframes spin { to { transform: rotate(360deg); } }
   [data-theme="night"] .sun { filter: grayscale(1) brightness(1.5); }
+  /* 時間感：清晨薄霧、傍晚夕陽、晚上星星和月亮（照電腦上的時間） */
+  .stars { position: absolute; inset: 0 0 56% 0; z-index: 241; pointer-events: none; opacity: 0; transition: opacity 3s; }
+  .stars i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fffbe6; box-shadow: 0 0 4px #fff6cc; animation: twinkle 3s ease-in-out infinite alternate; }
+  @keyframes twinkle { from { opacity: .25; } to { opacity: 1; } }
+  .moon { position: absolute; top: 7%; right: 9%; z-index: 241; width: calc(46px * var(--ms, 1)); aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+    box-shadow: inset calc(-12px * var(--ms, 1)) calc(3px * var(--ms, 1)) 0 0 #fff4cf; filter: drop-shadow(0 0 10px rgba(255, 240, 190, .75)); opacity: 0; transition: opacity 3s; }
+  .mist { position: absolute; left: 0; right: 0; top: 36%; height: 30%; pointer-events: none; opacity: 0; transition: opacity 3s;
+    background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, .6) 45%, rgba(255, 255, 255, 0)); filter: blur(4px); }
+  .time-tint { position: absolute; inset: 0; z-index: 240; pointer-events: none; opacity: 0; transition: opacity 3s; }
+  .meadow[data-time="dawn"] .mist { opacity: .75; }
+  .meadow[data-time="dawn"] .time-tint { opacity: 1; background: linear-gradient(rgba(255, 214, 226, .22), rgba(255, 255, 255, 0) 55%); }
+  .meadow[data-time="dusk"] .time-tint { opacity: 1; background: linear-gradient(rgba(255, 168, 120, .3), rgba(255, 190, 150, .14) 55%, rgba(130, 90, 130, .1)); }
+  .meadow[data-time="night"] .time-tint { opacity: 1; background: linear-gradient(rgba(38, 40, 96, .46), rgba(48, 50, 108, .32) 60%, rgba(28, 30, 72, .38)); }
+  .meadow[data-time="night"] .stars, .meadow[data-time="night"] .moon { opacity: 1; }
+  .meadow[data-time="night"] .sun { visibility: hidden; }
+  .meadow[data-time="night"] .cloud { opacity: .45; }
+  .meadow.gloomy .stars, .meadow.gloomy .moon { opacity: 0 !important; }
+  .meadow[data-time="night"] .fly { opacity: 0; }   /* 晚上蝴蝶也去睡了 */
   [data-theme="night"] .cloud { opacity: .45; }
 
   .deco { position: absolute; transform-origin: bottom center; animation: sway 3s ease-in-out infinite alternate; pointer-events: none; }
@@ -835,14 +853,17 @@
   <div class="curtains" id="curtains"></div>
   <div class="meadow" id="meadow">
     <!-- 窗外的景色不畫線：草地用綠色深淺分出遠近，每一層的上緣是鋸齒狀的草尖（由程式畫） -->
+    <div class="stars" id="stars" aria-hidden="true"></div><div class="moon" aria-hidden="true"></div>
     <svg class="scene far" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true"></svg>
     <div class="trees" aria-hidden="true"></div>
+    <div class="mist" aria-hidden="true"></div>
     <svg class="scene near" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true"></svg>
     <div class="sun" aria-hidden="true"></div>
     <svg class="rainbow" id="rainbow" viewBox="0 0 200 100" aria-hidden="true"><g fill="none" stroke-width="7" stroke-linecap="round" opacity=".75">
       <path d="M10 100 A90 90 0 0 1 190 100" stroke="#f9c4c9"/><path d="M17 100 A83 83 0 0 1 183 100" stroke="#fde0b8"/>
       <path d="M24 100 A76 76 0 0 1 176 100" stroke="#fdf2bf"/><path d="M31 100 A69 69 0 0 1 169 100" stroke="#cdeccb"/>
       <path d="M38 100 A62 62 0 0 1 162 100" stroke="#c8dcf6"/><path d="M45 100 A55 55 0 0 1 155 100" stroke="#ddd0f3"/></g></svg>
+    <div class="time-tint" aria-hidden="true"></div>
     <div class="rain" id="rain" aria-hidden="true"></div>
     <div class="wind" id="wind" aria-hidden="true"></div>
     <div class="weather" id="weather" role="status"></div>
@@ -1325,7 +1346,9 @@ const EN = {
   "我們回來了，休息一下吧": "We're back, let's rest a bit", "外面的朋友都好可愛喔": "The friends outside are so cute",
   "喵～今天過得怎麼樣？選一隻貓告訴我吧！": "Meow~ How was your day? Pick a cat and tell me!",
   "（今天）": " (today)",
-  "語言": "Language", "記錄下來": "Log it", "更多": "More",
+  "語言": "Language", "早上的霧涼涼的": "The morning mist feels cool", "（伸懶腰）早安～": "(stretches) Good morning~", "草上有露珠耶": "There's dew on the grass",
+  "夕陽好漂亮": "The sunset is so pretty", "天空變成橘色了": "The sky turned orange", "要回家吃晚餐了嗎？": "Time to go home for dinner?",
+  "星星好多～": "So many stars~", "月亮好亮": "The moon is so bright", "（打哈欠）有點睏了": "(yawns) getting sleepy", "晚上的草原好安靜": "The meadow is so quiet at night", "記錄下來": "Log it", "更多": "More",
   "「當別人問，今天海上天氣好嗎？妳聽到了，妳聽到，都要回答很晴朗。」": "\"When someone asks you, 'How's the weather out at sea today?' — whenever you hear it, you must answer: 'Clear and sunny.'\"",
   "「即使下這麼大的雨也要這樣回答嗎？」": "\"Even when it's raining this hard?\"", "「是。」": "\"Yes.\"",
   "「即使不想回答也要這樣回答嗎？」": "\"Even when I don't want to answer?\"",
@@ -2282,9 +2305,9 @@ function grassLayer(d, fill, amp, step) {
   let p = `M-10 310 L-10 ${Y(-10).toFixed(1)}`;
   for (let x = -10; x <= 1010; x += amp ? step : 20) {
     p += ` L${x} ${Y(x).toFixed(1)}`;
-    if (amp) p += ` L${(x + step / 2).toFixed(1)} ${(Y(x + step / 2) - amp * (.55 + rand() * .9)).toFixed(1)}`;
+    if (amp) p += ` L${(x + step / 2).toFixed(1)} ${(Y(x + step / 2) - amp * .65 * (.55 + rand() * .9)).toFixed(1)}`;   // 鋸齒矮一點
   }
-  return `<path d="${p} L1010 310Z" fill="${fill}"/>`;
+  return `<path d="${p} L1010 310Z" fill="${fill}" stroke="${fill}" stroke-width="3.2" stroke-linejoin="round"/>`;   // 同色圓角描邊：尖端磨圓
 }
 const HILLS = {
   far:   "M-10 168 Q80 128 170 146 T350 132 T560 140 T760 118 T1010 134",
@@ -3319,8 +3342,15 @@ const WEATHER_FACE = { sunny: "happy", rainbow: "happy", breeze: "calm", clear: 
 const SCENERY_TALK = [["這朵花好香～", "happy"], ["蝴蝶！好想抓～", "happy", "hop"], ["那棵樹好想爬上去", "happy"], ["草地軟軟的", "calm"],
   ["毛線球在那邊！", "happy"], ["花上面停了一隻蝴蝶", "happy"], ["山的那邊有什麼呢？", "calm"]];
 const WET = ["rain", "heavyrain", "thunder"];
+const TIME_TALK = {
+  dawn:  ["早上的霧涼涼的", "（伸懶腰）早安～", "草上有露珠耶"],
+  dusk:  ["夕陽好漂亮", "天空變成橘色了", "要回家吃晚餐了嗎？"],
+  night: ["星星好多～", "月亮好亮", "（打哈欠）有點睏了", "晚上的草原好安靜"],
+};
 function envLine() {
   const wet = WET.includes(weatherKind) || weatherKind === "windy";
+  const tod = timeOfDay();
+  if (!wet && TIME_TALK[tod] && Math.random() < .35) return { text: pick(TIME_TALK[tod]), face: tod === "night" ? "calm" : "happy" };
   if (wet || Math.random() < .6) { const k = weatherKind || "clear"; return { text: pick(WEATHER_TALK[k]), face: WEATHER_FACE[k] }; }
   const [text, face, act] = pick(SCENERY_TALK);
   return { text, face, act };
@@ -3385,6 +3415,22 @@ function updateWeather() {
     wind.append(d);
   }
 })();
+// 時間感：清晨（5–7 點）、白天、傍晚（17:30–19:30）、晚上
+const timeOfDay = () => { const d = new Date(), h = d.getHours() + d.getMinutes() / 60;
+  return h >= 19.5 || h < 5 ? "night" : h < 7 ? "dawn" : h >= 17.5 ? "dusk" : "day"; };
+function updateTime() { $("meadow").dataset.time = timeOfDay(); }
+(function makeStars() {
+  const box = $("stars");
+  for (let i = 0; i < 38; i++) {
+    const d = el("i");
+    d.style.left = (Math.random() * 98) + "%"; d.style.top = (Math.random() * 92) + "%";
+    const k = .6 + Math.random() * .9; d.style.width = d.style.height = (2.4 * k).toFixed(1) + "px";
+    d.style.animationDelay = -(Math.random() * 3) + "s"; d.style.animationDuration = (2 + Math.random() * 2.5) + "s";
+    box.append(d);
+  }
+})();
+updateTime();
+setInterval(updateTime, 60000);
 // 雷雨時偶爾閃一下
 setInterval(() => {
   if (lastWeather !== "thunder" || reduceMotion || Math.random() < .5) return;
