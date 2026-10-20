@@ -479,7 +479,7 @@
     position: absolute; left: 50%; bottom: 0; width: 120px; height: 26px; transform: translateX(-50%);
     background: var(--accent-soft); border: 2px solid var(--line); border-radius: 50%;
   }
-  .dock .cat { position: absolute; width: 124px; left: 3px; bottom: 8px; }
+  .dock .cat { position: absolute; width: 124px; left: 3px; bottom: 8px; transition: transform var(--walk, 0s) linear; }
   body.docked .wrap { padding-bottom: 140px; }
   @media (max-width: 600px) {
     .dock { width: 96px; height: 84px; }
@@ -691,10 +691,22 @@
     .themes { font-size: 0; gap: 4px; flex-wrap: nowrap; }
     .themes button { width: 16px; height: 16px; border-width: 1.5px; }
     .themes button.on { outline-offset: 2px; }
-    .big-window { margin: 0 0 24px; }   /* 窗台會往下凸出一點，留空間給它 */
+    .big-window { margin: 0 auto 24px; max-width: calc((100vh - 136px) * 2.1); max-width: calc((100dvh - 136px) * 2.1); }   /* 窗台會往下凸出一點，留空間給它；窗戶維持大約 2:1，不要拉得太扁 */
     .meadow { height: calc(100vh - 136px); height: calc(100dvh - 136px); min-height: 170px; border-width: 8px; }
-    .curtain-btns, .note, .h-rug, .h-bed, .rt, .h-lights, .h-hang { display: none !important; }
-    .h-fishbowl, .h-shelf, .h-clock, .h-desk, .h-chair, .h-bigbed, .h-lamp, .h-sofa, .h-hoop, .h-poster, .h-paws, .h-wreath, .h-plant { display: none; }
+    .curtain-btns, .note, .h-rug, .h-bed, .h-lights, .h-hang { display: none !important; }
+    .rt:not(.rt-menu):not(.rt-sign) { display: none !important; }
+    .h-desk, .h-chair, .h-bigbed, .h-lamp, .h-sofa, .h-paws, .h-wreath, .h-shelf { display: none; }
+    /* 窗戶兩邊的牆：左邊魚缸和刺繡框，右邊時鐘和海報，地上一盆植物 */
+    #home { --side: calc((100vw - min(100vw - 24px, (100dvh - 136px) * 2.1)) / 2); }
+    /* 寬度跟著兩邊牆的寬度縮放，置中在牆上 */
+    .h-fishbowl { --w: min(104px, var(--side) * .8); display: block; left: calc(var(--side) / 2 - var(--w) / 2); top: 52px; width: var(--w); }
+    .h-hoop { --w: min(72px, var(--side) * .62); display: block; left: calc(var(--side) / 2 - var(--w) / 2); top: 150px; width: var(--w); }
+    .h-clock { --w: min(52px, var(--side) * .5); display: block; right: calc(var(--side) / 2 - var(--w) / 2); top: 50px; width: var(--w); }
+    .h-poster { --w: min(72px, var(--side) * .62); display: block; right: calc(var(--side) / 2 - var(--w) / 2); top: 128px; width: var(--w); }
+    .h-plant { display: block; left: 8px; bottom: calc(var(--floorH) - 12px); width: min(54px, var(--side) * .5); }
+    body[data-room="cafe"] .rt-menu { --w: min(112px, var(--side) * .82); display: block !important; left: calc(var(--side) / 2 - var(--w) / 2) !important; top: 64px !important; width: var(--w) !important; }
+    body[data-room="cafe"] .rt-sign { --w: min(92px, var(--side) * .7); display: block !important; right: calc(var(--side) / 2 - var(--w) / 2) !important; top: 150px !important; width: var(--w) !important; }
+    @media (max-aspect-ratio: 3/2) { .h-fishbowl, .h-hoop, .h-clock, .h-poster, .rt-menu, .rt-sign { display: none !important; } }
     .toolbar { margin: 0; gap: 8px; }
     .tool-btn { font-size: 14px; padding: 5px 14px; }
     .dock { width: 70px; height: 62px; bottom: 4px; }
@@ -802,8 +814,8 @@
   <!-- 星空閣樓 -->
 
   <!-- 貓咪咖啡廳 -->
-  <div class="rt rt-cafe rt-pos" style="left:calc(var(--u)*50);top:calc(var(--u)*260);width:calc(var(--u)*140)" aria-hidden="true"><svg viewBox="0 0 140 120"><g stroke="#7a5a50" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="4" y="4" width="132" height="112" rx="6" fill="#c99a70"/><rect x="12" y="12" width="116" height="96" rx="3" fill="#3f4a44"/><text x="70" y="31" font-size="13" text-anchor="middle" fill="#fdf6e8" stroke="none" font-family="Huninn, sans-serif">MENU</text><path d="M40 36 H100" stroke="#fdf6e8" stroke-width="1" stroke-dasharray="2 2.6"/><g font-size="9.5" fill="#fdf6e8" stroke="none" font-family="Huninn, sans-serif"><text x="20" y="54">貓咪拿鐵</text><text x="98" y="54" text-anchor="end" fill="#f3b49a">80</text><text x="20" y="72">肉球鬆餅</text><text x="98" y="72" text-anchor="end" fill="#f3b49a">120</text><text x="20" y="90">小魚乾</text><text x="98" y="90" text-anchor="end" fill="#f3b49a">30</text></g><g stroke="#fdf6e8" stroke-width="1.1" fill="none"><path d="M104 46 H120 V52 Q120 60 112 60 Q104 60 104 52Z"/><path d="M120 48 Q125 49 120 55"/><path d="M109 42 Q107 39 109 36 M115 42 Q113 39 115 36"/></g><g stroke="#fdf6e8" stroke-width="1.1" fill="none"><ellipse cx="112" cy="86" rx="10" ry="4"/><path d="M102 86 V82 Q112 77 122 82 V86"/></g><path d="M112 83.3 C109.3 81.5 108.9 79.7 109.8 78.8 C110.6 78.1 111.6 78.4 112 79.3 C112.4 78.4 113.4 78.1 114.2 78.8 C115.1 79.7 114.7 81.5 112 83.3Z" fill="#f3b49a" stroke="none"/><g fill="#fdf6e8" stroke="none" opacity="0.7"><ellipse cx="30" cy="102.4" rx="3.6" ry="2.9"/><circle cx="26.2" cy="98.3" r="1.4"/><circle cx="28.7" cy="96.6" r="1.4"/><circle cx="31.3" cy="96.6" r="1.4"/><circle cx="33.8" cy="98.3" r="1.4"/></g><g fill="#fdf6e8" stroke="none" opacity="0.7"><ellipse cx="40" cy="104.4" rx="3.6" ry="2.9"/><circle cx="36.2" cy="100.3" r="1.4"/><circle cx="38.7" cy="98.6" r="1.4"/><circle cx="41.3" cy="98.6" r="1.4"/><circle cx="43.8" cy="100.3" r="1.4"/></g></g></svg></div>
-  <div class="rt rt-cafe rt-pos" style="right:calc(var(--u)*70);top:calc(var(--u)*270);width:calc(var(--u)*110)" aria-hidden="true"><svg viewBox="0 0 110 110"><g stroke="#7a5a50" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M55 6 V20" /><path d="M55 20 L30 34 M55 20 L80 34" stroke-width="1.2"/><circle cx="55" cy="56" r="38" fill="#fff8ee"/><circle cx="55" cy="56" r="33" fill="none" stroke="#e3a07a" stroke-width="1.4" stroke-dasharray="3 3"/><ellipse cx="55" cy="80" rx="14.3" ry="3.4" fill="#e3a07a" stroke-width="1.2"/><path d="M44.6 64.4 H65.4 V72.2 Q65.4 78.7 55 78.7 Q44.6 78.7 44.6 72.2Z" fill="#e3a07a" stroke-width="1.2"/><path d="M65.4 67 Q71.9 67.5 70.6 71.7 Q69.3 74.8 64.6 74" fill="none" stroke-width="1.3"/><ellipse cx="55" cy="64.4" rx="10.4" ry="2.9" fill="#b07a52" stroke-width="1.1"/><ellipse cx="55" cy="64.4" rx="3.9" ry="1.7" fill="#fff3e0" stroke="none"/><path d="M51.6 63.6 L51.9 61.8 L53.4 63.1 M58.4 63.6 L58.1 61.8 L56.6 63.1" fill="#fff3e0" stroke="none"/><path d="M48 68.3 V73.5" stroke="#fff" stroke-width="1.8" opacity=".8"/><circle cx="52" cy="70.4" r="0.8" fill="#7a5a50" stroke="none"/><circle cx="58" cy="70.4" r="0.8" fill="#7a5a50" stroke="none"/><path d="M53.5 71.8 Q54.2 73 55 71.9 Q55.8 73 56.5 71.8" fill="none" stroke-width="0.8"/><path d="M40.6 61 L41.5 52 L48.7 58.3Z M69.4 61 L68.5 52 L61.3 58.3Z" fill="#e3a07a"/><g class="steam" fill="none" stroke="#b9a08f" stroke-width="1.2" opacity="0.5"><path d="M52.7 52 Q50.9 48.4 52.7 45.7 Q54.5 43 52.7 40.3"/><path d="M57.3 51.1 Q55.5 47.5 57.3 44.8 Q59.1 42.1 57.3 39.4"/></g></g></svg></div>
+  <div class="rt rt-cafe rt-pos rt-menu" style="left:calc(var(--u)*50);top:calc(var(--u)*260);width:calc(var(--u)*140)" aria-hidden="true"><svg viewBox="0 0 140 120"><g stroke="#7a5a50" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="4" y="4" width="132" height="112" rx="6" fill="#c99a70"/><rect x="12" y="12" width="116" height="96" rx="3" fill="#3f4a44"/><text x="70" y="31" font-size="13" text-anchor="middle" fill="#fdf6e8" stroke="none" font-family="Huninn, sans-serif">MENU</text><path d="M40 36 H100" stroke="#fdf6e8" stroke-width="1" stroke-dasharray="2 2.6"/><g font-size="9.5" fill="#fdf6e8" stroke="none" font-family="Huninn, sans-serif"><text x="20" y="54">貓咪拿鐵</text><text x="98" y="54" text-anchor="end" fill="#f3b49a">80</text><text x="20" y="72">肉球鬆餅</text><text x="98" y="72" text-anchor="end" fill="#f3b49a">120</text><text x="20" y="90">小魚乾</text><text x="98" y="90" text-anchor="end" fill="#f3b49a">30</text></g><g stroke="#fdf6e8" stroke-width="1.1" fill="none"><path d="M104 46 H120 V52 Q120 60 112 60 Q104 60 104 52Z"/><path d="M120 48 Q125 49 120 55"/><path d="M109 42 Q107 39 109 36 M115 42 Q113 39 115 36"/></g><g stroke="#fdf6e8" stroke-width="1.1" fill="none"><ellipse cx="112" cy="86" rx="10" ry="4"/><path d="M102 86 V82 Q112 77 122 82 V86"/></g><path d="M112 83.3 C109.3 81.5 108.9 79.7 109.8 78.8 C110.6 78.1 111.6 78.4 112 79.3 C112.4 78.4 113.4 78.1 114.2 78.8 C115.1 79.7 114.7 81.5 112 83.3Z" fill="#f3b49a" stroke="none"/><g fill="#fdf6e8" stroke="none" opacity="0.7"><ellipse cx="30" cy="102.4" rx="3.6" ry="2.9"/><circle cx="26.2" cy="98.3" r="1.4"/><circle cx="28.7" cy="96.6" r="1.4"/><circle cx="31.3" cy="96.6" r="1.4"/><circle cx="33.8" cy="98.3" r="1.4"/></g><g fill="#fdf6e8" stroke="none" opacity="0.7"><ellipse cx="40" cy="104.4" rx="3.6" ry="2.9"/><circle cx="36.2" cy="100.3" r="1.4"/><circle cx="38.7" cy="98.6" r="1.4"/><circle cx="41.3" cy="98.6" r="1.4"/><circle cx="43.8" cy="100.3" r="1.4"/></g></g></svg></div>
+  <div class="rt rt-cafe rt-pos rt-sign" style="right:calc(var(--u)*70);top:calc(var(--u)*270);width:calc(var(--u)*110)" aria-hidden="true"><svg viewBox="0 0 110 110"><g stroke="#7a5a50" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M55 6 V20" /><path d="M55 20 L30 34 M55 20 L80 34" stroke-width="1.2"/><circle cx="55" cy="56" r="38" fill="#fff8ee"/><circle cx="55" cy="56" r="33" fill="none" stroke="#e3a07a" stroke-width="1.4" stroke-dasharray="3 3"/><ellipse cx="55" cy="80" rx="14.3" ry="3.4" fill="#e3a07a" stroke-width="1.2"/><path d="M44.6 64.4 H65.4 V72.2 Q65.4 78.7 55 78.7 Q44.6 78.7 44.6 72.2Z" fill="#e3a07a" stroke-width="1.2"/><path d="M65.4 67 Q71.9 67.5 70.6 71.7 Q69.3 74.8 64.6 74" fill="none" stroke-width="1.3"/><ellipse cx="55" cy="64.4" rx="10.4" ry="2.9" fill="#b07a52" stroke-width="1.1"/><ellipse cx="55" cy="64.4" rx="3.9" ry="1.7" fill="#fff3e0" stroke="none"/><path d="M51.6 63.6 L51.9 61.8 L53.4 63.1 M58.4 63.6 L58.1 61.8 L56.6 63.1" fill="#fff3e0" stroke="none"/><path d="M48 68.3 V73.5" stroke="#fff" stroke-width="1.8" opacity=".8"/><circle cx="52" cy="70.4" r="0.8" fill="#7a5a50" stroke="none"/><circle cx="58" cy="70.4" r="0.8" fill="#7a5a50" stroke="none"/><path d="M53.5 71.8 Q54.2 73 55 71.9 Q55.8 73 56.5 71.8" fill="none" stroke-width="0.8"/><path d="M40.6 61 L41.5 52 L48.7 58.3Z M69.4 61 L68.5 52 L61.3 58.3Z" fill="#e3a07a"/><g class="steam" fill="none" stroke="#b9a08f" stroke-width="1.2" opacity="0.5"><path d="M52.7 52 Q50.9 48.4 52.7 45.7 Q54.5 43 52.7 40.3"/><path d="M57.3 51.1 Q55.5 47.5 57.3 44.8 Q59.1 42.1 57.3 39.4"/></g></g></svg></div>
   <div class="rt rt-cafe rt-pos" style="left:calc(var(--u)*4);bottom:calc(var(--floorH) - var(--u)*46);width:calc(var(--u)*80);z-index:1" aria-hidden="true"><svg viewBox="0 0 120 230"><g stroke="#7a5a50" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="54" y="40" width="12" height="186" rx="4" fill="#efc2a5"/><path d="M54 60 H66 M54 80 H66 M54 100 H66 M54 120 H66 M54 140 H66 M54 160 H66 M54 180 H66 M54 200 H66" stroke-width="1" opacity=".5"/><rect x="14" y="218" width="92" height="10" rx="4" fill="#b98d66"/><rect x="10" y="30" width="62" height="14" rx="6" fill="#b98d66"/><rect x="50" y="120" width="62" height="14" rx="6" fill="#b98d66"/><path d="M26 8 Q40 0 56 8 L56 30 H26Z" fill="#e3a07a"/><ellipse cx="41" cy="30" rx="18" ry="4" fill="#9d7350"/><circle cx="96" cy="150" r="6" fill="#f4a7bd"/><path d="M96 134 V144" stroke-width="1.2"/></g></svg></div>
   <div class="h-floor"></div>
   <div class="h-rug"></div>
@@ -3271,7 +3283,8 @@ function curtainHTML() {
       <path d="M0 12 H${W}" fill="none" class="trim-line" stroke-width="3"/>
       <path d="${folds}" fill="none" stroke-width="1.2" opacity=".3"/>${poms}${cord}</g></svg>`;
   }
-  const pw = lerp(openPanelW(W), W / 2 + out + 10, curtainShut), ph = H + 18;
+  // 簾子垂到窗台上面就好（寬螢幕掛在窗框上方 20px 的桿子上，所以多 20）
+  const pw = lerp(openPanelW(W), W / 2 + out + 10, curtainShut), ph = H + (out ? 14 : -6);
   return sidePanel("l", pw, ph, curtainStyle) + sidePanel("r", pw, ph, curtainStyle);
 }
 function renderCurtains() {
@@ -3328,6 +3341,15 @@ function bindCurtainDrag(svg) {
   };
 }
 addEventListener("resize", () => { clearTimeout(renderCurtains.t); renderCurtains.t = setTimeout(renderCurtains, 200); });
+// 窗戶的大小一變就重畫，簾子才不會停在舊的長度
+if ("ResizeObserver" in window) {
+  let lastSize = "";
+  new ResizeObserver(() => {
+    const w = document.querySelector(".big-window"), size = w.offsetWidth + "x" + w.offsetHeight;
+    if (size === lastSize) return;
+    lastSize = size; clearTimeout(renderCurtains.t); renderCurtains.t = setTimeout(renderCurtains, 60);
+  }).observe(document.querySelector(".big-window"));
+}
 $("curtainBtn").onclick = e => {
   e.stopPropagation();
   const keys = Object.keys(CURTAINS);
@@ -3586,6 +3608,23 @@ function dockLook(pose, secs) {
   dockCat.className = "cat " + pose;
   dockTimer = secs ?? 5 + Math.random() * 5;
 }
+// 縮在右下角時，也會沿著畫面下方慢慢走來走去（dockX：離開坐墊多遠，往左是負的）
+let dockX = 0;
+function dockWalk(x) {
+  const w = $("dock").offsetWidth, min = -(innerWidth - w - 16);
+  x = Math.max(min, Math.min(0, x));
+  const dist = Math.abs(x - dockX);
+  if (dist < 8) return false;
+  const secs = dist / (34 + 30 * petEnergy());
+  const flip = dockCat.querySelector(".flip");
+  if (flip) flip.style.transform = `scaleX(${x < dockX ? -1 : 1})`;
+  syncStep(dockCat, dist / secs, dockCat.offsetWidth);
+  dockCat.style.setProperty("--walk", secs.toFixed(2) + "s");
+  dockCat.style.transform = `translateX(${x}px)`;
+  dockX = x;
+  dockLook("walk", secs + .1);
+  return true;
+}
 
 // ---------- 說話泡泡：跟著寵物 ----------
 let typing = null, bubbleHide = null, lastTalk = Date.now();
@@ -3810,6 +3849,7 @@ function placeBuddy() {
     const S = roomSpots(), home = S.home || { x: S.gutters[0][0], y: S.floorY };
     rb.x = home.x; rb.y = home.y; rb.dir = 1; rbPlace = S.home ? "home" : "floor";
     rbLook("loaf"); setRB(0);
+    dockX = 0; dockCat.style.transform = ""; dockCat.style.removeProperty("--walk");   // 回到房間：右下角的那隻歸位
     roomInterrupt(() => rbStay("loaf", 8 + Math.random() * 10));   // 一開始先在貓床窩一下
   } else {
     rbFreeze(); roomRun++;
@@ -3864,12 +3904,19 @@ dockCat.onclick = petBuddy;
 
 // 右下角時：自己待著（坐、理毛、趴、睡）
 setInterval(() => {
-  if (inRoom) return;
+  if (inRoom || outside || document.hidden) return;
   dockTimer -= .5;
   if (dockTimer > 0) return;
-  const acts = buddyFace() === "tired" ? { sleep: 4, loaf: 2, sit: 1 } : { sit: 3, groom: 2, loaf: 2, sleep: 1 };
+  const tired = buddyFace() === "tired", home = dockX === 0;
+  // 在坐墊上才會趴著睡；走出去的話，偶爾坐一下、理理毛，最後走回坐墊
+  const acts = home ? (tired ? { sleep: 4, loaf: 2, sit: 1, wander: 1 } : { sit: 3, groom: 2, loaf: 2, sleep: 1, wander: 3 + 3 * petEnergy() })
+                    : { sit: 2, groom: 1, wander: 2, home: 2 + (tired ? 3 : 0) };
   let r = Math.random() * Object.values(acts).reduce((a, b) => a + b, 0);
-  dockLook(Object.keys(acts).find(k => (r -= acts[k]) <= 0) || "sit");
+  const act = Object.keys(acts).find(k => (r -= acts[k]) <= 0) || "sit";
+  if (act === "wander") { if (dockWalk(-Math.random() * innerWidth)) return; }
+  if (act === "home") { if (dockWalk(0)) return; }
+  if (dockPose === "walk") { const f = dockCat.querySelector(".flip"); if (f && dockX < 0 && Math.random() < .5) f.style.transform = "scaleX(1)"; }
+  dockLook(act === "wander" || act === "home" ? "sit" : act);
 }, 500);
 
 // ---------- 寵物設定：名字、花色 ----------
