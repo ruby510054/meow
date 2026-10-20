@@ -99,6 +99,17 @@ Press "Go outside" to take your pet out to the meadow and play with the other ca
 ### Online
 Just open <https://ruby510054.github.io/meow/>. A recent version of Chrome, Edge, Firefox or Safari is recommended.
 
+### Install as an app
+Mood Meadow can be installed like an app on your computer or phone, with its own icon and window, and it works offline:
+
+- **Windows / Mac**: open the site in Chrome or Edge and click the "Install" icon at the right of the address bar
+- **iPhone / iPad**: open it in Safari, tap "Share" → "Add to Home Screen"
+- **Android**: open it in Chrome and choose "Install app" or "Add to Home screen" from the menu
+
+On a phone held sideways, it switches to a landscape layout: the window fills most of the screen, with the buttons underneath.
+
+You need an internet connection the first time. After that it works offline. The font is saved bit by bit while you're online; if offline text uses characters that haven't been saved yet, the system font is shown for them.
+
 ### On your own computer
 Download or clone this project and open `index.html` in a browser.
 
@@ -139,6 +150,7 @@ So the page works as a single file, `index.html` contains an identical copy (ins
 ## Tech
 
 - The whole site is one `index.html`: plain HTML, CSS and JavaScript, with no packages and no build step
+- It's a PWA: `manifest.webmanifest` makes it installable, and `sw.js` caches the page, icons and font for offline use. After changing `index.html`, bump the cache version in `sw.js` (`mood-meadow-v2`) so installed copies update
 - Cats, furniture and weather are SVGs drawn in code
 - Background music and purring are synthesized live with the Web Audio API; meows are trimmed real recordings embedded in the file
 - The font is [jf open Huninn](https://fonts.google.com/specimen/Huninn) from Google Fonts; it needs an internet connection, otherwise the system font is used
@@ -147,6 +159,9 @@ So the page works as a single file, `index.html` contains an identical copy (ins
 .
 ├── index.html     # the whole site
 ├── mood.json      # feeling definitions
+├── manifest.webmanifest  # app name, icons and colors for installing
+├── sw.js          # service worker for offline use
+├── icons/         # app icons
 ├── README.md      # Chinese README
 ├── README.en.md   # English README
 ├── LICENSE        # MIT license

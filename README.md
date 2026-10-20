@@ -85,6 +85,17 @@
 ### 線上使用
 直接打開 <https://ruby510054.github.io/meow/> 就可以了。建議使用 Chrome、Edge、Firefox 或 Safari 的新版本。
 
+### 安裝成 app
+心情草原可以像 app 一樣裝在電腦或手機上，有自己的圖示、開成獨立視窗，沒有網路時也打得開：
+
+- **Windows／Mac 電腦**：用 Chrome 或 Edge 打開網址，按網址列右邊的「安裝」圖示
+- **iPhone／iPad**：用 Safari 打開，按「分享」→「加入主畫面」
+- **Android**：用 Chrome 打開，按選單裡的「安裝應用程式」或「加到主畫面」
+
+手機橫著拿時，畫面會換成橫版：窗戶放大到幾乎整個螢幕，按鈕排在下面。
+
+第一次打開時要有網路，之後就可以離線使用。字型會在有網路時慢慢存起來，離線時如果遇到還沒存過的字，會暫時用系統字型顯示。
+
 ### 在自己的電腦上使用
 下載或 clone 這個專案，用瀏覽器打開 `index.html`。
 
@@ -125,6 +136,7 @@ special_options：mixed（混合情緒）、unsure（說不上來）
 ## 技術
 
 - 整個網頁就是一個 `index.html`：純 HTML、CSS、JavaScript，不需要安裝套件，也不需要建置
+- 是一個 PWA：`manifest.webmanifest` 讓它可以安裝成 app，`sw.js` 把網頁、圖示和字型存起來，離線也能用。改了 `index.html` 之後，記得把 `sw.js` 裡的版本號（`mood-meadow-v2`）加一，已經安裝的人才會換成新版
 - 貓咪、家具、天氣都是用程式畫的 SVG
 - 背景音樂和呼嚕聲用 Web Audio API 即時合成；喵叫聲是剪輯過的真實錄音，直接嵌在檔案裡
 - 字型使用 Google Fonts 上的 [jf open 粉圓（Huninn）](https://fonts.google.com/specimen/Huninn)，需要網路才會載入，沒有網路時會改用系統字型
@@ -133,6 +145,9 @@ special_options：mixed（混合情緒）、unsure（說不上來）
 .
 ├── index.html     # 整個網頁
 ├── mood.json      # 情緒分類
+├── manifest.webmanifest  # 安裝成 app 用的說明檔（名稱、圖示、顏色）
+├── sw.js          # 讓網頁能離線打開（service worker）
+├── icons/         # app 圖示
 ├── README.md      # 中文說明
 ├── README.en.md   # 英文說明
 ├── LICENSE        # MIT 授權

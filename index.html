@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>心情草原 Mood Meadow</title>
+<!-- 可以安裝成 app（PWA）：app 名稱、圖示、主題色 -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#fdf1f4">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="心情草原">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
 <style>
@@ -668,6 +677,29 @@
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  /* 手機橫放：一個畫面放得下窗戶和按鈕，不用捲動 */
+  @media (orientation: landscape) and (max-height: 520px) {
+    .wrap { max-width: none; padding: 6px 12px; }
+    body.docked .wrap { padding-bottom: 6px; }
+    header { flex-wrap: nowrap; gap: 6px; margin-bottom: 6px; }
+    h1 { font-size: 18px; white-space: nowrap; }
+    header button { font-size: 12px !important; padding: 3px 8px !important; }
+    .buddy-btn + .buddy-btn { margin-left: 4px; }
+    .music { gap: 4px; } .music input { display: none; }
+    .themes { font-size: 0; gap: 4px; flex-wrap: nowrap; }
+    .themes button { width: 16px; height: 16px; border-width: 1.5px; }
+    .themes button.on { outline-offset: 2px; }
+    .big-window { margin: 0 0 24px; }   /* 窗台會往下凸出一點，留空間給它 */
+    .meadow { height: calc(100vh - 136px); height: calc(100dvh - 136px); min-height: 170px; border-width: 8px; }
+    .curtain-btns, .note, .h-rug, .h-bed, .rt, .h-lights, .h-hang { display: none !important; }
+    .h-fishbowl, .h-shelf, .h-clock, .h-desk, .h-chair, .h-bigbed, .h-lamp, .h-sofa, .h-hoop, .h-poster, .h-paws, .h-wreath, .h-plant { display: none; }
+    .toolbar { margin: 0; gap: 8px; }
+    .tool-btn { font-size: 14px; padding: 5px 14px; }
+    .dock { width: 70px; height: 62px; bottom: 4px; }
+    .dock .cushion { width: 64px; height: 15px; }
+    .dock .cat { width: 66px; left: 2px; bottom: 4px; }
   }
 </style>
 </head>
@@ -1601,12 +1633,12 @@ function headArt(mood, coat = mood, acc = null) {
       fill="none" stroke="${wc}" stroke-width=".7" opacity=".55"/>`;
   return `${A.back}
     <g transform="rotate(${-er} 88 30) translate(0 ${ey})">
-      <path d="M81.5 36 C80.5 26 82.5 17 86.5 11.5 C91.5 15 95.5 20 97.5 26" fill="${earL}"/>
-      <path d="M84.5 30 C84 24 85 19 87 15.5 C90 18 92.5 21 94 25Z" fill="#F8B5C4" stroke="none"/>
+      <path d="M81.5 36 C80.6 28.5 81.6 21.6 84.4 17.4 Q86.6 14.6 89.6 16.6 C93.4 19.2 96.2 22.4 97.5 26" fill="${earL}"/>
+      <path d="M84.6 30.4 C84.4 26 85.2 22.4 86.6 20 Q87.8 18.6 89.4 19.8 C91.4 21.4 93 23.2 94 25.6Z" fill="#F8B5C4" stroke="none"/>
     </g>
     <g transform="rotate(${er} 112 30) translate(0 ${ey})">
-      <path d="M118.5 36 C119.5 26 117.5 17 113.5 11.5 C108.5 15 104.5 20 102.5 26" fill="${earR}"/>
-      <path d="M115.5 30 C116 24 115 19 113 15.5 C110 18 107.5 21 106 25Z" fill="#F8B5C4" stroke="none"/>
+      <path d="M118.5 36 C119.4 28.5 118.4 21.6 115.6 17.4 Q113.4 14.6 110.4 16.6 C106.6 19.2 103.8 22.4 102.5 26" fill="${earR}"/>
+      <path d="M115.4 30.4 C115.6 26 114.8 22.4 113.4 20 Q112.2 18.6 110.6 19.8 C108.6 21.4 107 23.2 106 25.6Z" fill="#F8B5C4" stroke="none"/>
     </g>
     <path d="M81 42 C80 30 89 25 100 25 C111 25 120 30 119 42 C120.5 45 118.5 48.5 119.5 50.5 C116 55.5 109 59 100 59 C91 59 84 55.5 80.5 50.5 C81.5 48.5 79.5 45 81 42Z" fill="${m.fur}"/>
     ${m.patches ? `<path d="M83 38 C82 31 88 27 95 27.5 C96 32 91 37 83 38Z" fill="${m.patches[0]}" stroke="none"/>
@@ -4586,6 +4618,11 @@ function applyLang(lang, save = true) {
 buildEmotionEN();
 $("langBtn").onclick = () => applyLang(LANG === "en" ? "zh" : "en");
 applyLang(LANG, false);
+
+// ---------- 可以安裝成 app：註冊 service worker（直接打開本機檔案時不需要）----------
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
 </script>
 </body>
 </html>
