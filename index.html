@@ -470,6 +470,10 @@
     display: block; position: fixed; top: 16px; left: 16px; z-index: 50; font: inherit; font-size: 17px; color: var(--ink); cursor: pointer;
     background: var(--card); border: 2px solid var(--line); border-radius: var(--wobble); padding: 8px 22px; box-shadow: var(--shadow);
   }
+  /* 手機直拿出門：草原轉 90 度變成橫的，把手機轉過來看 */
+  body.outside.rot .big-window { inset: auto; left: 0; top: 0; width: 100vh; width: 100dvh; height: 100vw; max-width: none;
+    transform-origin: 0 0; transform: rotate(90deg) translateY(-100%); }
+  body.outside.rot .meadow { height: 100vw; }
   .meadow .cat[data-pet] .hopper > svg { filter: opacity(calc(1 - var(--far, 0) * .1)); }   /* 寵物不套用遠處的柔化 */
   .fade { position: fixed; inset: 0; z-index: 70; background: var(--accent-soft); opacity: 0; pointer-events: none; transition: opacity .38s; }
   .fade.on { opacity: 1; }
@@ -691,7 +695,8 @@
     .themes { font-size: 0; gap: 4px; flex-wrap: nowrap; }
     .themes button { width: 16px; height: 16px; border-width: 1.5px; }
     .themes button.on { outline-offset: 2px; }
-    .big-window { margin: 0 auto 24px; max-width: calc((100vh - 136px) * 2.1); max-width: calc((100dvh - 136px) * 2.1); }   /* 窗台會往下凸出一點，留空間給它；窗戶維持大約 2:1，不要拉得太扁 */
+    .big-window { margin: 0 auto 24px; max-width: calc((100vh - 136px) * 2.1); max-width: calc((100dvh - 136px) * 2.1); }
+    body.outside .big-window { max-width: none; margin: 0; }   /* 出門時佔滿整個畫面 */   /* 窗台會往下凸出一點，留空間給它；窗戶維持大約 2:1，不要拉得太扁 */
     .meadow { height: calc(100vh - 136px); height: calc(100dvh - 136px); min-height: 170px; border-width: 8px; }
     .curtain-btns, .note, .h-rug, .h-bed, .h-lights, .h-hang { display: none !important; }
     .rt:not(.rt-menu):not(.rt-sign) { display: none !important; }
@@ -2750,6 +2755,10 @@ meadow.addEventListener("click", e => {
   if (reduceMotion || e.target.closest(".cat, .toy, .label")) return;
   // 扣掉窗框的寬度（草原的座標從窗框內側開始算）
   const r = meadow.getBoundingClientRect(), fx = meadow.clientLeft, fy = meadow.clientTop;
+  if (document.body.classList.contains("rot")) {   // 草原轉了 90 度：畫面的上下是草原的左右，畫面的左邊是草原的底部
+    dropTreat(e.clientY - r.top, Math.min(Y_MAX, Math.max(Y_MIN, e.clientX - r.left)));
+    return;
+  }
   dropTreat(e.clientX - r.left - fx, Math.min(Y_MAX, Math.max(Y_MIN, r.bottom - fy - e.clientY)));
 });
 function dropTreat(x, y) {
@@ -4562,12 +4571,17 @@ function fadeSwap(fn) {
   f.classList.add("on");
   setTimeout(() => { fn(); requestAnimationFrame(() => f.classList.remove("on")); }, 380);
 }
+// 手機直拿時，出門走走的草原轉成橫的；能鎖定方向的裝置（例如 Android 的 app）直接鎖成橫向
+const phonePortrait = () => matchMedia("(orientation: portrait) and (max-width: 700px)").matches;
+function updateRot() { document.body.classList.toggle("rot", outside && phonePortrait()); }
 function goOut() {
   if (outside) return;
   closeDrawers();
   fadeSwap(() => {
     outside = true;
     document.body.classList.add("outside");
+    updateRot();
+    try { screen.orientation?.lock?.("landscape").catch(() => {}); } catch (e) {}
     roomRun++; roomBuddy.hidden = true;   // 房間裡的寵物先停下來（牠跟你出門了）
     sizeMeadow();
     renderMeadow(!reduceMotion);
@@ -4581,6 +4595,8 @@ function goHome() {
     if (petCat) { removeCat(petCat); petCat = null; }
     outside = false;
     document.body.classList.remove("outside");
+    updateRot();
+    try { screen.orientation?.unlock?.(); } catch (e) {}
     sizeMeadow();
     renderMeadow();
     ball.x = meadow.clientWidth * .6; moveBall(0, meadow.clientWidth);
@@ -4592,6 +4608,30 @@ function goHome() {
 $("goOut").onclick = goOut;
 $("homeBtn").onclick = goHome;
 document.addEventListener("keydown", e => { if (e.key === "Escape" && outside && !document.querySelector("dialog[open]")) goHome(); });
+
+// 轉向、視窗大小改變：草原、貓的大小和可以走的範圍重新算，右下角的寵物也不要停在畫面外
+let lastMeadow = "";
+function onMeadowResize() {
+  updateRot();
+  const size = meadow.clientWidth + "x" + meadow.clientHeight;
+  if (size === lastMeadow) return;
+  lastMeadow = size;
+  sizeMeadow();
+  const [lo, hi] = roamRange();
+  cats.forEach(c => {
+    const [a, b] = roamRange(c);
+    c.x = Math.min(Math.max(c.x, a), b); c.tx = Math.min(Math.max(c.tx, a), b);
+    if (c.wrap) { c.wrap = null; pickMode(c); }
+    draw(c);
+  });
+  ball.x = Math.min(Math.max(ball.x, 0), meadow.clientWidth - 30); moveBall(0, meadow.clientWidth);
+  if (dockX) {
+    const min = -(innerWidth - $("dock").offsetWidth - 16);
+    if (dockX < min) { dockX = min; dockCat.style.setProperty("--walk", "0s"); dockCat.style.transform = `translateX(${dockX}px)`; }
+  }
+}
+if ("ResizeObserver" in window) new ResizeObserver(() => { clearTimeout(onMeadowResize.t); onMeadowResize.t = setTimeout(onMeadowResize, 80); }).observe(meadow);
+addEventListener("resize", () => { clearTimeout(onMeadowResize.t); onMeadowResize.t = setTimeout(onMeadowResize, 120); });
 
 renderMoods();
 renderCoats();
