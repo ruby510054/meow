@@ -1,6 +1,6 @@
 // 心情草原的 service worker：讓網頁可以安裝成 app、沒有網路時也打得開
 // 改了網頁或圖示之後，把版本號加一，使用者下次打開就會換成新版
-const CACHE = "mood-meadow-v6";
+const CACHE = "mood-meadow-v7";
 const CORE = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png",
   "icons/icon-maskable-512.png", "icons/apple-touch-icon.png", "icons/favicon-32.png"];
 

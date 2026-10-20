@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>心情草原 Mood Meadow</title>
 <!-- 可以安裝成 app（PWA）：app 名稱、圖示、主題色 -->
 <link rel="manifest" href="manifest.webmanifest">
@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="心情草原">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
 <style>
@@ -717,6 +717,17 @@
     .dock { width: 70px; height: 62px; bottom: 4px; }
     .dock .cushion { width: 64px; height: 15px; }
     .dock .cat { width: 66px; left: 2px; bottom: 4px; }
+  }
+
+  /* iPhone 的瀏海、狀態列、底部橫條：畫面延伸到後面（草原、房間的牆鋪滿），按鈕和文字避開 */
+  .wrap { padding-top: max(20px, env(safe-area-inset-top)); padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+  .dock { bottom: calc(8px + env(safe-area-inset-bottom)); right: calc(10px + env(safe-area-inset-right)); }
+  body.outside .home-btn { top: calc(16px + env(safe-area-inset-top)); left: calc(16px + env(safe-area-inset-left)); }
+  /* 直拿轉成橫的時候：畫面的上方（狀態列）變成草原的左邊，底部橫條變成右邊 */
+  body.outside.rot .home-btn { top: 16px; left: calc(16px + env(safe-area-inset-top)); }
+  @media (orientation: landscape) and (max-height: 520px) {
+    .wrap { padding: max(6px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) 6px max(12px, env(safe-area-inset-left)); }
+    .dock { bottom: calc(4px + env(safe-area-inset-bottom)); }
   }
 </style>
 </head>
