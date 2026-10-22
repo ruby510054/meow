@@ -450,6 +450,10 @@
     border: 1.5px solid var(--line); border-radius: var(--wobble2); padding: 3px 12px; box-shadow: var(--shadow);
   }
   .buddy-btn { margin-left: auto; }
+  .notice { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); z-index: 70; transform: translate(-50%, 12px); opacity: 0; pointer-events: none;
+    max-width: calc(100vw - 32px); padding: 8px 18px; font-size: 14px; color: var(--ink); background: var(--card); border: 1.5px solid var(--line);
+    border-radius: var(--wobble2); box-shadow: var(--shadow); transition: opacity .3s, transform .3s; }
+  .notice.show { opacity: 1; transform: translate(-50%, 0); }
   .buddy-bubble {
     position: fixed; z-index: 6; max-width: 260px; font-size: 15px; line-height: 1.55; pointer-events: none;
     background: var(--card); border: 2px solid var(--line); border-radius: var(--wobble2); padding: 8px 14px;
@@ -875,7 +879,7 @@
     <h1><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><ellipse class="a" cx="12" cy="15.5" rx="4.6" ry="3.8"/><circle class="a" cx="5.6" cy="10.6" r="2"/><circle class="a" cx="9.2" cy="6.6" r="2"/><circle class="a" cx="14.8" cy="6.6" r="2"/><circle class="a" cx="18.4" cy="10.6" r="2"/></svg> 心情草原</h1>
     <button class="buddy-btn" id="langBtn" data-noi18n>EN</button>
     <button class="buddy-btn" id="roomBtn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M6 10.5 V19.5 H18 V10.5"/><path d="M3.8 11.6 L12 4.5 L20.2 11.6"/><path d="M10 19.5 V14.5 Q10 13.5 11 13.5 H13 Q14 13.5 14 14.5 V19.5"/></svg> 房間</button>
-    <button class="buddy-btn" id="buddyBtn" title="我的寵物"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M5.2 9.5 L5.8 3.8 L10 7 Q12 6.4 14 7 L18.2 3.8 L18.8 9.5 Q20.4 13.4 18 16.6 Q15.6 19.6 12 19.6 Q8.4 19.6 6 16.6 Q3.6 13.4 5.2 9.5Z"/><circle class="k" cx="9.3" cy="12.2" r="1"/><circle class="k" cx="14.7" cy="12.2" r="1"/><path d="M11 14.6 Q12 15.6 13 14.6" stroke-width="1.3"/></svg> 寵物</button>
+    <button class="buddy-btn" id="buddyBtn" title="房間裡的貓"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M5.2 9.5 L5.8 3.8 L10 7 Q12 6.4 14 7 L18.2 3.8 L18.8 9.5 Q20.4 13.4 18 16.6 Q15.6 19.6 12 19.6 Q8.4 19.6 6 16.6 Q3.6 13.4 5.2 9.5Z"/><circle class="k" cx="9.3" cy="12.2" r="1"/><circle class="k" cx="14.7" cy="12.2" r="1"/><path d="M11 14.6 Q12 15.6 13 14.6" stroke-width="1.3"/></svg> 寵物</button>
     <div class="music">
       <button id="sfxBtn" aria-pressed="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M6.2 16.5 V11.2 A5.8 5.8 0 0 1 17.8 11.2 V16.5 L19.4 18 H4.6Z"/><path d="M10.2 18.4 A1.9 1.9 0 0 0 13.8 18.4 M12 3.8 V5.4"/></svg> 音效開</button>
       <input type="range" id="sfxVol" min="0" max="1" step="0.05" aria-label="音效音量">
@@ -963,7 +967,7 @@
       <p class="hint" id="hint">選一個最接近的感覺</p>
       <div id="picker"></div>
       <div class="acc-preview" id="accPreview" hidden></div>
-      <textarea id="text" placeholder="想說點什麼嗎？"></textarea>
+      <textarea id="text" placeholder="寫一點什麼（可以不寫）"></textarea>
       <button class="save" id="save">記錄下來 <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M3.2 12 C6 7.2 12 7 15.6 10.8 L19.8 7.8 V16.2 L15.6 13.2 C12 17 6 16.8 3.2 12Z"/><circle class="k" cx="7.6" cy="11.2" r="1"/></svg></button>
       <div class="today" id="today"></div>
     </section>
@@ -987,7 +991,8 @@
   <div class="cushion"></div>
   <div class="cat sit" id="buddy" role="button"></div>
 </div>
-<div class="buddy-bubble" id="bubble" aria-hidden="true"></div><p class="sr-only" id="bubbleSr" aria-live="polite"></p>
+<div class="notice" id="notice" role="status"></div>
+
 
 <dialog class="card day-dlg about-dlg" id="aboutDlg" aria-labelledby="aboutTitle">
   <div class="dlg-head"><h2 id="aboutTitle">關於心情草原</h2><button class="dlg-x" data-close-about aria-label="關閉">×</button></div>
@@ -1013,7 +1018,7 @@
   <div class="clear-opt danger-box">
     <p class="warn">清除之後就找不回來了，建議先下載一份備份檔。</p>
     <button class="btn" id="clearBackup"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 14.5 V18.5 Q4.5 19.6 5.6 19.6 H18.4 Q19.5 19.6 19.5 18.5 V14.5 M12 4.2 V14 M8.2 10.4 L12 14.2 L15.8 10.4"/></svg> 先下載備份檔</button>
-    <label class="clear-reset"><input type="checkbox" id="clearReset"> 寵物和設定也一起重設（名字、花色、一起生活的天數、主題色、窗簾、音樂和音效）</label>
+    <label class="clear-reset"><input type="checkbox" id="clearReset"> 房間的貓和設定也一起重設（名字、花色、主題色、窗簾、音樂、音效和語言）</label>
     <button class="btn danger" id="clearAll">清除所有心情記錄</button>
   </div>
 </dialog>
@@ -1024,11 +1029,10 @@
 </dialog>
 
 <dialog class="card day-dlg" id="buddyDlg" aria-labelledby="buddyDlgTitle">
-  <div class="dlg-head"><h2 id="buddyDlgTitle">我的寵物</h2><button class="dlg-x" id="buddyDlgClose" aria-label="關閉">×</button></div>
-  <p class="pet-days" id="petDays"></p>
+  <div class="dlg-head"><h2 id="buddyDlgTitle">房間裡的貓</h2><button class="dlg-x" id="buddyDlgClose" aria-label="關閉">×</button></div>
   <label class="buddy-name">名字 <input id="buddyName" maxlength="8"></label>
   <div class="coats" id="coats"></div>
-  <p class="dlg-empty">牠平常住在你的房間裡，最喜歡書桌下的貓床。點牠可以摸摸喔</p>
+  <p class="dlg-empty">牠會在房間裡自己活動，表情跟著現在的情緒。</p>
 </dialog>
 
 <dialog class="card day-dlg" id="dayDlg" aria-labelledby="dlgTitle">
@@ -1229,40 +1233,25 @@ const MEOW_CLIPS = [
 const EN = {
   // 標題、按鈕
   "心情草原 Mood Meadow": "Mood Meadow", "心情草原": "Mood Meadow",
-  "房間": "Room", "我的寵物": "My pet", "寵物": "Pet", "音效開": "Sound on", "音效關": "Sound off", "音效音量": "Sound volume",
+  "房間": "Room", "寵物": "Pet", "音效開": "Sound on", "音效關": "Sound off", "音效音量": "Sound volume",
   "音樂開": "Music on", "音樂關": "Music off", "音量": "Volume", "顏色": "Color",
   "櫻花粉": "Sakura", "蜜桃": "Peach", "薰衣草": "Lavender", "薄荷": "Mint", "天空": "Sky", "檸檬": "Lemon", "莓果": "Berry", "可可": "Cocoa",
   "奶白": "Milk", "拿鐵": "Latte", "焦糖": "Caramel", "草莓牛奶": "Strawberry milk", "抹茶": "Matcha", "藍莓優格": "Blueberry yogurt", "焙茶": "Hojicha", "夜空": "Night sky",
   "回家": "Go home", "記錄心情": "Log mood", "心情日曆": "Mood calendar", "出門走走": "Go outside", "收起來": "Hide",
   "現在的心情": "How do you feel right now?",
-  "先選一個最接近的區塊，再挑一個詞；記錄之後貓咪會跑進草原裡玩喔！一天可以記很多次～": "Pick the closest area first, then a word. After you log it, a cat will run into the meadow to play! You can log as many times a day as you like~",
-  "先選一個最接近的區塊，再挑一個詞；記錄之後貓咪會跑進草原裡玩喔！": "Pick the closest area first, then a word. After you log it, a cat will run into the meadow to play!",
-  "想說點什麼嗎？": "Anything you want to say? (optional)",
-  "發生了什麼事？": "What happened? How does your body feel? (optional)",
-  "記錄下來 🐟": "Log it 🐟", "上個月": "Previous month", "下個月": "Next month",
-  "下載備份檔": "Download backup", "從備份檔讀取": "Load from backup", "清除資料": "Clear data", "關於心情草原": "About Mood Meadow",
-  "記錄只存在這個瀏覽器裡，而且只留最近七天 · 想換瀏覽器或電腦，可以先下載備份檔": "Entries stay only in this browser, and only for the last 7 days · To move to another browser or computer, download a backup first",
-  "喵叫聲錄音來自 Wikimedia Commons：Tsester、freemaster2（CC0）、PantheraLeo1359531（": "Meow recordings from Wikimedia Commons: Tsester, freemaster2 (CC0), PantheraLeo1359531 (",
+            "下載備份檔": "Download backup", "從備份檔讀取": "Load from backup", "清除資料": "Clear data", "關於心情草原": "About Mood Meadow",
+    "喵叫聲錄音來自 Wikimedia Commons：Tsester、freemaster2（CC0）、PantheraLeo1359531（": "Meow recordings from Wikimedia Commons: Tsester, freemaster2 (CC0), PantheraLeo1359531 (",
   "），已剪輯並調高音調": "), trimmed and pitched up",
   "關閉": "Close", "換個房間": "Change room", "名字": "Name",
-  "牠平常住在你的房間裡，最喜歡書桌下的貓床。點牠可以摸摸喔": "It lives in your room and loves the cat bed under the desk. Click it to pet it",
-  "補記一筆": "Add an entry",
+    "補記一筆": "Add an entry",
   // 關於
-  "心情草原是一個讓人練習": "Mood Meadow is a little place to practice ", "覺察和表達情緒": "noticing and expressing your feelings",
-  "的小地方。每天花幾秒鐘，跟貓咪說說現在的感覺吧。": ". Take a few seconds each day to tell a cat how you feel.",
-  "練習說出情緒，有什麼好處？": "Why put feelings into words?",
-  "說出來，情緒會緩和一點": "Naming a feeling softens it", "：替情緒命名，本身就是一種調節情緒的方式": ": putting a name to a feeling is itself a way of regulating it",
-  "分得越細，越能好好面對": "Finer words, better coping", "：比較容易找到適合的方法照顧自己。心情草原準備了很多情緒詞，希望讓人比較容易分辨自己的情緒": ": it's easier to find the right way to look after yourself. Mood Meadow has lots of feeling words to help you tell your feelings apart",
-  "寫下來，對身心都有幫助": "Writing it down helps", "：把感受寫下來，是很多人整理心情的方式": ": writing down how you feel is how many people sort out their emotions",
-  "情緒會隨著時間變淡": "Feelings fade with time", "：所以記錄只留七天，草原上的貓咪身影也會慢慢變淡": ": so entries only stay for 7 days, and the cats in the meadow slowly fade too",
-  "心情草原是陪你練習的小工具，不能取代專業的協助。如果最近常常覺得撐不住，或是有傷害自己的念頭，請找信任的人聊聊，或撥打": "Mood Meadow is a small practice tool and can't replace professional help. If you often feel you can't cope, or have thoughts of hurting yourself, please talk to someone you trust, or call ",
+                "心情草原是陪你練習的小工具，不能取代專業的協助。如果最近常常覺得撐不住，或是有傷害自己的念頭，請找信任的人聊聊，或撥打": "Mood Meadow is a small practice tool and can't replace professional help. If you often feel you can't cope, or have thoughts of hurting yourself, please talk to someone you trust, or call ",
   "安心專線 1925": "Taiwan Mental Health Hotline 1925", "（24 小時，免付費）、": " (24 hours, free), ", "GitHub 上的介紹": "the GitHub page", "生命線 1995": "Lifeline 1995", "張老師 1980": "Teacher Chang 1980",
   "更多說明，請看": "For more details, see ",
   // 清除
   "只清除示範資料": "Only clear the demo entries", "你自己記的心情會留著": "Your own entries will stay",
   "清除之後就找不回來了，建議先下載一份備份檔。": "This can't be undone. Download a backup first.", "先下載備份檔": "Download a backup first",
-  "寵物和設定也一起重設（名字、花色、一起生活的天數、主題色、窗簾、音樂和音效）": "Also reset the pet and settings (name, coat, days together, colors, curtains, music, sound and language)",
-  "清除所有心情記錄": "Clear all entries",
+    "清除所有心情記錄": "Clear all entries",
   // 房間
   "粉色小屋": "Pink cottage", "跟著顏色主題變化": "Follows the color theme", "貓咪咖啡廳": "Cat café", "黑板菜單、貓跳台": "Chalkboard menu, cat tree",
   "喵～": "Meow~", "晚安，喵": "Good night", "貓咪拿鐵": "Cat latte", "肉球鬆餅": "Paw pancake", "小魚乾": "Fish snack",
@@ -1300,9 +1289,8 @@ const EN = {
   "同時有好幾種感覺，可以複選": "Several feelings at once — pick more than one", "先從身體感覺或發生的事開始記錄": "Start with how your body feels or what happened",
   // 情緒選擇
   "混合情緒": "Mixed", "說不上來": "Not sure",
-  "可以點好幾個詞，選完就記錄吧": "Pick several words, then log it", "點一個最接近的詞，看看說明": "Click the closest word to see what it means",
-  "先選一個最接近現在感覺的區塊": "First pick the area closest to how you feel", "身體有什麼感覺？": "How does your body feel?", "跟什麼有關？": "What's it about?",
-  "這次的配件：": "This time's accessory: ", "🎲 換個顏色": "🎲 New color", "換個顏色": "New color",
+    "身體有什麼感覺？": "How does your body feel?", "跟什麼有關？": "What's it about?",
+  "這次的配件：": "This time's accessory: ", "換個顏色": "New color",
   "選好了就按下面的按鈕記錄吧～": "When you're ready, press the button below to log it~",
   "胸口悶悶的": "Tight chest", "肩膀很緊": "Tense shoulders", "心跳很快": "Racing heart", "胃不舒服": "Upset stomach", "頭痛": "Headache",
   "想哭": "Want to cry", "呼吸很淺": "Shallow breathing", "手腳冰冷": "Cold hands and feet", "全身沒力": "No energy", "很想睡": "Very sleepy",
@@ -1310,24 +1298,7 @@ const EN = {
   "工作／學業": "Work / school", "家人": "Family", "朋友": "Friends", "感情": "Relationship", "自己": "Myself", "健康": "Health",
   "睡眠": "Sleep", "金錢": "Money", "天氣": "Weather", "網路／社群": "Online / social media", "一個人獨處": "Being alone", "其他": "Other",
   // 家族的貼心話
-  "哈——！誰惹你了？先深呼吸，我陪你一起氣一下": "Hiss! Who upset you? Take a deep breath — I'll be mad with you for a bit",
-  "怕怕的時候，我就在你旁邊，哪裡都不去": "When you're scared, I'm right here and I'm not going anywhere",
-  "事情好多齁…我們一件一件來，先喝口水": "So much to do… let's take it one thing at a time. Have some water first",
-  "耶！你開心我也開心～ 翻肚肚給你摸 🐾": "Yay! If you're happy, I'm happy~ Here, belly rubs 🐾",
-  "好厲害！我就知道你做得到 ✨": "Amazing! I knew you could do it ✨", "我也想知道！一起去看看吧～": "I want to know too! Let's go look~",
-  "過來，我蹭蹭你… 難過的時候不用逞強喔": "Come here, let me snuggle you… You don't have to be strong when you're sad",
-  "辛苦了… 今天早點休息，我幫你暖被窩 💤": "You worked hard… Rest early today, I'll warm up the bed 💤",
-  "你已經很好了，不用對自己那麼兇喔": "You're already doing great — don't be so hard on yourself",
-  "沒有感覺也沒關係，我就安靜地陪著你": "It's okay not to feel anything. I'll just stay here quietly with you",
-  "平平靜靜的，真好，一起曬太陽吧 ☀️": "Nice and calm — let's sunbathe together ☀️", "這樣剛剛好呢，呼嚕呼嚕～": "Just right, purr purr~",
-  "被在乎的感覺，心會暖暖的對吧 💕": "Being cared for makes your heart warm, right? 💕",
-  "說不上來也沒關係，我們從身體的感覺開始慢慢想": "It's okay not to know. Let's start slowly with how your body feels",
-  "好多感覺混在一起，很正常喔，我都陪你": "Lots of feelings mixed together is normal. I'm with you for all of them",
-  "平平靜靜的一天也很好喔，一起曬太陽吧 ☀️": "A calm day is a good day. Let's sunbathe together ☀️",
-  "哈——！誰欺負你？我幫你哈他！": "Hiss! Who was mean to you? I'll hiss at them!",
-  "辛苦了… 今天早點睡，我幫你暖被窩 💤": "You worked hard… Sleep early tonight, I'll warm up the bed 💤",
-  "深呼吸～ 吸——吐——。我在這裡陪你": "Deep breath~ in… out… I'm right here with you",
-  // 配件
+                                    // 配件
   "對不起": "Sorry", "冒煙": "Steam puff", "打結的毛線球": "Tangled yarn", "青筋": "Anger mark", "想要的小魚乾": "The fish I want",
   "頭頂著火": "Head on fire", "冷汗": "Cold sweat", "問號": "Question marks", "一團亂線": "Scribble cloud", "驚嘆號": "Exclamation mark",
   "雙驚嘆號": "Double exclamation", "鬧鐘": "Alarm clock", "小閃電": "Little lightning", "一疊文件": "Pile of papers", "小花": "Little flower",
@@ -1339,130 +1310,42 @@ const EN = {
   "眼罩": "Sleep mask", "禮物": "Gift", "閃閃": "Sparkles", "愛心": "Hearts", "問號泡泡": "Question bubble",
   // 草原
   "今天": "Today", "毛線球": "Yarn ball",
-  "好吃！": "Yummy!", "喵嗚～ 謝謝你！": "Mew~ Thank you!", "（嚼嚼嚼）": "(munch munch)", "還有嗎？": "Any more?",
-  "今天天氣真好～": "What lovely weather~", "喵哈哈！": "Meow ha ha!", "想玩毛線球！": "I want to play with the yarn!", "好想翻滾一下": "I want to roll around",
-  "嘿嘿，心情好好": "Hehe, feeling good", "風吹起來好舒服": "The breeze feels so nice", "慢慢來也沒關係": "It's okay to take it slow",
-  "曬太陽中…": "Sunbathing…", "嗯～ 草好香": "Mm~ the grass smells nice", "今天也辛苦了": "You worked hard today too",
-  "…可以陪我一下嗎": "…can you stay with me a bit?", "嗚…": "Mew…", "抱抱就會好一點": "A hug would help", "沒關係，會過去的": "It's okay, it'll pass",
-  "（小聲）喵…": "(quietly) meow…", "哼！": "Hmph!", "不要惹我喔！": "Don't mess with me!", "我在生悶氣": "I'm sulking",
-  "…給我小魚乾就原諒你": "…give me a fish snack and I'll forgive you", "哈——！": "Hiss!", "好睏…": "So sleepy…", "再睡五分鐘…": "Five more minutes…",
-  "哈啊～（打哈欠）": "Haaah~ (yawn)", "不想動…": "Don't want to move…", "床在哪裡…": "Where's my bed…", "怎麼辦怎麼辦": "What do I do, what do I do",
-  "那是什麼聲音？！": "What was that sound?!", "深呼吸…": "Deep breath…", "有點緊張…": "A little nervous…", "你會一直在吧？": "You'll stay, right?",
-  "呼…嚕…": "Purr… purr…", "Zzz…": "Zzz…", "（夢到小魚乾）": "(dreaming of fish snacks)", "靠著你好溫暖～": "Leaning on you is so warm~",
-  "呼嚕呼嚕": "Purr purr", "最喜歡你了": "I love you the most", "看招！": "Take that!", "喵嗚！": "Mrrow!", "抓到你了！": "Got you!",
-  "別跑！": "Don't run!", "追到你了喔～": "Caught you~", "追不到～": "Can't catch me~", "嘿嘿嘿": "Hehehe", "等等我～": "Wait for me~",
-  "我們去散步": "Let's go for a walk", "毛線球！": "Yarn ball!", "我的！": "Mine!", "是小魚乾！": "A fish snack!", "我先的！": "I saw it first!",
-  "好、好可怕…": "S-so scary…", "躲起來就看不到我了…": "If I hide, they can't see me…", "（發抖）…": "(shivering)…", "不要過來…": "Don't come closer…",
-  "怎麼辦…怎麼辦…": "What do I do… what do I do…", "靜不下來…": "Can't settle down…", "耶～耶～！": "Yay~ yay~!", "轉圈圈！": "Spinning!",
-  "…": "…", "（看著遠方）": "(staring into the distance)", "我自己待一下就好…": "I just need some time alone…",
-  // 窗簾、天氣
+  "好吃！": "Yummy!", "（嚼嚼嚼）": "(munch munch)",         "嗚…": "Mew…",   "哼！": "Hmph!",         "Zzz…": "Zzz…",   "呼嚕呼嚕": "Purr purr",           "…": "…",   // 窗簾、天氣
   "輕紗": "Sheer", "波浪短帘": "Valance", "格子布": "Gingham", "換一種窗簾": "Change curtains", "拉開窗簾": "Open curtains", "拉上窗簾": "Close curtains",
   "窗簾（拖曳可以拉開或拉上）": "Curtain (drag to open or close)", "窗簾（往下拖可以拉下來）": "Curtain (drag down to close)",
   "霧濛濛 🌫️": "Foggy 🌫️", "大雨 🌧️": "Heavy rain 🌧️", "小雨 🌦️": "Light rain 🌦️", "雷雨 ⛈️": "Thunderstorm ⛈️", "起風了 🌬️": "Windy 🌬️",
   "晴朗 ☀️": "Sunny ☀️", "彩虹 🌈": "Rainbow 🌈", "微風晴空 🌤️": "Clear with a breeze 🌤️", "多雲 ☁️": "Cloudy ☁️",
   // 寵物說的話
-  "早安！今天也一起加油吧 ☀️": "Good morning! Let's do our best today ☀️", "吃早餐了嗎？": "Did you have breakfast?", "早上的空氣好舒服～": "The morning air feels so nice~",
-  "午餐吃什麼呀？": "What's for lunch?", "吃飽了嗎？吃飽才有力氣喔": "Have you eaten? You need food for energy",
-  "下午有點想睡…要不要起來伸個懶腰？": "A bit sleepy this afternoon… want to get up and stretch?", "喝口水休息一下吧 💧": "Have some water and take a break 💧",
-  "今天過得怎麼樣？": "How was your day?", "晚餐吃了嗎？": "Did you have dinner?", "辛苦一整天了，放鬆一下吧": "Long day — time to relax",
-  "很晚了喔，早點休息好不好？": "It's late — how about getting some rest?", "我陪你到你睡著 🌙": "I'll stay with you until you fall asleep 🌙",
-  "今天也辛苦了，晚安前要不要記一下心情？": "You worked hard today. Want to log your mood before bed?", "記得喝水喔 💧": "Remember to drink water 💧",
-  "肩膀放鬆～ 深呼吸": "Relax your shoulders~ deep breath", "我在這裡喔": "I'm right here", "有你在我就很開心": "I'm happy when you're here",
-  "你已經很努力了": "You're already trying so hard", "要不要看看窗外？": "Want to look out the window?",
-  "今天心情不錯呢！是發生什麼好事了嗎？": "You're in a good mood today! Did something nice happen?", "看你開心，我尾巴都翹起來了": "Seeing you happy makes my tail stand up",
-  "平平靜靜的，真好": "Nice and calm", "這樣慢慢的也很好喔": "Taking it slow is good too", "還難過嗎？想哭也沒關係，我陪你": "Still sad? It's okay to cry, I'm here",
-  "不管怎樣，我都在你旁邊": "No matter what, I'm by your side", "氣消一點了嗎？要不要摸摸我": "Feeling less angry? Want to pet me?",
-  "生氣的時候，先深呼吸三次好不好": "When you're angry, try three deep breaths first", "累了就休息一下，不用勉強": "Rest when you're tired, don't push yourself",
-  "今天早點睡吧，我幫你暖被窩": "Go to bed early today, I'll warm up the bed", "一步一步來就好": "Just one step at a time",
-  "緊張的時候，摸摸我會好一點喔": "When you're nervous, petting me helps",
-  "床好軟，好好睡…": "The bed is so soft… so sleepy…", "（在床上伸懶腰）": "(stretching on the bed)", "被子有你的味道～": "The blanket smells like you~",
-  "沙發好軟～ 你也來坐！": "The sofa is so soft~ come sit too!", "（在沙發上窩成一團）": "(curled up on the sofa)",
-  "（坐在書桌上）你的筆電好溫暖喔": "(sitting on the desk) Your laptop is so warm", "我在書桌上陪你～": "I'll keep you company on the desk~",
-  "我的小窩最舒服了": "My little bed is the comfiest", "（在貓床裡踩踩）": "(kneading the cat bed)", "房間好好玩！": "The room is so fun!",
-  "（在地板上打滾）": "(rolling on the floor)", "（說夢話）小魚乾…還要…": "(sleep-talking) fish snacks… more…", "…（尾巴動了一下）": "…(tail twitches)",
-  "你還在嗎？我等你喔": "Are you still there? I'll wait for you", "（在旁邊安靜地陪著你）": "(quietly keeping you company)",
-  "今天還沒記錄心情喔，現在感覺怎麼樣？": "You haven't logged your mood today. How are you feeling?", "想跟我說說今天的事嗎？": "Want to tell me about your day?",
-  "剛剛說不上來的感覺，現在有比較清楚一點嗎？": "That feeling you couldn't name — is it any clearer now?",
-  "（舔舔）要把自己弄得香香的": "(lick lick) gotta keep myself clean", "（舔舔）你要不要也洗把臉？": "(lick lick) want to wash your face too?",
-  "（把腳收起來）這樣最舒服了": "(tucks paws in) this is the comfiest", "草原上的大家玩得好開心～": "Everyone in the meadow is having so much fun~",
-  "我也想玩毛線球！": "I want to play with the yarn too!",
-  "好一陣子沒備份了，要不要按下面的「下載備份檔」存一份？": "It's been a while since your last backup. Want to press \"Download backup\" below?",
-  "記錄越來越多了，存一份備份檔比較安心喔": "You have lots of entries now — a backup would be safer",
-  "呼嚕呼嚕～": "Purr purr~", "喵～ 再摸一下嘛": "Meow~ pet me a little more", "（用頭蹭蹭你的手）": "(rubs head against your hand)",
-  "最喜歡你了 💕": "I love you the most 💕", "（瞇起眼睛）呼嚕…": "(squints happily) purr…", "（被你摸醒了）喵…？": "(woken up by your petting) meow…?",
-  // 日曆、記錄
+                                                            // 日曆、記錄
   "日": "Sun", "一": "Mon", "二": "Tue", "三": "Wed", "四": "Thu", "五": "Fri", "六": "Sat",
-  "這個月出現過的情緒": "Feelings this month", "修改": "Edit", "刪除": "Delete", "確定刪除？": "Delete for sure?", "時間": "Time",
-  "儲存": "Save", "取消": "Cancel", "先選一個感覺喔": "Pick a feeling first", "這天還沒有記錄喔": "No entries on this day yet", "沒有記錄": "no entries",
-  "過午夜了，新的一天開始囉…不過該睡覺了喔 🌙": "It's past midnight, a new day has begun… but it's time to sleep 🌙",
-  "新的一天開始了！今天心情怎麼樣？": "A new day has begun! How are you feeling today?",
-  "喵？先選一個最接近現在的感覺喔！": "Meow? Pick the feeling closest to how you feel first!",
-  "記好了！謝謝你跟我分享 🐟": "Got it! Thanks for sharing with me 🐟", "記好了！心情變了隨時再來跟我說喔 🐟": "Got it! Come tell me again whenever your mood changes 🐟",
-  "記好了！看看草原，新的貓咪跑進來了～ 之後心情變了可以再記一次喔": "Got it! Look at the meadow — a new cat ran in~ You can log again if your mood changes",
-  "喵？這個好像不是心情草原的備份檔耶…": "Meow? This doesn't look like a Mood Meadow backup…", "讀取好了！這些記錄本來就都在了喔": "Loaded! All of these entries were already here",
-  "示範資料清掉了！接下來都是你自己的記錄囉": "Demo entries cleared! From now on it's all yours",
-  "真的要全部清除嗎？再按一次": "Really clear everything? Press again", "都清乾淨了。從今天開始，一起慢慢記錄吧 🐾": "All clear. Let's start logging together from today 🐾",
-  "走吧！一起去草原～": "Let's go! To the meadow together~", "出門囉！好多朋友在外面": "We're out! So many friends out here",
-  "風好舒服喔～": "The breeze feels so nice~", "回到家了～ 草原好好玩！": "Home again~ The meadow was so fun!",
-  "我們回來了，休息一下吧": "We're back, let's rest a bit", "外面的朋友都好可愛喔": "The friends outside are so cute",
-  "喵～今天過得怎麼樣？選一隻貓告訴我吧！": "Meow~ How was your day? Pick a cat and tell me!",
-  "（今天）": " (today)",
-  "語言": "Language", "早上的霧涼涼的": "The morning mist feels cool", "（伸懶腰）早安～": "(stretches) Good morning~", "草上有露珠耶": "There's dew on the grass",
-  "夕陽好漂亮": "The sunset is so pretty", "天空變成橘色了": "The sky turned orange", "要回家吃晚餐了嗎？": "Time to go home for dinner?",
-  "星星好多～": "So many stars~", "月亮好亮": "The moon is so bright", "（打哈欠）有點睏了": "(yawns) getting sleepy", "晚上的草原好安靜": "The meadow is so quiet at night", "記錄下來": "Log it", "更多": "More",
+  "修改": "Edit", "刪除": "Delete", "確定刪除？": "Delete for sure?", "時間": "Time",
+  "儲存": "Save", "取消": "Cancel", "沒有記錄": "no entries",
+                "真的要全部清除嗎？再按一次": "Really clear everything? Press again",           "（今天）": " (today)",
+  "語言": "Language", "房間裡的貓": "The cat in the room", "牠會在房間裡自己活動，表情跟著現在的情緒。": "It wanders around the room on its own; its face follows the current feeling.",
+  "房間的貓和設定也一起重設（名字、花色、主題色、窗簾、音樂、音效和語言）": "Also reset the room cat and settings (name, coat, colors, curtains, music, sound and language)",
+  "寫一點什麼（可以不寫）": "Write something (optional)", "發生了什麼事、身體有什麼感覺（可以不寫）": "What happened, how your body feels (optional)",
+  "請先選一個感覺": "Pick a feeling first", "這天沒有記錄": "No entries on this day", "氣到毛都豎起來了": "So mad my fur is standing up", "眼眶濕濕的": "My eyes are a little wet", "好想躲起來…": "I want to hide…", "心裡滿滿的": "My heart feels full",
+  "這個檔案不是心情草原的備份檔": "This file isn't a Mood Meadow backup", "已讀取備份檔，沒有新的記錄": "Backup loaded — no new entries",
+  "已清除示範資料": "Demo entries cleared", "已清除所有記錄": "All entries cleared", "記下來了": "Logged",
+  "哼，還在氣": "Hmph, still mad", "心裡有一團火": "There's a fire inside me",   "心裡怕怕的…": "I feel scared…", "總覺得會出事": "I feel like something will go wrong", "我有點緊張": "I'm a little nervous",
+  "事情好多…": "So much going on…", "腦袋塞滿了": "My head is too full", "靜不下來": "I can't settle down",
+  "心情好好～": "Feeling so good~", "嘿嘿，好開心": "Hehe, I'm so happy", "想跳起來！": "I want to jump!",
+  "我做得到！": "I can do it!", "今天的我很棒": "I'm doing great today", "有點驕傲耶": "I'm a little proud",
+  "好想知道更多": "I want to know more", "想去做點什麼！": "I want to go do something!", "會越來越好的": "It'll keep getting better",
+  "心裡沉沉的…": "My heart feels heavy…", "有點想哭": "I kind of want to cry",   "好累…": "So tired…", "沒力氣了": "No energy left", "想休息一下": "I want to rest a bit",
+  "是不是我不夠好…": "Am I not good enough…", "有點不好意思": "A little embarrassed",   "什麼都感覺不太到": "I can't really feel anything", "心裡空空的": "I feel empty inside", "好無聊…": "So bored…",
+  "心裡很平靜": "I feel calm inside", "慢慢來就好": "Slow is fine", "好放鬆～": "So relaxed~",
+  "這樣就很好了": "This is just right", "好滿足～": "So content~", "很安心": "I feel safe",
+  "心裡暖暖的": "My heart feels warm", "被在乎的感覺真好": "Being cared for feels nice",
+  "說不上來是什麼感覺…": "I can't tell what I feel…", "心裡有點霧霧的": "It's a little foggy inside",
+  "好多感覺混在一起…": "So many feelings mixed together…", "心情有點複雜": "My feelings are complicated",
+  "天快亮了": "It's almost dawn", "影子變得好長": "The shadows are getting long", "早上的霧涼涼的": "The morning mist feels cool", "草上有露珠耶": "There's dew on the grass",
+  "夕陽好漂亮": "The sunset is so pretty", "天空變成橘色了": "The sky turned orange",   "星星好多～": "So many stars~", "月亮好亮": "The moon is so bright", "晚上的草原好安靜": "The meadow is so quiet at night", "記錄下來": "Log it", "更多": "More",
   "「當別人問，今天海上天氣好嗎？妳聽到了，妳聽到，都要回答很晴朗。」": "\"When someone asks you, 'How's the weather out at sea today?' — whenever you hear it, you must answer: 'Clear and sunny.'\"",
   "「即使下這麼大的雨也要這樣回答嗎？」": "\"Even when it's raining this hard?\"", "「是。」": "\"Yes.\"",
   "「即使不想回答也要這樣回答嗎？」": "\"Even when I don't want to answer?\"",
-  "——吳明益《複眼人》": "— Wu Ming-Yi, The Man with the Compound Eyes (our translation)", "這七天": "These 7 days", "最近": "Recent", "🍃 最近": "🍃 Recent", "最近的心情": "Recent moods", "選一個最接近的感覺": "Pick the closest feeling", "想說點什麼嗎？": "Anything to say?",
-  "發生了什麼事？": "What happened?", "可以選好幾個": "Pick as many as you like", "點一個最接近的詞": "Click the closest word", "先選一個區塊": "Pick an area first",
-  "記好了！看看草原～": "Got it! Look at the meadow~", "記錄只留在這個瀏覽器，七天後就會淡去": "Entries stay only in this browser and fade after 7 days",
-  "每天花幾秒鐘，跟貓咪說說現在的感覺。": "Take a few seconds each day to tell a cat how you feel.", "說出來，情緒會緩和一點": "Naming a feeling softens it",
-  "情緒會隨著時間變淡，記錄也只留七天": "Feelings fade with time, and entries only stay for 7 days",
-  "哇，是誰惹你？告訴我，我去把他的筆推下桌！": "Whoa, who upset you? Tell me — I'll knock their pen off the desk!",
-  "怕什麼？我先去偷看一下…你躲我後面！": "What's scary? Let me peek first… hide behind me!",
-  "好多事喔…要不要先讓我坐在鍵盤上，逼你休息一下？": "So much to do… shall I sit on your keyboard so you have to take a break?",
-  "哇！什麼好事？說嘛說嘛！": "Ooh! What happened? Tell me, tell me!", "你剛剛超厲害的！再做一次給我看！": "That was amazing! Do it again so I can watch!",
-  "你也好奇？我也是！我們一起去翻翻看！": "You're curious too? Me too! Let's go dig around together!",
-  "（偷偷靠過來）…這個難過是什麼形狀的？我陪你一起看看": "(sneaks closer) …What shape is this sadness? Let's look at it together",
-  "累了喔？那我們來比賽誰先睡著！": "Tired? Let's race to see who falls asleep first!",
-  "咦，你又在對自己很兇了？再這樣我要咬你喔（輕輕的）": "Huh, being hard on yourself again? Keep it up and I'll bite you (gently)",
-  "沒有感覺嗎？那我用尾巴搔你癢看看": "Can't feel anything? Let me tickle you with my tail",
-  "好安靜…我可以趴在旁邊研究你嗎？": "So quiet… can I lie here and study you?",
-  "剛剛好的感覺是什麼味道？像曬過太陽的棉被嗎？": "What does \"just right\" smell like? Like a sun-dried blanket?",
-  "被在乎的感覺暖暖的對吧！我也要！": "Being cared for feels warm, right? I want some too!",
-  "說不上來？那我們來當偵探，從身體的感覺開始找線索！": "Can't name it? Let's be detectives and look for clues in how your body feels!",
-  "好多感覺纏在一起，像打結的毛線球！我們慢慢拆": "So many feelings tangled up, like knotted yarn! Let's untangle it slowly",
-  "早安！窗外有鳥！你看到了嗎？": "Good morning! There's a bird outside! Did you see it?", "今天要去哪裡？可以帶我嗎？": "Where are you going today? Can I come?",
-  "（在你腳邊繞圈圈）早餐吃什麼？": "(circling your feet) What's for breakfast?", "午餐是什麼味道的？分我聞一下": "What does lunch smell like? Let me sniff",
-  "那個便當盒，我可以鑽進去嗎？": "That lunchbox — can I climb inside?", "下午好無聊…我們來玩！": "The afternoon is so boring… let's play!",
-  "（盯著窗外的蝴蝶）…": "(staring at the butterfly outside)…", "今天有什麼新鮮事？說給我聽！": "Anything new today? Tell me!",
-  "晚餐有魚嗎？": "Is there fish for dinner?", "你身上有新的味道，今天去了哪裡？": "You smell different — where did you go today?",
-  "好晚了…可是我好清醒！": "It's so late… but I'm wide awake!", "睡前要不要記一下今天的心情？我想看！": "Want to log today's mood before bed? I want to see!",
-  "（在棉被上跳來跳去）": "(bouncing on the blanket)", "你的杯子空了，要我幫你推倒嗎？…開玩笑的，去喝水吧": "Your cup is empty — want me to knock it over? …Just kidding, go drink some water",
-  "（把筆推下桌）…不是我。": "(pushes the pen off the desk) …wasn't me.", "（追自己的尾巴）": "(chasing my tail)", "你在看什麼？我也要看！": "What are you looking at? I want to see too!",
-  "（盯著你的手）…可以咬嗎？": "(staring at your hand) …can I bite it?", "要不要看看窗外？剛剛有東西在動！": "Want to look outside? Something just moved!",
-  "你今天笑好多！是發生什麼好事？說嘛說嘛！": "You're smiling a lot today! What happened? Tell me, tell me!", "開心的時候可以陪我玩嗎？": "Since you're happy, will you play with me?",
-  "好安靜…我可以趴你腿上嗎？": "So quiet… can I sit on your lap?", "你在想什麼？我猜…小魚乾？": "What are you thinking about? Let me guess… fish snacks?",
-  "難過的話…要不要摸摸我的肚子？只限今天喔": "If you're sad… want to rub my belly? Today only", "（把我最愛的毛線球推到你旁邊）給你": "(pushes my favorite yarn ball to you) for you",
-  "要不要一起去抓枕頭出氣？": "Want to go attack a pillow together?", "生氣的你，好像炸毛的我耶": "Angry you looks like puffed-up me",
-  "累了？我幫你暖被窩…順便占你的枕頭": "Tired? I'll warm up the bed… and steal your pillow", "我們一起躺平吧": "Let's just lie down together",
-  "緊張的時候，捏捏我的肉球會好一點喔，軟軟的": "When you're nervous, squeeze my paw pads — they're squishy", "怕什麼？我幫你去偷看！": "What's scary? I'll go peek for you!",
-  "（在床上跳來跳去）彈彈的！": "(bouncing on the bed) Boing!", "被子裡面有什麼？我要鑽進去看看": "What's under the blanket? I'm going in",
-  "床好軟…先睡一下再搗蛋": "The bed is so soft… nap first, mischief later", "沙發縫裡有寶藏！": "There's treasure in the sofa cushions!",
-  "（在沙發上磨爪…被你看到了）": "(scratching the sofa… you saw that)", "（坐在鍵盤上）你在打什麼？": "(sitting on the keyboard) What are you typing?",
-  "這個滑鼠會動耶！": "This mouse moves!", "我在小窩裡藏了一顆毛線球，不要說出去": "I hid a yarn ball in my bed — don't tell anyone",
-  "地板上有一根頭髮！是你的嗎？": "There's a hair on the floor! Is it yours?", "你還在嗎？我要去搗蛋囉～": "Are you still there? I'm going to make mischief~",
-  "（偷偷看你在做什麼）": "(sneakily watching what you're doing)", "你今天還沒跟我說心情耶，現在是什麼感覺？": "You haven't told me your mood today — how do you feel?",
-  "想跟我說說今天的事嗎？我好好奇！": "Want to tell me about your day? I'm so curious!", "剛剛說不上來的那個，有找到線索了嗎？": "That thing you couldn't name — found any clues yet?",
-  "（舔舔）…你要不要也舔舔看？": "(lick lick) …want to try licking too?", "（舔舔）剛剛踩到什麼了…": "(lick lick) what did I just step in…",
-  "（把腳收起來）我現在是一塊吐司": "(tucks paws in) I'm a loaf of bread now", "草原上那隻貓在追蝴蝶！我也要！": "That cat in the meadow is chasing a butterfly! Me too!",
-  "抓到你的手了！（輕咬）": "Got your hand! (nibble)", "再摸一下！不然我要咬囉～": "Pet me more! Or I'll bite~", "（翻肚子）…這是陷阱喔": "(shows belly) …it's a trap",
-  "呼嚕呼嚕～ 好啦再一下": "Purr purr~ okay, a little more", "（用頭撞你的手）": "(headbutts your hand)",
-  "記好了！下次也要跟我說喔，我很好奇 🐟": "Got it! Tell me next time too — I'm curious 🐟",
-  "（把橡皮擦撥下去）咦，掉了耶": "(swats the eraser off) oops, it fell", "（盯著筆，用爪子撥一下）…": "(stares at the pen, pokes it with a paw)…", "🍃 這七天": "🍃 These 7 days", "這七天": "These 7 days", "這七天的心情": "The past 7 days",
-  "這七天記錄了": "These 7 days you logged", "這七天出現過的情緒": "Feelings these 7 days",
-  "情緒會隨著時間慢慢變淡，記錄也只留七天。": "Feelings fade with time, and entries only stay for 7 days.",
-  "今天天氣不錯～": "Nice weather today~", "天空好藍": "The sky is so blue", "太陽好暖～": "The sun is so warm~", "適合曬肚肚": "Perfect for a belly sunbath",
+  "——吳明益《複眼人》": "— Wu Ming-Yi, The Man with the Compound Eyes (our translation)", "這七天": "These 7 days", "最近": "Recent", "最近的心情": "Recent moods", "選一個最接近的感覺": "Pick the closest feeling",   "可以選好幾個": "Pick as many as you like", "點一個最接近的詞": "Click the closest word",   "記錄只留在這個瀏覽器，七天後就會淡去": "Entries stay only in this browser and fade after 7 days",
+                                                                                        "這七天": "These 7 days",   "這七天記錄了": "These 7 days you logged",     "今天天氣不錯～": "Nice weather today~", "天空好藍": "The sky is so blue", "太陽好暖～": "The sun is so warm~", "適合曬肚肚": "Perfect for a belly sunbath",
   "陽光把毛曬得暖暖的": "The sunshine makes my fur warm", "好想在太陽下睡午覺": "I want a nap in the sun", "微風好舒服～": "The breeze feels so nice~",
   "風裡有花的味道": "The wind smells like flowers", "是彩虹耶！": "It's a rainbow!", "彩虹好漂亮～": "The rainbow is so pretty~",
   "彩虹的另一邊有小魚乾嗎？": "Are there fish snacks at the end of the rainbow?", "雲好多喔": "So many clouds", "那朵雲好像一條魚": "That cloud looks like a fish",
@@ -1488,30 +1371,12 @@ const EN_PATTERNS = [
   [/^今天的記錄（(\d+)）$/, (_, n) => `Today's entries (${n})`],
   [/^(.+) 出現 (\d+) 次$/, (_, e, n) => `${tr(e)} ×${n}`],
   [/^這個月記錄了$/, () => "This month you logged"], [/^這七天記錄了$/, () => "These 7 days you logged"], [/^次$/, () => "times"],
-  [/^和(.+)一起生活的第 (\d+) 天 🐾$/, (_, nm, n) => `Day ${n} with ${tr(nm)} 🐾`],
-  [/^我們一起生活 (\d+) 天了耶，謝謝你養我 💕$/, (_, n) => `We've been together ${n} days — thank you for taking care of me 💕`],
-  [/^今天已經跟我說了 (\d+) 次心情了，謝謝你願意告訴我 💕$/, (_, n) => `You've told me how you feel ${n} times today — thank you 💕`],
-  [/^剛剛的「(.+)」，現在有好一點嗎？$/, (_, e) => `Are you feeling better than "${tr(e)}" now?`],
-  [/^「(.+)」的時候，對自己溫柔一點喔$/, (_, e) => `When you feel "${tr(e)}", be gentle with yourself`],
-  [/^「(.+)」的感覺真好，多待一會兒吧$/, (_, e) => `"${tr(e)}" feels nice — stay in it a while`],
-  [/^你剛剛說「(.+)」，我有記住喔$/, (_, t) => `You said "${t}" — I remember`],
-  [/^關於「(.+)」，現在感覺怎麼樣？$/, (_, t) => `About "${t}" — how do you feel now?`],
-  [/^備份好了！(\d+) 筆記錄都在檔案裡，要好好收著喔 💾$/, (_, n) => `Backed up! All ${n} entries are in the file — keep it safe 💾`],
-  [/^讀取好了！多了 (\d+) 筆記錄，歡迎回來 🐾$/, (_, n) => `Loaded! ${n} new entries — welcome back 🐾`],
+  [/^已下載備份檔（(\d+) 筆記錄）$/, (_, n) => `Backup downloaded (${n} ${n == 1 ? "entry" : "entries"})`],
+  [/^已讀取備份檔，新增 (\d+) 筆記錄$/, (_, n) => `Backup loaded — ${n} new ${n == 1 ? "entry" : "entries"}`],
   [/^目前有 (\d+) 筆你自己的記錄(?:，和 (\d+) 筆示範資料)?。$/, (_, n, d) => `You have ${n} entries of your own` + (d ? ` and ${d} demo entries.` : ".")],
-  [/^你好！我是(.+)，以後我陪你喔 🐾$/, (_, nm) => `Hi! I'm ${tr(nm)}. I'll be with you from now on 🐾`],
-  [/^你好！我是(.+)！這個房間有好多東西可以玩耶 🐾$/, (_, nm) => `Hi! I'm ${tr(nm)}! This room has so much to play with 🐾`],
-  [/^「(.+)」是什麼樣的感覺？可以跟我說說嗎？$/, (_, e) => `What does "${tr(e)}" feel like? Can you tell me?`],
-  [/^剛剛的「(.+)」，現在有變小一點嗎？$/, (_, e) => `Has that "${tr(e)}" gotten any smaller?`],
-  [/^「(.+)」！我也想要！怎麼做到的？$/, (_, e) => `"${tr(e)}"! I want that too! How'd you do it?`],
-  [/^「(.+)」…然後呢？然後呢？$/, (_, t) => `"${t}"… and then? And then?`],
-  [/^我一直在想你剛剛說的「(.+)」耶$/, (_, t) => `I keep thinking about what you said: "${t}"`],
-  [/^今天已經跟我說了 (\d+) 次心情了！今天好精彩$/, (_, n) => `You've told me your mood ${n} times today! What a day`],
-  [/^我們一起生活 (\d+) 天了！每天都有新發現$/, (_, n) => `We've been together ${n} days! Something new every day`],
   [/^心情天氣：(.+)$/, (_, w) => `Mood weather: ${tr(w)}`],
   [/^摸摸(.+)$/, (_, nm) => `Pet ${tr(nm)}`],
   [/^移除 (.+)$/, (_, e) => `Remove ${tr(e)}`],
-  [/^現在：(.+)　選好了就按下面的按鈕記錄吧～$/, (_, e) => `Now: ${tr(e)}　When you're ready, press the button below to log it~`],
   [/^現在：(.+)$/, (_, e) => `Now: ${tr(e)}`],
   [/^(.+) ×(\d+)$/, (_, e, n) => `${tr(e)} ×${n}`],
   [/^(.+) 的(.+)貓$/, (_, k, e) => `${tr(e)} cat (${k})`],
@@ -1562,22 +1427,16 @@ function tr(s) {
 const INK = "#4a3439";
 const MOODS = {
   happy:   { name: "開心", fur: "#F4B07E", stripe: "#DE8A55", chest: "#FCE6D2", eye: "#8CC46B", tail: "up",
-             say: "耶！你開心我也開心～ 翻肚肚給你摸 🐾",
              acts: { walk: 3, hop: 2, roll: 1.5, sit: 1, groom: 1 }, speed: 55 },
   calm:    { name: "平靜", fur: "#EFE2D0", stripe: "#D9C4A6", chest: "#FBF5EC", eye: "#86BEE0", tail: "up",
-             say: "平平靜靜的一天也很好喔，一起曬太陽吧 ☀️",
              acts: { walk: 2, sit: 2, loaf: 2, groom: 1.5, sleep: 1 }, speed: 35 },
   sad:     { name: "難過", fur: "#AEBBCF", stripe: "#95A4BC", chest: "#CDD6E3", eye: "#A6CF86", tail: "low",
-             say: "過來，我蹭蹭你… 難過的時候不用逞強喔",
              acts: { loaf: 3, sit: 2, walk: 1, sleep: 1 }, speed: 22 },
   angry:   { name: "生氣", fur: "#57535F", stripe: "#57535F", chest: "#FFFFFF", paw: "#FFFFFF", eye: "#D8E26A", tail: "puff", whisker: "#fff", eyeLine: "#F3EEF5",
-             say: "哈——！誰欺負你？我幫你哈他！",
              acts: { walk: 4, hop: 1, sit: 1, groom: .5 }, speed: 70 },
   tired:   { name: "好累", fur: "#F8F5F1", stripe: "#E7E0D6", chest: "#FFFFFF", eye: "#8FC3EA", tail: "low",
-             say: "辛苦了… 今天早點睡，我幫你暖被窩 💤",
              acts: { sleep: 5, loaf: 2, walk: .5 }, speed: 18 },
   anxious: { name: "焦慮", fur: "#FAF2E8", stripe: "#FAF2E8", chest: "#FFFFFF", eye: "#D2B55B", tail: "puff", calico: true,
-             say: "深呼吸～ 吸——吐——。我在這裡陪你",
              acts: { walk: 4, sit: 1, groom: 1 }, speed: 80 },
 };
 const CALICO_DARK = "#5A5560", CALICO_ORANGE = "#E9A06A";
@@ -2486,7 +2345,7 @@ function makeCat(key, entry, enter) {
     const date = key.slice(0, 10), [, mo, d] = date.split("-");
     const who = (date === TODAY ? tr("今天") : `${+mo}/${+d}`) + (entry.t ? " " + entry.t : "");
     const sep = LANG === "en" ? [" · ", ": "] : ["・", "："];
-    say(c, `${who}${sep[0]}${tr(emoNames(entry))}${sep[1]}${entry.text || tr(sayFor(emoOf(entry)))}`, 4, entry.mood, true);   // 說起那天的心情時，露出那天的表情
+    say(c, `${who}${sep[0]}${tr(emoNames(entry))}${sep[1]}${entry.text || tr(emoOf(entry).length > 1 ? "好多感覺混在一起…" : pick(FAMILY_TALK[EMO[emoOf(entry)[0]]?.family] || FAMILY_TALK.calm))}`.replace(/[:：]\s*$/, ""), 4, entry.mood, true);   // 說起那天的心情時，露出那天的表情
     meow(1.08 * (COAT_PITCH[entry.mood] ?? 1), .8, .7);
     if (c.partner) endPair(c);
     setMode(c, "hop");
@@ -2791,7 +2650,7 @@ function callCats(t, n) {
       c.mode = "totreat"; c.treat = t; look(c, "walk"); c.timer = 15;
     });
 }
-const YUM = ["好吃！", "喵嗚～ 謝謝你！", "（嚼嚼嚼）", "還有嗎？"];
+const YUM = ["好吃！", "（嚼嚼嚼）"];
 function eat(c, t) {
   treats.splice(treats.indexOf(t), 1);
   t.el.remove();
@@ -2801,44 +2660,43 @@ function eat(c, t) {
 }
 
 // 草原貓咪的碎碎念：依心情、正在做的事
-const CHATTER = {
-  happy:   ["今天天氣真好～", "喵哈哈！", "想玩毛線球！", "好想翻滾一下", "嘿嘿，心情好好"],
-  calm:    ["風吹起來好舒服", "慢慢來也沒關係", "曬太陽中…", "嗯～ 草好香", "今天也辛苦了"],
-  sad:     ["…可以陪我一下嗎", "嗚…", "抱抱就會好一點", "沒關係，會過去的", "（小聲）喵…"],
-  angry:   ["哼！", "不要惹我喔！", "我在生悶氣", "…給我小魚乾就原諒你", "哈——！"],
-  tired:   ["好睏…", "再睡五分鐘…", "哈啊～（打哈欠）", "不想動…", "床在哪裡…"],
-  anxious: ["怎麼辦怎麼辦", "那是什麼聲音？！", "深呼吸…", "有點緊張…", "你會一直在吧？"],
+// 草原上的貓說的話：只說跟牠的情緒直接有關的，或跟天氣、風景有關的（後者在 envLine）
+const FAMILY_TALK = {
+  anger: ["哼，還在氣", "心裡有一團火", "氣到毛都豎起來了"],
+  fear: ["心裡怕怕的…", "總覺得會出事", "我有點緊張"],
+  stress: ["事情好多…", "腦袋塞滿了", "靜不下來"],
+  joy: ["心情好好～", "嘿嘿，好開心", "想跳起來！"],
+  confidence: ["我做得到！", "今天的我很棒", "有點驕傲耶"],
+  engagement: ["好想知道更多", "想去做點什麼！", "會越來越好的"],
+  sadness: ["心裡沉沉的…", "有點想哭", "眼眶濕濕的"],
+  exhaustion: ["好累…", "沒力氣了", "想休息一下"],
+  self_conscious: ["是不是我不夠好…", "有點不好意思", "好想躲起來…"],
+  numbness: ["什麼都感覺不太到", "心裡空空的", "好無聊…"],
+  calm: ["心裡很平靜", "慢慢來就好", "好放鬆～"],
+  contentment: ["這樣就很好了", "好滿足～", "很安心"],
+  connection: ["心裡滿滿的", "心裡暖暖的", "被在乎的感覺真好"],
+  unsure: ["說不上來是什麼感覺…", "心裡有點霧霧的"],
+  mixed: ["好多感覺混在一起…", "心情有點複雜"],
 };
-const DOING = {
-  sleep: ["呼…嚕…", "Zzz…", "（夢到小魚乾）"],
-  cuddle: ["靠著你好溫暖～", "呼嚕呼嚕", "最喜歡你了"],
-  wrestle: ["看招！", "喵嗚！", "抓到你了！"],
-  chase: ["別跑！", "追到你了喔～"], flee: ["追不到～", "嘿嘿嘿"],
-  follow: ["等等我～", "我們去散步"],
-  toball: ["毛線球！", "我的！"], totreat: ["是小魚乾！", "我先的！"],
-  hide: ["好、好可怕…", "躲起來就看不到我了…"], cower: ["（發抖）…", "不要過來…"],
-  pace: ["怎麼辦…怎麼辦…", "靜不下來…"], spin: ["耶～耶～！", "轉圈圈！"],
-  alone: ["…", "（看著遠方）"], edge: ["我自己待一下就好…"],
-};
-// 每種動作說話時的表情（睡覺不換，眼睛本來就閉著）
-const DOING_FACE = { cuddle: "calm", wrestle: "happy", chase: "happy", flee: "happy", follow: "calm", toball: "happy", totreat: "happy",
-  hide: "anxious", cower: "anxious", pace: "anxious", spin: "happy", alone: "sad", edge: "sad" };
+// 牠的情緒：照情緒家族說一句
+function emotionLine(c) {
+  const ids = emoOf(c.entry), e = EMO[ids[0]];
+  const fam = ids.length > 1 ? "mixed" : e?.family;
+  return pick(FAMILY_TALK[fam] || FAMILY_TALK.calm);
+}
 const pick = list => list[Math.floor(Math.random() * list.length)];
 function chatter() {
   const here = cats.filter(c => !c.wrap && inView(c));
   if (sayCat || !here.length) return;
   const c = pick(here);
-  if (c.entry.pet) return;   // 寵物說的話由寵物自己決定
-  const asleep = c.el.classList.contains("sleep");
-  if (!asleep && !c.partner && Math.random() < .45) {
+  if (c.entry.pet || c.el.classList.contains("sleep")) return;   // 寵物不說話；睡著的貓也不說話
+  if (Math.random() < .5) {
     const env = envLine();
     say(c, env.text, 3, env.face);
     if (env.act && isFree(c)) setMode(c, env.act);
     return;
   }
-  const key = asleep ? "sleep" : DOING[c.partner ? c.act : c.mode] ? (c.partner ? c.act : c.mode) : DOING[c.mode] ? c.mode : null;
-  const lines = key ? DOING[key] : CHATTER[c.base || c.entry.mood];
-  say(c, pick(lines), 3, asleep ? null : key ? DOING_FACE[key] : c.base || c.entry.mood);
+  say(c, emotionLine(c), 3, c.base || c.entry.mood);
 }
 
 function say(c, text, secs = 4, face = null, raw = false) {
@@ -3052,24 +2910,6 @@ const emoOf = r => {
 const emoNames = r => emoOf(r).map(id => EMO[id].name).join("・");
 const faceOf = ids => EMO[ids[0]]?.face || "calm";
 const accOf = (r, salt = "") => ({ id: emoOf(r)[0], hue: Number.isFinite(r.hue) ? r.hue : hashHue(salt + (r.t || "") + (r.text || "") + emoOf(r).join()) });
-const FAMILY_SAY = {
-  anger: "哈——！誰惹你了？先深呼吸，我陪你一起氣一下",
-  fear: "怕怕的時候，我就在你旁邊，哪裡都不去",
-  stress: "事情好多齁…我們一件一件來，先喝口水",
-  joy: "耶！你開心我也開心～ 翻肚肚給你摸 🐾",
-  confidence: "好厲害！我就知道你做得到 ✨",
-  engagement: "我也想知道！一起去看看吧～",
-  sadness: "過來，我蹭蹭你… 難過的時候不用逞強喔",
-  exhaustion: "辛苦了… 今天早點休息，我幫你暖被窩 💤",
-  self_conscious: "你已經很好了，不用對自己那麼兇喔",
-  numbness: "沒有感覺也沒關係，我就安靜地陪著你",
-  calm: "平平靜靜的，真好，一起曬太陽吧 ☀️",
-  contentment: "這樣剛剛好呢，呼嚕呼嚕～",
-  connection: "被在乎的感覺，心會暖暖的對吧 💕",
-  unsure: "說不上來也沒關係，我們從身體的感覺開始慢慢想",
-  mixed: "好多感覺混在一起，很正常喔，我都陪你",
-};
-const sayFor = ids => ids.length > 1 ? FAMILY_SAY.mixed : FAMILY_SAY[EMO[ids[0]]?.family] || FAMILY_SAY.calm;
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 
 // 選情緒的元件：先選象限 → 展開家族和情緒詞；可以切換「混合情緒」複選，或「說不上來」
@@ -3219,7 +3059,7 @@ function renderMoods() {
       showAccPreview();
       updateWeather();
       if (ids.length && ids.join() !== before) buddyReact(picked, ids);
-      $("text").placeholder = st.unsure ? "發生了什麼事？身體有什麼感覺？（可以不寫喔）" : "想說點什麼嗎？";
+      $("text").placeholder = st.unsure ? "發生了什麼事、身體有什麼感覺（可以不寫）" : "寫一點什麼（可以不寫）";
       $("hint").textContent = ids.length ? "" : "選一個最接近的感覺";
     },
   });
@@ -3415,9 +3255,9 @@ const SCENERY_TALK = [["這朵花好香～", "happy"], ["蝴蝶！好想抓～",
   ["毛線球在那邊！", "happy"], ["花上面停了一隻蝴蝶", "happy"], ["山的那邊有什麼呢？", "calm"]];
 const WET = ["rain", "heavyrain", "thunder"];
 const TIME_TALK = {
-  dawn:  ["早上的霧涼涼的", "（伸懶腰）早安～", "草上有露珠耶"],
-  dusk:  ["夕陽好漂亮", "天空變成橘色了", "要回家吃晚餐了嗎？"],
-  night: ["星星好多～", "月亮好亮", "（打哈欠）有點睏了", "晚上的草原好安靜"],
+  dawn:  ["早上的霧涼涼的", "天快亮了", "草上有露珠耶"],
+  dusk:  ["夕陽好漂亮", "天空變成橘色了", "影子變得好長"],
+  night: ["星星好多～", "月亮好亮", "晚上的草原好安靜"],
 };
 function envLine() {
   const wet = WET.includes(weatherKind) || weatherKind === "windy";
@@ -3585,7 +3425,6 @@ if (!buddy.since) {
   buddy.since = real[0] || TODAY;
   try { localStorage.setItem("meow-buddy", JSON.stringify(buddy)); } catch (e) {}
 }
-const petDays = () => Math.max(1, Math.round((new Date(TODAY) - new Date(buddy.since)) / 864e5) + 1);
 const buddyName = () => buddy.name || COAT_NAMES[buddy.coat];
 const buddyFace = () => picked || todayMood() || "calm";
 function saveBuddy() { try { localStorage.setItem("meow-buddy", JSON.stringify(buddy)); } catch (e) {} }
@@ -3646,33 +3485,11 @@ function dockWalk(x) {
   return true;
 }
 
-// ---------- 說話泡泡：跟著寵物 ----------
-let typing = null, bubbleHide = null, lastTalk = Date.now();
-function placeBubble() {
-  const b = $("bubble");
-  if (!b.classList.contains("show")) return;
-  const r = activeCat().getBoundingClientRect(), w = b.offsetWidth, h = b.offsetHeight;
-  b.style.left = Math.min(Math.max(r.left + r.width / 2 - w / 2, 8), innerWidth - w - 8) + "px";
-  b.style.top = Math.max(8, r.top + r.height * .12 - h) + "px";
-  requestAnimationFrame(placeBubble);
-}
-function buddySay(text) {
-  text = tr(text);
-  lastTalk = Date.now();
-  if (outside && petCat) { say(petCat, text, 5); $("bubbleSr").textContent = `${buddyName()}：${text}`; return; }
-  const b = $("bubble");
-  b.innerHTML = "<b></b>：<span></span>";
-  b.firstChild.textContent = buddyName();
-  $("bubbleSr").textContent = `${buddyName()}：${text}`;
-  const span = b.lastChild, chars = [...text];
-  clearInterval(typing); clearTimeout(bubbleHide);
-  const wasShown = b.classList.contains("show");
-  b.classList.add("show");
-  if (!wasShown) placeBubble();
-  const done = () => { bubbleHide = setTimeout(() => b.classList.remove("show"), 7000); };
-  if (reduceMotion) { span.textContent = text; return done(); }
-  let i = 0;
-  typing = setInterval(() => { span.textContent += chars[i++]; if (i >= chars.length) { clearInterval(typing); done(); } }, 45);
+// 操作結果的提示（備份、讀取、清除）：一般的小提示，不是寵物在說話
+function notice(text) {
+  const n = $("notice");
+  n.textContent = tr(text); n.classList.add("show");
+  clearTimeout(notice.t); notice.t = setTimeout(() => n.classList.remove("show"), 3500);
 }
 function buddyHeart() {
   const r = activeCat().getBoundingClientRect(), h = document.createElement("div");
@@ -3890,23 +3707,8 @@ addEventListener("resize", () => { clearTimeout(placeTimer); placeTimer = setTim
 }, 300); });
 
 // ---------- 互動：選心情、摸摸 ----------
-function buddyReact(k, ids = []) {
-  drawBuddy();
-  const love = k === "sad" || k === "happy" || ids.some(id => EMO[id]?.family === "connection");
-  if (inRoom) {
-    rbLook(rbPose);
-    roomInterrupt(async () => {
-      if (k === "tired") return rbStay("sleep", 8);
-      await rbStay("hop", .75);
-      if (love) { buddyHeart(); setTimeout(buddyHeart, 400); }
-      await rbStay("sit", 3);
-    });
-  } else {
-    if (k === "tired") return dockLook("sleep", 8);
-    dockLook("hop", .75);
-    if (love) { buddyHeart(); setTimeout(buddyHeart, 400); }
-  }
-}
+// 選了心情：房間的貓不會跑來回應，只是表情變成那個情緒的樣子，繼續做自己的事
+function buddyReact() { drawBuddy(); }
 const COAT_PITCH = { happy: 1, calm: 1.05, sad: .92, angry: .85, tired: 1.1, anxious: 1.15, goldie: 1, siamese: 1.12, orangewhite: 1.05, graywhite: .95, silver: .98, tortie: .9, brown: .94, black: .88 };   // 每隻貓的聲音高低不太一樣
 function petBuddy() {
   const woke = curPose() === "sleep";
@@ -3960,7 +3762,6 @@ function renderCoats() {
 }
 function updateBuddyBtn() {
   iconLabel($("buddyBtn"), "cat", buddyName());
-  $("petDays").textContent = `和${buddyName()}一起生活的第 ${petDays()} 天 🐾`;
 }
 $("buddyName").oninput = e => { buddy.name = e.target.value.trim(); saveBuddy(); updateBuddyBtn(); };
 $("aboutBtn").onclick = () => $("aboutDlg").showModal?.();
@@ -4072,7 +3873,7 @@ function editorRow(date, r, i) {
   box.className = "editor";
   box.innerHTML = `<div class="pick-here"></div>
     <label class="row">時間 <input type="time"></label>
-    <textarea placeholder="想說點什麼嗎？（可以不寫喔）"></textarea>
+    <textarea placeholder="寫一點什麼（可以不寫）"></textarea>
     <div class="row"><button class="btn ok save-edit">儲存</button><button class="btn cancel">取消</button><span class="warn"></span></div>`;
   const ids = r.mood || r.emo ? emoOf(r) : [];
   const pk = emotionPicker(box.querySelector(".pick-here"), {
@@ -4084,7 +3885,7 @@ function editorRow(date, r, i) {
   box.querySelector(".cancel").onclick = () => { editing = null; renderDlg(); };
   box.querySelector(".save-edit").onclick = () => {
     const ids = pk.ids();
-    if (!ids.length) { box.querySelector(".warn").textContent = "先選一個感覺喔"; return; }
+    if (!ids.length) { box.querySelector(".warn").textContent = "請先選一個感覺"; return; }
     const rec = { emo: ids, mood: faceOf(ids), text: box.querySelector("textarea").value.trim(), t: box.querySelector("input").value,
       hue: Number.isFinite(r.hue) ? r.hue : i === "new" ? randHue() : accOf(r, date).hue };
     if (pk.state.unsure && pk.state.body.length) rec.body = [...pk.state.body];
@@ -4111,7 +3912,7 @@ function renderDlg() {
   $("dlgTitle").textContent = `${y} 年 ${m} 月 ${d} 日` + (dlgDate === TODAY ? "（今天）" : "");
   const box = $("dlgList");
   box.innerHTML = "";
-  if (!list.length && editing !== "new") box.innerHTML = `<p class="dlg-empty">${dlgDate < keepFrom() ? "記錄只會留 7 天，這天的已經變成回憶了" : "這天還沒有記錄喔"}</p>`;
+  if (!list.length && editing !== "new") box.innerHTML = `<p class="dlg-empty">${dlgDate < keepFrom() ? "記錄只會留 7 天，這天的已經變成回憶了" : "這天沒有記錄"}</p>`;
   list.forEach((r, i) => box.appendChild(editing === i ? editorRow(dlgDate, r, i) : recRow(dlgDate, r, i)));
   if (editing === "new") box.appendChild(editorRow(dlgDate, { mood: null, text: "", t: dlgDate === TODAY ? nowTime() : "21:00" }, "new"));
   $("dlgAdd").hidden = editing !== null || dlgDate > TODAY || dlgDate < keepFrom();
@@ -4173,7 +3974,7 @@ window.addEventListener("focus", checkNewDay);
 
 $("save").onclick = () => {
   checkNewDay();
-  if (!pickedEmo.length) { $("hint").textContent = "喵？先選一個最接近現在的感覺喔！"; return; }
+  if (!pickedEmo.length) { $("hint").textContent = "請先選一個感覺"; return; }
   const st = mainPicker.state;
   const rec = { emo: [...pickedEmo], mood: picked, text: $("text").value.trim(), t: nowTime(), hue: pendingHue };
   if (st.unsure && st.body.length) rec.body = [...st.body];
@@ -4186,7 +3987,7 @@ $("save").onclick = () => {
   if (cats.filter(c => !c.entry.pet).length >= meadowCount()) removeCat(cats.find(c => !c.entry.pet));
   const c = makeCat(`${TODAY}#${entries[TODAY].length - 1}`, rec, !reduceMotion);
   draw(c);
-  say(c, "記好了！謝謝你跟我分享 🐟");
+  say(c, emotionLine(c), 4, c.base || rec.mood);   // 新來的貓說說牠帶來的那個情緒
   if (inRoom) roomInterrupt(() => rbStay("hop", .75)); else dockLook("hop", .75);
   buddyHeart();
   picked = null; pickedEmo = []; pendingHue = randHue();
@@ -4194,8 +3995,8 @@ $("save").onclick = () => {
   showAccPreview();
   updateWeather();
   $("text").value = "";
-  $("text").placeholder = "想說點什麼嗎？（可以不寫喔）";
-  $("hint").textContent = "記好了！看看草原～";
+  $("text").placeholder = "寫一點什麼（可以不寫）";
+  $("hint").textContent = "記下來了";
   setTimeout(closeDrawers, 700);
 };
 
@@ -4467,7 +4268,7 @@ $("exportBtn").onclick = () => {
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
   try { localStorage.setItem("meow-last-backup", Date.now()); } catch (e) {}
-  buddySay(`備份好了！${realCount()} 筆記錄都在檔案裡，要好好收著喔 💾`);
+  notice(`已下載備份檔（${realCount()} 筆記錄）`);
 };
 
 $("importBtn").onclick = () => $("importFile").click();
@@ -4479,7 +4280,7 @@ $("importFile").onchange = e => {
     let data;
     try { data = JSON.parse(reader.result); } catch (err) { data = null; }
     if (!data || data.app !== "meow-diary" || typeof data.entries !== "object") {
-      buddySay("喵？這個好像不是心情草原的備份檔耶…");
+      notice("這個檔案不是心情草原的備份檔");
       return;
     }
     // 合併：不會刪掉現有的記錄，重複的不會再加一次
@@ -4510,7 +4311,7 @@ $("importFile").onchange = e => {
     }
     if (data.theme && document.querySelector(`#themes button[data-t="${CSS.escape(data.theme)}"]`)) applyTheme(data.theme);
     refreshAll();
-    buddySay(added ? `讀取好了！多了 ${added} 筆記錄，歡迎回來 🐾` : "讀取好了！這些記錄本來就都在了喔");
+    notice(added ? `已讀取備份檔，新增 ${added} 筆記錄` : "已讀取備份檔，沒有新的記錄");
   };
   reader.readAsText(file);
   e.target.value = "";
@@ -4532,7 +4333,7 @@ document.querySelector("[data-close-clear]").onclick = () => $("clearDlg").close
 $("clearDemoOnly").onclick = () => {
   removeDemo(); refreshAll();
   $("clearDlg").close();
-  buddySay("示範資料清掉了！接下來都是你自己的記錄囉");
+  notice("已清除示範資料");
 };
 $("clearBackup").onclick = () => $("exportBtn").click();
 // 全部清除要按兩次才會真的刪
@@ -4553,7 +4354,7 @@ $("clearAll").onclick = () => {
   }
   refreshAll();
   $("clearDlg").close();
-  buddySay("都清乾淨了。從今天開始，一起慢慢記錄吧 🐾");
+  notice("已清除所有記錄");
 };
 
 // ---------- 出門走走：整個畫面變成草原，寵物跟著一起出門 ----------

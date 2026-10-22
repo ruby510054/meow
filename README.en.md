@@ -2,7 +2,7 @@
 
 [中文](README.md) | **English**
 
-A small web page for practicing noticing and expressing your feelings. Pick the feeling closest to how you feel right now, and a cat runs into the meadow outside the window while the sky changes with your mood. There's also a cat of your own living in the room.
+A small web page for practicing noticing and expressing your feelings. Pick the feeling closest to how you feel right now, and a cat runs into the meadow outside the window while the sky changes with your mood. There's also a cat in the room that goes about its own day.
 
 Mood Meadow only keeps the last 7 days: the older an entry gets, the fainter its cat becomes in the meadow, and after 7 days it's gone.
 
@@ -10,7 +10,7 @@ No install, no sign-up — just open the page. Everything stays in your own brow
 
 **Try it online: <https://ruby510054.github.io/meow/>** (switch to English with the "EN" button in the top right)
 
-![Mood Meadow: the meadow outside the window, the room and the pet](docs/main.png)
+![Mood Meadow: the meadow outside the window, the room and its cat](docs/main.png)
 
 > The screenshots show the Chinese interface; everything is also available in English.
 
@@ -65,8 +65,8 @@ It follows the time of day too: a light mist in the early morning, sunset colors
 
 ![All feeling accessories](docs/accessories.png)
 
-### The room and your pet
-- A cat of your own lives in the room. It runs around, chases its tail, naps on the bed and sofa, and now and then makes mischief on the desk
+### The room and its cat
+- A cat lives in the room and wanders around on its own. It runs around, chases its tail, naps on the bed and sofa, and now and then makes mischief on the desk
 - Its expression follows your mood, and petting it makes hearts float up
 - Give it a name and pick its coat
 - Two rooms to choose from: the pink cottage and the cat café, each with its own furniture
@@ -77,9 +77,9 @@ It follows the time of day too: a light mist in the early morning, sunset colors
 ![Curtain styles](docs/curtains.png)
 
 ### Go outside
-Press "Go outside" to take your pet out to the meadow and play with the other cats up close.
+Press "Go outside" to step out into the meadow; the room cat comes along, and you can see the meadow cats up close.
 
-![Going outside: your pet comes along to the meadow](docs/outside.png)
+![Going outside: the room cat comes along to the meadow](docs/outside.png)
 
 ### Recent
 "Recent" shows the cats from the last 7 days, fainter the further back they are, along with the mood colors and the feelings that came up.
