@@ -44,7 +44,8 @@ Mood Meadow is a small practice tool and can't replace professional help. If you
 
 ### Log your mood
 - Pick one of four areas (energy × pleasantness, based on the circumplex model of affect), then the closest of 47 feeling words — each comes with a short description
-- Choose "Mixed" to pick several words; if you're "Not sure", you can log how your body feels and what it's about instead
+- Each feeling family ends with "+ My own word": if a feeling belongs to a family but none of the words or descriptions quite fit, add your own word and description. Its coat and accessory follow that family; while adding it you can also drag a point on a small square to set how pleasant and how energetic it is, and the weather outside changes as you drag. Words you no longer want can be hidden
+- Choose "Mixed" to pick several words; if you're "Not sure", you can log how your body feels and what it's about instead, or tap a rough spot on the small square
 - Log as many times a day as you like, and edit, delete, or add entries for any of the last 7 days
 
 ![Logging a mood: pick "Sad" and it starts raining outside](docs/record.png)

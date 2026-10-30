@@ -560,6 +560,26 @@
   .emo-chip:hover { transform: translateY(-1px); background: color-mix(in srgb, var(--q) 16%, var(--card)); }
   .emo-chip.on { background: color-mix(in srgb, var(--q) 30%, var(--card)); border-color: color-mix(in srgb, var(--q) 75%, var(--line)); font-weight: 600; }
   .emo-chip.soft { --q: #a0848c; }
+  .emo-chip.add-word { border-style: dashed; background: transparent; color: var(--muted); }
+  .emo-chip.mine { border-style: dashed; }
+  .word-form { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; width: 100%; margin-top: 2px; }
+  .word-form input { font: inherit; font-size: 14px; color: var(--ink); background: var(--card); border: 1.5px dashed var(--line); border-radius: 10px; padding: 3px 10px; }
+  .word-form input:first-child { width: 7em; } .word-form input:nth-child(2) { flex: 1; min-width: 9em; }
+  .mood-pad { position: relative; width: 150px; height: 110px; flex-shrink: 0; border: 1.5px solid var(--line); border-radius: 14px; cursor: crosshair; touch-action: none;
+    background-color: var(--card); background-repeat: no-repeat;
+    background-image: radial-gradient(circle at 0 0, #F19799cc, transparent 55%), radial-gradient(circle at 100% 0, #FAD46Fcc, transparent 55%),
+      radial-gradient(circle at 0 100%, #95A6E8cc, transparent 55%), radial-gradient(circle at 100% 100%, #8DCAAAcc, transparent 55%); }
+  .mood-pad:focus-visible { outline: 2px dashed var(--line); outline-offset: 3px; }
+  .mood-pad .pl { position: absolute; font-size: 10.5px; color: var(--muted); pointer-events: none; white-space: nowrap; }
+  .mood-pad .pl.t { top: 3px; left: 50%; transform: translateX(-50%); } .mood-pad .pl.b { bottom: 3px; left: 50%; transform: translateX(-50%); }
+  .mood-pad .pl.l { left: 5px; top: 50%; transform: translateY(-50%); } .mood-pad .pl.r { right: 5px; top: 50%; transform: translateY(-50%); }
+  .mood-pad .pl.c { transform: none; } .mood-pad .pl.lt { left: 6px; top: 4px; } .mood-pad .pl.rt { right: 6px; top: 4px; }
+  .mood-pad .pl.lb { left: 6px; bottom: 4px; } .mood-pad .pl.rb { right: 6px; bottom: 4px; }
+  .pad-dot { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: var(--card); border: 2px solid var(--line); box-shadow: 0 1px 3px rgba(0,0,0,.25); pointer-events: none; }
+  .pad-dot[hidden] { display: none; }
+  .pad-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; width: 100%; margin: 4px 0; }
+  .pad-hint { font-size: 12px; color: var(--muted); }
+  .hide-word { font: inherit; font-size: 12px; color: var(--muted); background: none; border: 0; text-decoration: underline; cursor: pointer; padding: 0 2px; }
   .acc-preview { display: flex; align-items: center; gap: 10px; margin: -2px 0 12px; font-size: 14px; }
   .acc-preview[hidden] { display: none; }
   .acc-preview > svg { width: 52px; height: 52px; flex-shrink: 0; }
@@ -601,7 +621,7 @@
   .day.today { border: 2px solid var(--accent); background: var(--accent-soft); }
   .day:not(.empty) { cursor: pointer; transition: background .15s; }
   .day > svg, .day .heads, .day .more { opacity: var(--fade, 1); }
-  .week-note { width: 100%; margin: 0 0 4px; font-size: 13px; color: var(--muted); }
+  .week-note { width: 100%; margin: 18px 0 4px; font-size: 13px; color: var(--muted); }
   .day:not(.empty):hover, .day:not(.empty):focus-visible { background: var(--accent-soft); outline: none; }
   .day .heads { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 80%; margin-top: 10px; }
   .day .heads svg { width: 100%; height: auto; margin: 0; }
@@ -980,10 +1000,10 @@
       </div>
       <div class="cal" id="cal"></div>
       <div class="summary" id="summary"></div>
+      <p class="week-note">記錄只留在這個瀏覽器，七天後就會淡去</p>
     </section>
   </aside>
 
-  <p class="note">記錄只留在這個瀏覽器，七天後就會淡去</p>
 </main>
 
 <div class="fade" id="fade" aria-hidden="true"></div>
@@ -1018,7 +1038,7 @@
   <div class="clear-opt danger-box">
     <p class="warn">清除之後就找不回來了，建議先下載一份備份檔。</p>
     <button class="btn" id="clearBackup"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 14.5 V18.5 Q4.5 19.6 5.6 19.6 H18.4 Q19.5 19.6 19.5 18.5 V14.5 M12 4.2 V14 M8.2 10.4 L12 14.2 L15.8 10.4"/></svg> 先下載備份檔</button>
-    <label class="clear-reset"><input type="checkbox" id="clearReset"> 房間的貓和設定也一起重設（名字、花色、主題色、窗簾、音樂、音效和語言）</label>
+    <label class="clear-reset"><input type="checkbox" id="clearReset"> 房間的貓和設定也一起重設（花色、自己的情緒詞、主題色、窗簾、音樂、音效和語言）</label>
     <button class="btn danger" id="clearAll">清除所有心情記錄</button>
   </div>
 </dialog>
@@ -1030,7 +1050,6 @@
 
 <dialog class="card day-dlg" id="buddyDlg" aria-labelledby="buddyDlgTitle">
   <div class="dlg-head"><h2 id="buddyDlgTitle">房間裡的貓</h2><button class="dlg-x" id="buddyDlgClose" aria-label="關閉">×</button></div>
-  <label class="buddy-name">名字 <input id="buddyName" maxlength="8"></label>
   <div class="coats" id="coats"></div>
   <p class="dlg-empty">牠會在房間裡自己活動，表情跟著現在的情緒。</p>
 </dialog>
@@ -1321,8 +1340,11 @@ const EN = {
   "修改": "Edit", "刪除": "Delete", "確定刪除？": "Delete for sure?", "時間": "Time",
   "儲存": "Save", "取消": "Cancel", "沒有記錄": "no entries",
                 "真的要全部清除嗎？再按一次": "Really clear everything? Press again",           "（今天）": " (today)",
-  "語言": "Language", "房間裡的貓": "The cat in the room", "牠會在房間裡自己活動，表情跟著現在的情緒。": "It wanders around the room on its own; its face follows the current feeling.",
-  "房間的貓和設定也一起重設（名字、花色、主題色、窗簾、音樂、音效和語言）": "Also reset the room cat and settings (name, coat, colors, curtains, music, sound and language)",
+  "語言": "Language", "更強烈": "Stronger", "比較淡": "Milder", "高能量": "High energy", "低能量": "Low energy", "不舒服": "Unpleasant", "舒服": "Pleasant",
+  "大概在哪裡？（可以不點）": "Roughly where? (optional)", "不點了": "Clear", "拖一下，看窗外的天氣（可以不拖）": "Drag to see the weather outside (optional)",
+  "大概的位置：左右是舒不舒服，上下是能量高低": "Rough position: left–right is pleasantness, up–down is energy", "＋ 自己的詞": "+ My own word", "情緒詞": "Feeling word", "說明（可以不寫）": "Description (optional)", "加入": "Add",
+  "不再顯示這個詞": "Stop showing this word", "房間的貓": "Room cat", "房間的貓和設定也一起重設（花色、自己的情緒詞、主題色、窗簾、音樂、音效和語言）": "Also reset the room cat and settings (coat, your own feeling words, colors, curtains, music, sound and language)", "房間裡的貓": "The cat in the room", "牠會在房間裡自己活動，表情跟著現在的情緒。": "It wanders around the room on its own; its face follows the current feeling.",
+  "房間的貓和設定也一起重設（花色、主題色、窗簾、音樂、音效和語言）": "Also reset the room cat and settings (name, coat, colors, curtains, music, sound and language)",
   "寫一點什麼（可以不寫）": "Write something (optional)", "發生了什麼事、身體有什麼感覺（可以不寫）": "What happened, how your body feels (optional)",
   "請先選一個感覺": "Pick a feeling first", "這天沒有記錄": "No entries on this day", "氣到毛都豎起來了": "So mad my fur is standing up", "眼眶濕濕的": "My eyes are a little wet", "好想躲起來…": "I want to hide…", "心裡滿滿的": "My heart feels full",
   "這個檔案不是心情草原的備份檔": "This file isn't a Mood Meadow backup", "已讀取備份檔，沒有新的記錄": "Backup loaded — no new entries",
@@ -1926,6 +1948,8 @@ try {
   entries = JSON.parse(stored) || {};
 } catch (e) {}
 // 讀進來的資料先檢查一遍：壞掉的記錄跳過、缺的欄位補預設值，免得整個網頁打不開
+// 情緒的位置：[愉悅度, 能量]，都在 -1 ~ 1
+const validPt = pt => Array.isArray(pt) && pt.length === 2 && pt.every(n => Number.isFinite(+n) && Math.abs(+n) <= 1);
 function cleanEntries(raw) {
   const out = {};
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return out;
@@ -1936,6 +1960,7 @@ function cleanEntries(raw) {
       if (Array.isArray(r.emo)) rec.emo = r.emo.filter(x => typeof x === "string").slice(0, 10);
       for (const f of ["body", "ctx"]) if (Array.isArray(r[f])) rec[f] = r[f].filter(x => typeof x === "string").slice(0, 20);
       if (Number.isFinite(r.hue)) rec.hue = r.hue;
+      if (validPt(r.pt)) rec.pt = r.pt.map(n => +(+n).toFixed(2));
       if (r.demo) rec.demo = true;
       return rec;
     });
@@ -2314,7 +2339,7 @@ const SPECIAL_ACT = {
   loved: "rub", grateful: "rub",       // 被愛、感激：一直去蹭別的貓
 };
 function persona(entry) {
-  const ids = emoOf(entry), p = moodPoint(ids) || { v: .2, a: 0 };
+  const ids = emoOf(entry), p = moodPoint(ids, entry.pt) || { v: .2, a: 0 };
   const e = (p.a + 1) / 2, w = (p.v + 1) / 2;   // 都換成 0 ~ 1
   const acts = {
     walk: .4 + 3.4 * e,
@@ -2890,6 +2915,40 @@ QUADS.forEach(q => q.families.forEach(f => {
   if (!EMO[f.id]) EMO[f.id] = { id: f.id, name: f.label.zh, desc: "", family: f.id, familyName: f.label.zh, quad: q.id, color: q.soft, face,
     valence: avgOf(f.emotions, "valence"), arousal: avgOf(f.emotions, "arousal") };
 }));
+// 自己的情緒詞：放在某個情緒家族底下，天氣、花色、配件、草原上的話都跟著那個家族
+// 跟記錄不一樣，詞會一直留著（是你的詞彙），不想看到可以收起來
+const CUSTOM_KEY = "meow-custom-emo";
+let customEmo = [];
+try { customEmo = JSON.parse(localStorage.getItem(CUSTOM_KEY)) || []; } catch (e) {}
+const validCustom = c => c && typeof c.id === "string" && /^c_[\w]+$/.test(c.id) && typeof c.name === "string" && c.name.trim() && EMO[c.family] && EMO[c.family].family === c.family;
+if (!Array.isArray(customEmo)) customEmo = [];
+const cleanCustom = c => ({ id: c.id, family: c.family, name: c.name.trim().slice(0, 8), desc: String(c.desc || "").trim().slice(0, 30), hidden: !!c.hidden,
+  ...(validPt(c.pt) ? { pt: c.pt.map(n => +(+n).toFixed(2)) } : {}) });
+customEmo = customEmo.filter(validCustom).map(cleanCustom);
+function registerCustom(c) {
+  const f = EMO[c.family];
+  EMO[c.id] = { id: c.id, name: c.name, desc: c.desc, valence: c.pt ? c.pt[0] : f.valence, arousal: c.pt ? c.pt[1] : f.arousal, family: f.family, familyName: f.familyName,
+    quad: f.quad, color: f.color, face: f.face, custom: true, hidden: c.hidden };
+}
+const saveCustom = () => { try { localStorage.setItem(CUSTOM_KEY, JSON.stringify(customEmo)); } catch (e) {} };
+function addCustom(family, name, desc, pt) {
+  const c = { id: "c_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), family, name: name.trim().slice(0, 8), desc: desc.trim().slice(0, 30), hidden: false };
+  if (validPt(pt)) c.pt = pt.map(n => +n.toFixed(2));
+  customEmo.push(c); registerCustom(c); saveCustom();
+  return c.id;
+}
+function hideCustom(id) {
+  const c = customEmo.find(x => x.id === id);
+  if (c) { c.hidden = true; EMO[id].hidden = true; saveCustom(); }
+}
+// 收起來、而且已經沒有記錄用到的詞，就真的刪掉
+{
+  const used = new Set(Object.values(entries).flat().flatMap(r => Array.isArray(r.emo) ? r.emo : []));
+  const before = customEmo.length;
+  customEmo = customEmo.filter(c => !c.hidden || used.has(c.id));
+  customEmo.forEach(registerCustom);
+  if (customEmo.length !== before) saveCustom();
+}
 // 情緒表準備好之後，再整理一次記錄：不認識的情緒詞拿掉，表情跟情緒詞對齊
 for (const list of Object.values(entries)) list.forEach(r => {
   if (!r.emo) return;
@@ -2913,8 +2972,38 @@ const accOf = (r, salt = "") => ({ id: emoOf(r)[0], hue: Number.isFinite(r.hue) 
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 
 // 選情緒的元件：先選象限 → 展開家族和情緒詞；可以切換「混合情緒」複選，或「說不上來」
+// 可以拖的點：橫的是「不舒服 ↔ 舒服」，直的是「低能量 ↔ 高能量」；range 限制在某個區塊裡
+// 背景是四個區塊的顏色，只看一個區塊時就放大那一角
+const QUAD_RANGE = { high_unpleasant: [-1, 0, 0, 1], high_pleasant: [0, 1, 0, 1], low_unpleasant: [-1, 0, -1, 0], low_pleasant: [0, 1, -1, 0] };
+function moodPad({ pt, range = [-1, 1, -1, 1], onMove }) {
+  const [v0, v1, a0, a1] = range;
+  const pad = el("div", "mood-pad"), dot = el("i", "pad-dot");
+  pad.tabIndex = 0; pad.setAttribute("role", "slider"); pad.setAttribute("aria-label", "大概的位置：左右是舒不舒服，上下是能量高低");
+  pad.style.backgroundSize = `${200 / (v1 - v0)}% ${200 / (a1 - a0)}%`;
+  pad.style.backgroundPosition = `${v0 < 0 ? 0 : 100}% ${a1 > 0 ? 0 : 100}%`;
+  if (v1 - v0 === 2) pad.style.backgroundPosition = "0 0";
+  if (v1 - v0 === 2) pad.innerHTML = `<span class="pl t">高能量</span><span class="pl b">低能量</span><span class="pl l">不舒服</span><span class="pl r">舒服</span>`;
+  else {   // 只有一個區塊：外側的角比較強烈，靠近中間的角比較淡
+    const outX = v0 < 0 ? "l" : "r", outY = a1 > 0 ? "t" : "b", inX = outX === "l" ? "r" : "l", inY = outY === "t" ? "b" : "t";
+    pad.innerHTML = `<span class="pl c ${outX}${outY}">更強烈</span><span class="pl c ${inX}${inY}">比較淡</span>`;
+  }
+  pad.append(dot);
+  let cur = validPt(pt) ? [...pt] : null;
+  const show = () => { dot.hidden = !cur; if (cur) { dot.style.left = ((cur[0] - v0) / (v1 - v0) * 100) + "%"; dot.style.top = ((a1 - cur[1]) / (a1 - a0) * 100) + "%"; } };
+  const set = (v, a) => { cur = [+Math.min(v1, Math.max(v0, v)).toFixed(2), +Math.min(a1, Math.max(a0, a)).toFixed(2)]; show(); onMove?.(cur); };
+  const at = e => { const r = pad.getBoundingClientRect(); set(v0 + (e.clientX - r.left) / r.width * (v1 - v0), a1 - (e.clientY - r.top) / r.height * (a1 - a0)); };
+  pad.onpointerdown = e => { e.preventDefault(); pad.setPointerCapture(e.pointerId); pad.focus(); at(e); };
+  pad.onpointermove = e => { if (pad.hasPointerCapture(e.pointerId)) at(e); };
+  pad.onkeydown = e => {
+    const d = { ArrowLeft: [-.1, 0], ArrowRight: [.1, 0], ArrowUp: [0, .1], ArrowDown: [0, -.1] }[e.key];
+    if (!d) return;
+    e.preventDefault(); const c = cur || [(v0 + v1) / 2, (a0 + a1) / 2]; set(c[0] + d[0], c[1] + d[1]);
+  };
+  show();
+  return pad;
+}
 function emotionPicker(root, opts = {}) {
-  const blank = () => ({ quad: null, multi: false, sel: [], unsure: false, body: [], ctx: [], focus: null });
+  const blank = () => ({ quad: null, multi: false, sel: [], unsure: false, body: [], ctx: [], focus: null, adding: null, pt: null, addPt: null });
   const st = Object.assign(blank(), opts.init || {});
   if (!st.quad && st.sel.length) st.quad = EMO[st.sel[0]]?.quad || null;
   if (st.sel.length > 1) st.multi = true;
@@ -2923,9 +3012,16 @@ function emotionPicker(root, opts = {}) {
   const showDesc = id => {
     const e = EMO[id];
     descEl.textContent = e ? `${e.name}${e.desc ? "：" + e.desc : ""}` : defaultDesc();
+    // 選到自己的詞時，可以把它收起來
+    const last = EMO[st.sel.at(-1)];
+    if (!e && last?.custom && !st.unsure) {
+      const hide = el("button", "hide-word", "不再顯示這個詞");
+      hide.onclick = () => { hideCustom(last.id); st.sel = st.sel.filter(x => x !== last.id); render(); changed(); };
+      descEl.append(" ", hide);
+    }
   };
   const defaultDesc = () => st.unsure ? EMO.unsure.desc
-    : st.sel.length ? `${EMO[st.sel.at(-1)].name}：${EMO[st.sel.at(-1)].desc}`
+    : st.sel.length ? `${EMO[st.sel.at(-1)].name}${EMO[st.sel.at(-1)].desc ? "：" + EMO[st.sel.at(-1)].desc : ""}`
     : st.quad ? (st.multi ? "可以選好幾個" : "點一個最接近的詞")
     : "";
   const toggleIn = (list, v) => list.includes(v) ? list.splice(list.indexOf(v), 1) : list.push(v);
@@ -2987,6 +3083,16 @@ function emotionPicker(root, opts = {}) {
         g.append(chips);
         root.append(g);
       });
+      const g = el("div", "fam");
+      g.append(el("span", "fam-name", "大概在哪裡？（可以不點）"));
+      const row = el("div", "pad-row");
+      row.append(moodPad({ pt: st.pt, onMove: pt => { st.pt = pt; changed(); clear.hidden = false; } }));
+      const clear = el("button", "hide-word", "不點了");
+      clear.hidden = !st.pt;
+      clear.onclick = () => { st.pt = null; render(); changed(); };
+      row.append(clear);
+      g.append(row);
+      root.append(g);
     } else if (st.quad) {
       const q = QUADS.find(x => x.id === st.quad);
       q.families.forEach(f => {
@@ -3007,6 +3113,49 @@ function emotionPicker(root, opts = {}) {
           };
           chips.append(c);
         });
+        // 自己的詞（這個家族的）
+        customEmo.filter(c => c.family === f.id && (!c.hidden || st.sel.includes(c.id))).forEach(cw => {
+          const on = st.sel.includes(cw.id);
+          const c = el("button", "emo-chip mine" + (on ? " on" : ""), cw.name);
+          c.style.setProperty("--q", q.soft);
+          c.setAttribute("aria-pressed", on);
+          c.onmouseenter = c.onfocus = () => showDesc(cw.id);
+          c.onmouseleave = c.onblur = () => showDesc(null);
+          c.onclick = () => {
+            if (st.multi) toggleIn(st.sel, cw.id); else st.sel = on ? [] : [cw.id];
+            render(); changed();
+          };
+          chips.append(c);
+        });
+        if (st.adding === f.id) {
+          const form = el("div", "word-form");
+          const name = el("input"); name.maxLength = 8; name.placeholder = "情緒詞";
+          const desc = el("input"); desc.maxLength = 30; desc.placeholder = "說明（可以不寫）";
+          const ok = el("button", "emo-chip on", "加入"), no = el("button", "emo-chip", "取消");
+          const fam = EMO[f.id];
+          if (!st.addPt) st.addPt = [+fam.valence.toFixed(2), +fam.arousal.toFixed(2)];
+          const padRow = el("div", "pad-row");
+          padRow.append(moodPad({ pt: st.addPt, range: QUAD_RANGE[q.id], onMove: pt => { st.addPt = pt; changed(); } }));
+          padRow.append(el("span", "pad-hint", "拖一下，看窗外的天氣（可以不拖）"));
+          ok.style.setProperty("--q", q.soft);
+          const add = () => {
+            if (!name.value.trim()) { name.focus(); return; }
+            const id = addCustom(f.id, name.value, desc.value, st.addPt);
+            if (st.multi) st.sel.push(id); else st.sel = [id];
+            st.adding = null; st.addPt = null; render(); changed();
+          };
+          const cancel = () => { st.adding = null; st.addPt = null; render(); changed(); };
+          ok.onclick = add; no.onclick = cancel;
+          [name, desc].forEach(i => i.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); add(); } if (e.key === "Escape") { e.stopPropagation(); cancel(); } });
+          form.append(name, desc, padRow, ok, no);
+          chips.append(form);
+          setTimeout(() => name.focus(), 0);
+        } else {
+          const plus = el("button", "emo-chip add-word", "＋ 自己的詞");
+          plus.style.setProperty("--q", q.soft);
+          plus.onclick = () => { st.adding = f.id; st.addPt = null; render(); changed(); };
+          chips.append(plus);
+        }
         g.append(chips);
         root.append(g);
       });
@@ -3032,12 +3181,13 @@ function emotionPicker(root, opts = {}) {
   return {
     state: st,
     ids: () => st.unsure ? ["unsure"] : [...st.sel],
+    pt: () => st.unsure && validPt(st.pt) ? [...st.pt] : null,
     reset() { Object.assign(st, blank()); render(); },
   };
 }
 
 // 主畫面的情緒選單
-let pickedEmo = [], pendingHue = randHue();
+let pickedEmo = [], pendingHue = randHue(), livePt = null;
 let mainPicker;
 function showAccPreview() {
   const box = $("accPreview");
@@ -3053,6 +3203,7 @@ function renderMoods() {
     animated: true,
     onChange: st => {
       const ids = st.unsure ? ["unsure"] : [...st.sel], before = pickedEmo.join();
+      livePt = st.adding && st.addPt ? st.addPt : st.unsure && st.pt ? st.pt : null;
       if (ids[0] !== pickedEmo[0]) pendingHue = randHue();   // 換了情緒就抽一個新顏色
       pickedEmo = ids;
       picked = ids.length ? faceOf(ids) : null;
@@ -3229,7 +3380,8 @@ const SKY = {
 const hex2rgb = h => [16, 8, 0].map(sh => (parseInt(h.slice(1), 16) >> sh) & 255);
 const lerpRGB = (a, b, t) => a.map((x, i) => x + (b[i] - x) * t);
 const rgb = c => `rgb(${c.map(Math.round).join(",")})`;
-function moodPoint(ids) {
+function moodPoint(ids, pt) {
+  if (validPt(pt)) return { v: +pt[0], a: +pt[1] };   // 自己拖的位置
   if (!ids.length) return null;
   if (ids[0] === "unsure") return { v: 0, a: 0, unsure: true };
   const es = ids.map(id => EMO[id]).filter(e => Number.isFinite(e?.valence));
@@ -3281,7 +3433,8 @@ function reactWeather() {
 function updateWeather() {
   const last = (entries[TODAY] || []).at(-1);
   const ids = pickedEmo.length ? pickedEmo : last ? emoOf(last) : [];
-  const p = moodPoint(ids), m = $("meadow");
+  const pt = livePt || (pickedEmo.length ? null : last?.pt);   // 正在拖的點，或今天最後一筆記錄的點
+  const p = moodPoint(livePt ? [] : ids, pt), m = $("meadow");
   let name = "", top, bot;
   if (!p) {
     m.style.removeProperty("--skyA"); m.style.removeProperty("--skyB");
@@ -3425,7 +3578,7 @@ if (!buddy.since) {
   buddy.since = real[0] || TODAY;
   try { localStorage.setItem("meow-buddy", JSON.stringify(buddy)); } catch (e) {}
 }
-const buddyName = () => buddy.name || COAT_NAMES[buddy.coat];
+const buddyName = () => "房間裡的貓";
 const buddyFace = () => picked || todayMood() || "calm";
 function saveBuddy() { try { localStorage.setItem("meow-buddy", JSON.stringify(buddy)); } catch (e) {} }
 
@@ -3458,8 +3611,8 @@ function drawBuddy() {
   dockCat.innerHTML = html;
   roomBuddy.innerHTML = html;
   roomBuddy.style.setProperty("--step", "0.3s");
-  roomBuddy.setAttribute("aria-label", `摸摸${buddyName()}`);
-  dockCat.setAttribute("aria-label", `摸摸${buddyName()}`);
+  roomBuddy.setAttribute("aria-label", buddyName());
+  dockCat.setAttribute("aria-label", buddyName());
   setRB(0);
 }
 function dockLook(pose, secs) {
@@ -3741,7 +3894,7 @@ setInterval(() => {
   dockLook(act === "wander" || act === "home" ? "sit" : act);
 }, 500);
 
-// ---------- 寵物設定：名字、花色 ----------
+// ---------- 房間的貓：選花色 ----------
 function renderCoats() {
   $("coats").innerHTML = "";
   for (const k of Object.keys(COAT_NAMES)) {
@@ -3750,20 +3903,15 @@ function renderCoats() {
     b.innerHTML = `${headSVG("calm", k)}<span>${COAT_NAMES[k]}</span>`;
     b.setAttribute("aria-label", "選 " + COAT_NAMES[k]);
     b.onclick = () => {
-      const renamed = buddy.name && buddy.name !== COAT_NAMES[buddy.coat];
       buddy.coat = k;
-      if (!renamed) buddy.name = "";
-      $("buddyName").value = buddyName();
       saveBuddy(); renderCoats(); drawBuddy(); updateBuddyBtn();
-      if (inRoom) roomInterrupt(() => rbStay("hop", .75)); else dockLook("hop", .75);
     };
     $("coats").appendChild(b);
   }
 }
 function updateBuddyBtn() {
-  iconLabel($("buddyBtn"), "cat", buddyName());
+  iconLabel($("buddyBtn"), "cat", "房間的貓");
 }
-$("buddyName").oninput = e => { buddy.name = e.target.value.trim(); saveBuddy(); updateBuddyBtn(); };
 $("aboutBtn").onclick = () => $("aboutDlg").showModal?.();
 document.querySelector("[data-close-about]").onclick = () => $("aboutDlg").close();
 $("buddyBtn").onclick = () => { updateBuddyBtn(); $("buddyDlg").showModal?.(); };
@@ -3878,7 +4026,7 @@ function editorRow(date, r, i) {
   const ids = r.mood || r.emo ? emoOf(r) : [];
   const pk = emotionPicker(box.querySelector(".pick-here"), {
     compact: true,
-    init: ids[0] === "unsure" ? { unsure: true, body: [...(r.body || [])], ctx: [...(r.ctx || [])] } : { sel: ids },
+    init: ids[0] === "unsure" ? { unsure: true, body: [...(r.body || [])], ctx: [...(r.ctx || [])], pt: validPt(r.pt) ? [...r.pt] : null } : { sel: ids },
   });
   box.querySelector("input").value = r.t || "";
   box.querySelector("textarea").value = r.text || "";
@@ -3890,6 +4038,7 @@ function editorRow(date, r, i) {
       hue: Number.isFinite(r.hue) ? r.hue : i === "new" ? randHue() : accOf(r, date).hue };
     if (pk.state.unsure && pk.state.body.length) rec.body = [...pk.state.body];
     if (pk.state.unsure && pk.state.ctx.length) rec.ctx = [...pk.state.ctx];
+    if (pk.pt()) rec.pt = pk.pt();
     if (i === "new") (entries[date] ||= []).push(rec);
     else entries[date][i] = rec;
     editing = null;
@@ -3979,6 +4128,7 @@ $("save").onclick = () => {
   const rec = { emo: [...pickedEmo], mood: picked, text: $("text").value.trim(), t: nowTime(), hue: pendingHue };
   if (st.unsure && st.body.length) rec.body = [...st.body];
   if (st.unsure && st.ctx.length) rec.ctx = [...st.ctx];
+  if (mainPicker.pt()) rec.pt = mainPicker.pt();
   (entries[TODAY] ||= []).push(rec);
   persist();
   view = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -3990,7 +4140,7 @@ $("save").onclick = () => {
   say(c, emotionLine(c), 4, c.base || rec.mood);   // 新來的貓說說牠帶來的那個情緒
   if (inRoom) roomInterrupt(() => rbStay("hop", .75)); else dockLook("hop", .75);
   buddyHeart();
-  picked = null; pickedEmo = []; pendingHue = randHue();
+  picked = null; pickedEmo = []; livePt = null; pendingHue = randHue();
   mainPicker.reset();
   showAccPreview();
   updateWeather();
@@ -4251,8 +4401,7 @@ function removeDemo() {
 }
 function refreshAll() {
   persist(); renderCal(); renderToday(); renderMeadow(); renderCoats(); drawBuddy(); updateWeather();
-  $("buddyName").value = buddyName();
-}
+  }
 
 $("exportBtn").onclick = () => {
   const real = {};
@@ -4261,7 +4410,7 @@ $("exportBtn").onclick = () => {
     if (list.length) real[k] = list;
   }
   const data = { app: "meow-diary", version: 1, exported: new Date().toISOString(),
-                 entries: real, buddy, theme: document.documentElement.dataset.theme };
+                 entries: real, buddy, theme: document.documentElement.dataset.theme, custom: customEmo };
   const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
   const a = document.createElement("a");
   a.href = url; a.download = `心情草原備份-${TODAY}.json`;
@@ -4283,6 +4432,13 @@ $("importFile").onchange = e => {
       notice("這個檔案不是心情草原的備份檔");
       return;
     }
+    // 自己的詞先讀進來（記錄會用到）
+    if (Array.isArray(data.custom)) data.custom.forEach(c => {
+      if (!validCustom(c) || customEmo.some(x => x.id === c.id)) return;
+      const w = cleanCustom(c);
+      customEmo.push(w); registerCustom(w);
+    });
+    saveCustom();
     // 合併：不會刪掉現有的記錄，重複的不會再加一次
     removeDemo();
     let added = 0;
@@ -4296,6 +4452,7 @@ $("importFile").onchange = e => {
         const rec = { mood: face, text: String(r.text || "").slice(0, 500), t: /^\d{2}:\d{2}$/.test(r.t) ? r.t : "" };
         if (ids.length) rec.emo = ids;
         if (Number.isFinite(r.hue)) rec.hue = Math.round(r.hue) % 360;
+        if (validPt(r.pt)) rec.pt = r.pt.map(n => +(+n).toFixed(2));
         const strs = v => Array.isArray(v) ? v.filter(x => typeof x === "string").map(x => x.slice(0, 20)).slice(0, 20) : [];
         if (strs(r.body).length) rec.body = strs(r.body);
         if (strs(r.ctx).length) rec.ctx = strs(r.ctx);
@@ -4306,7 +4463,7 @@ $("importFile").onchange = e => {
       entries[date]?.sort((a, b) => (a.t || "").localeCompare(b.t || ""));
     }
     if (data.buddy && COAT_NAMES[data.buddy.coat]) {
-      buddy = { coat: data.buddy.coat, name: String(data.buddy.name || "").slice(0, 8), since: /^\d{4}-\d{2}-\d{2}$/.test(data.buddy.since) ? data.buddy.since : buddy.since };
+      buddy = { coat: data.buddy.coat, since: /^\d{4}-\d{2}-\d{2}$/.test(data.buddy.since) ? data.buddy.since : buddy.since };
       saveBuddy();
     }
     if (data.theme && document.querySelector(`#themes button[data-t="${CSS.escape(data.theme)}"]`)) applyTheme(data.theme);
@@ -4318,7 +4475,7 @@ $("importFile").onchange = e => {
 };
 
 // ---------- 清除資料 ----------
-const SETTING_KEYS = ["meow-room", "meow-theme", "meow-theme-cafe", "meow-lang", "meow-buddy", "meow-music", "meow-sfx", "meow-sfx-vol", "meow-curtain", "meow-curtain-shut", "meow-last-backup"];
+const SETTING_KEYS = ["meow-custom-emo", "meow-room", "meow-theme", "meow-theme-cafe", "meow-lang", "meow-buddy", "meow-music", "meow-sfx", "meow-sfx-vol", "meow-curtain", "meow-curtain-shut", "meow-last-backup"];
 function openClear() {
   const real = realCount(), demo = Object.values(entries).flat().filter(r => r.demo).length;
   $("clearInfo").textContent = `目前有 ${real} 筆你自己的記錄` + (demo ? `，和 ${demo} 筆示範資料。` : "。");
@@ -4364,7 +4521,7 @@ function addPetCat(enter) {
   c.coat = buddy.coat; c.base = c.face = buddyFace(); c.acc = buddyAcc();
   c.el.innerHTML = catHTML(buddyFace(), buddy.coat, buddyAcc());
   c.el.dataset.pet = "1";
-  c.el.setAttribute("aria-label", `摸摸${buddyName()}`);
+  c.el.setAttribute("aria-label", buddyName());
   c.el.onclick = e => {
     e.stopPropagation();
     if (c.partner) endPair(c);
@@ -4447,7 +4604,6 @@ addEventListener("resize", () => { clearTimeout(onMeadowResize.t); onMeadowResiz
 
 renderMoods();
 renderCoats();
-$("buddyName").value = buddyName();
 updateBuddyBtn();
 drawBuddy();
 renderCal();
