@@ -82,6 +82,9 @@ Press "Go outside" to step out into the meadow; the room cat comes along, and yo
 
 ![Going outside: the room cat comes along to the meadow](docs/outside.png)
 
+### Sticky notes
+Press "Notes" to stick a note in the room, write something, and drag it wherever you like. You can also press Ctrl+V (or paste on a phone) to turn copied text into a new note. Notes don't fade; peel one off with the × in its corner, and use the dot to change its color.
+
 ### Recent
 "Recent" shows the cats from the last 7 days, fainter the further back they are, along with the mood colors and the feelings that came up.
 

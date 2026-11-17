@@ -450,6 +450,26 @@
     border: 1.5px solid var(--line); border-radius: var(--wobble2); padding: 3px 12px; box-shadow: var(--shadow);
   }
   .buddy-btn { margin-left: auto; }
+  /* 便條紙：貼在房間裡，可以拖到任何地方 */
+  .notes { position: fixed; inset: 0; z-index: 20; pointer-events: none; }
+  body.outside .notes { display: none; }
+  .note-card { position: absolute; width: 150px; min-height: 120px; padding: 18px 12px 12px; pointer-events: auto; touch-action: none;
+    background: var(--nc, #fff3a8); border: 1.5px solid var(--line); border-radius: 4px 4px 4px 14px;
+    box-shadow: 0 6px 12px -6px rgba(74, 52, 57, .35); transform: rotate(var(--rot, 0deg)); cursor: grab; transition: box-shadow .15s; }
+  .note-card.dragging { cursor: grabbing; box-shadow: 0 12px 20px -8px rgba(74, 52, 57, .4); transition: none; }
+  .note-card::before { content: ""; position: absolute; left: 50%; top: -9px; width: 54px; height: 18px; transform: translateX(-50%) rotate(-3deg);
+    background: color-mix(in srgb, var(--accent) 35%, #fff); opacity: .8; border-radius: 2px; }
+  .note-card textarea { display: block; width: 100%; min-height: 86px; resize: none; border: 0; background: transparent; padding: 0; overflow: hidden;
+    font: inherit; font-size: 14px; line-height: 1.5; color: var(--ink); cursor: text; outline: none; }
+  .note-card textarea::placeholder { color: color-mix(in srgb, var(--ink) 40%, transparent); }
+  @media (max-width: 700px), (max-height: 520px) { .note-card { width: 118px; min-height: 96px; padding: 15px 9px 9px; } .note-card textarea { font-size: 13px; min-height: 66px; } }
+  .note-tools { position: absolute; right: 4px; top: 2px; display: flex; gap: 2px; opacity: 0; transition: opacity .15s; }
+  .note-card:hover .note-tools, .note-card:focus-within .note-tools { opacity: 1; }
+  @media (hover: none) { .note-tools { opacity: .7; } }
+  .note-tools button { font: inherit; font-size: 13px; line-height: 1; width: 22px; height: 22px; padding: 0; border: 0; border-radius: 50%;
+    background: transparent; color: var(--ink); cursor: pointer; }
+  .note-tools button:hover { background: rgba(255, 255, 255, .6); }
+  .note-tools .dot { display: block; width: 12px; height: 12px; margin: auto; border-radius: 50%; border: 1.5px solid var(--line); }
   .notice { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); z-index: 70; transform: translate(-50%, 12px); opacity: 0; pointer-events: none;
     max-width: calc(100vw - 32px); padding: 8px 18px; font-size: 14px; color: var(--ink); background: var(--card); border: 1.5px solid var(--line);
     border-radius: var(--wobble2); box-shadow: var(--shadow); transition: opacity .3s, transform .3s; }
@@ -967,6 +987,7 @@
   <div class="toolbar">
     <button class="tool-btn" id="openRecord" aria-controls="recordDrawer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M6.5 3.8 H15.5 Q18 3.8 18 6.3 V20.2 H9 Q6.5 20.2 6.5 17.7Z"/><path d="M9.6 8.4 H15 M9.6 11.6 H15 M9.6 14.8 H12.8"/></svg> 記錄心情<small id="todayCount"></small></button>
     <button class="tool-btn" id="openCal" aria-controls="calDrawer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M5 19 C5 10.5 10 5 19.2 4.8 C19 13.8 13.5 19 5 19Z"/><path d="M5 19 L13.6 10.4 M9.4 14.6 L9.2 11.4 M11.6 12.4 L14.6 12.6"/></svg> 最近</button>
+    <button class="tool-btn" id="addNote" title="貼一張便條紙"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M5 4.6 H19 V14.6 L14.6 19.4 H5Z"/><path d="M14.6 19.4 V15.4 Q14.6 14.6 15.4 14.6 H19"/><path d="M8.4 8.6 H15.6 M8.4 11.6 H13" stroke-width="1.3"/></svg> 便條紙</button>
     <button class="tool-btn" id="goOut"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M7 20 V5.4 Q7 4.4 8 4.4 H16 Q17 4.4 17 5.4 V20"/><circle class="k" cx="14.4" cy="12.6" r="1"/><path d="M4.2 20 H19.8"/></svg> 出門走走</button>
     <details class="data-bar" id="dataBar">
       <summary aria-label="更多" title="更多">⋯</summary>
@@ -1011,6 +1032,7 @@
   <div class="cushion"></div>
   <div class="cat sit" id="buddy" role="button"></div>
 </div>
+<div class="notes" id="notes" aria-label="便條紙"></div>
 <div class="notice" id="notice" role="status"></div>
 
 
@@ -1038,7 +1060,7 @@
   <div class="clear-opt danger-box">
     <p class="warn">清除之後就找不回來了，建議先下載一份備份檔。</p>
     <button class="btn" id="clearBackup"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 14.5 V18.5 Q4.5 19.6 5.6 19.6 H18.4 Q19.5 19.6 19.5 18.5 V14.5 M12 4.2 V14 M8.2 10.4 L12 14.2 L15.8 10.4"/></svg> 先下載備份檔</button>
-    <label class="clear-reset"><input type="checkbox" id="clearReset"> 房間的貓和設定也一起重設（花色、自己的情緒詞、主題色、窗簾、音樂、音效和語言）</label>
+    <label class="clear-reset"><input type="checkbox" id="clearReset"> 房間的貓和設定也一起重設（花色、自己的情緒詞、便條紙、主題色、窗簾、音樂、音效和語言）</label>
     <button class="btn danger" id="clearAll">清除所有心情記錄</button>
   </div>
 </dialog>
@@ -1340,10 +1362,11 @@ const EN = {
   "修改": "Edit", "刪除": "Delete", "確定刪除？": "Delete for sure?", "時間": "Time",
   "儲存": "Save", "取消": "Cancel", "沒有記錄": "no entries",
                 "真的要全部清除嗎？再按一次": "Really clear everything? Press again",           "（今天）": " (today)",
-  "語言": "Language", "更強烈": "Stronger", "比較淡": "Milder", "高能量": "High energy", "低能量": "Low energy", "不舒服": "Unpleasant", "舒服": "Pleasant",
+  "語言": "Language", "便條紙": "Notes", "貼一張便條紙": "Add a sticky note", "寫點什麼…": "Write something…", "換顏色": "Change color",
+  "撕掉": "Peel off", "撕掉這張便條紙": "Peel off this note", "更強烈": "Stronger", "比較淡": "Milder", "高能量": "High energy", "低能量": "Low energy", "不舒服": "Unpleasant", "舒服": "Pleasant",
   "大概在哪裡？（可以不點）": "Roughly where? (optional)", "不點了": "Clear", "拖一下，看窗外的天氣（可以不拖）": "Drag to see the weather outside (optional)",
   "大概的位置：左右是舒不舒服，上下是能量高低": "Rough position: left–right is pleasantness, up–down is energy", "＋ 自己的詞": "+ My own word", "情緒詞": "Feeling word", "說明（可以不寫）": "Description (optional)", "加入": "Add",
-  "不再顯示這個詞": "Stop showing this word", "房間的貓": "Room cat", "房間的貓和設定也一起重設（花色、自己的情緒詞、主題色、窗簾、音樂、音效和語言）": "Also reset the room cat and settings (coat, your own feeling words, colors, curtains, music, sound and language)", "房間裡的貓": "The cat in the room", "牠會在房間裡自己活動，表情跟著現在的情緒。": "It wanders around the room on its own; its face follows the current feeling.",
+  "不再顯示這個詞": "Stop showing this word", "房間的貓": "Room cat", "房間的貓和設定也一起重設（花色、自己的情緒詞、便條紙、主題色、窗簾、音樂、音效和語言）": "Also reset the room cat and settings (coat, your own feeling words, sticky notes, colors, curtains, music, sound and language)", "房間裡的貓": "The cat in the room", "牠會在房間裡自己活動，表情跟著現在的情緒。": "It wanders around the room on its own; its face follows the current feeling.",
   "房間的貓和設定也一起重設（花色、主題色、窗簾、音樂、音效和語言）": "Also reset the room cat and settings (name, coat, colors, curtains, music, sound and language)",
   "寫一點什麼（可以不寫）": "Write something (optional)", "發生了什麼事、身體有什麼感覺（可以不寫）": "What happened, how your body feels (optional)",
   "請先選一個感覺": "Pick a feeling first", "這天沒有記錄": "No entries on this day", "氣到毛都豎起來了": "So mad my fur is standing up", "眼眶濕濕的": "My eyes are a little wet", "好想躲起來…": "I want to hide…", "心裡滿滿的": "My heart feels full",
@@ -2120,6 +2143,7 @@ const ICON = {
   belloff: `<path class="s" d="M6.2 16.5 V11.2 A5.8 5.8 0 0 1 17.8 11.2 V16.5 L19.4 18 H4.6Z"/><path d="M10.2 18.4 A1.9 1.9 0 0 0 13.8 18.4 M12 3.8 V5.4 M4 4 L20 20"/>`,
   note: `<path d="M9 17.5 V6.2 L18 4.2 V15.5 M9 9.2 L18 7.2"/><ellipse class="s" cx="6.8" cy="17.6" rx="2.4" ry="2"/><ellipse class="s" cx="15.8" cy="15.6" rx="2.4" ry="2"/>`,
   noteoff: `<path d="M9 17.5 V6.2 L18 4.2 V15.5 M9 9.2 L18 7.2"/><ellipse class="s" cx="6.8" cy="17.6" rx="2.4" ry="2"/><ellipse class="s" cx="15.8" cy="15.6" rx="2.4" ry="2"/><path d="M4 4 L20 20"/>`,
+  sticky: `<path class="s" d="M5 4.6 H19 V14.6 L14.6 19.4 H5Z"/><path d="M14.6 19.4 V15.4 Q14.6 14.6 15.4 14.6 H19"/><path d="M8.4 8.6 H15.6 M8.4 11.6 H13" stroke-width="1.3"/>`,
   note2: `<path class="s" d="M6.5 3.8 H15.5 Q18 3.8 18 6.3 V20.2 H9 Q6.5 20.2 6.5 17.7Z"/><path d="M9.6 8.4 H15 M9.6 11.6 H15 M9.6 14.8 H12.8"/>`,
   leaf: `<path class="s" d="M5 19 C5 10.5 10 5 19.2 4.8 C19 13.8 13.5 19 5 19Z"/><path d="M5 19 L13.6 10.4 M9.4 14.6 L9.2 11.4 M11.6 12.4 L14.6 12.6"/>`,
   door: `<path class="s" d="M7 20 V5.4 Q7 4.4 8 4.4 H16 Q17 4.4 17 5.4 V20"/><circle class="k" cx="14.4" cy="12.6" r="1"/><path d="M4.2 20 H19.8"/>`,
@@ -4410,7 +4434,7 @@ $("exportBtn").onclick = () => {
     if (list.length) real[k] = list;
   }
   const data = { app: "meow-diary", version: 1, exported: new Date().toISOString(),
-                 entries: real, buddy, theme: document.documentElement.dataset.theme, custom: customEmo };
+                 entries: real, buddy, theme: document.documentElement.dataset.theme, custom: customEmo, notes };
   const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
   const a = document.createElement("a");
   a.href = url; a.download = `心情草原備份-${TODAY}.json`;
@@ -4432,6 +4456,8 @@ $("importFile").onchange = e => {
       notice("這個檔案不是心情草原的備份檔");
       return;
     }
+    // 便條紙：沒有的才加進來
+    if (Array.isArray(data.notes)) { data.notes.map(cleanNote).filter(n => n && !notes.some(x => x.id === n.id)).forEach(n => notes.push(n)); saveNotes(); renderNotes(); }
     // 自己的詞先讀進來（記錄會用到）
     if (Array.isArray(data.custom)) data.custom.forEach(c => {
       if (!validCustom(c) || customEmo.some(x => x.id === c.id)) return;
@@ -4475,7 +4501,7 @@ $("importFile").onchange = e => {
 };
 
 // ---------- 清除資料 ----------
-const SETTING_KEYS = ["meow-custom-emo", "meow-room", "meow-theme", "meow-theme-cafe", "meow-lang", "meow-buddy", "meow-music", "meow-sfx", "meow-sfx-vol", "meow-curtain", "meow-curtain-shut", "meow-last-backup"];
+const SETTING_KEYS = ["meow-notes", "meow-custom-emo", "meow-room", "meow-theme", "meow-theme-cafe", "meow-lang", "meow-buddy", "meow-music", "meow-sfx", "meow-sfx-vol", "meow-curtain", "meow-curtain-shut", "meow-last-backup"];
 function openClear() {
   const real = realCount(), demo = Object.values(entries).flat().filter(r => r.demo).length;
   $("clearInfo").textContent = `目前有 ${real} 筆你自己的記錄` + (demo ? `，和 ${demo} 筆示範資料。` : "。");
@@ -4678,6 +4704,107 @@ applyLang(LANG, false);
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
   addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 }
+
+// ---------- 便條紙：貼在房間裡，可以拖曳；不會淡掉，自己撕掉才會消失 ----------
+const NOTES_KEY = "meow-notes";
+const NOTE_COLORS = ["#fff3a8", "#ffd6e2", "#d6eefc", "#dcf2d4", "#ece0fa"];
+let notes = [];
+try { notes = JSON.parse(localStorage.getItem(NOTES_KEY)) || []; } catch (e) {}
+const cleanNote = n => n && typeof n === "object" && typeof n.id === "string" ? {
+  id: n.id.slice(0, 40), text: String(n.text || "").slice(0, 300),
+  x: Math.min(1, Math.max(0, +n.x || 0)), y: Math.min(1, Math.max(0, +n.y || 0)),
+  c: Number.isInteger(n.c) ? ((n.c % NOTE_COLORS.length) + NOTE_COLORS.length) % NOTE_COLORS.length : 0,
+  r: Math.max(-6, Math.min(6, +n.r || 0)), z: Number.isFinite(+n.z) ? +n.z : 0 } : null;
+notes = Array.isArray(notes) ? notes.map(cleanNote).filter(Boolean) : [];
+const saveNotes = () => { try { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); } catch (e) {} };
+let noteTop = Math.max(0, ...notes.map(n => n.z));
+function renderNotes() {
+  const box = $("notes");
+  box.innerHTML = "";
+  [...notes].sort((a, b) => a.z - b.z).forEach(n => box.append(noteEl(n)));
+}
+function placeNote(card, n) {
+  const w = card.offsetWidth || 150, h = card.offsetHeight || 120;
+  card.style.left = Math.round(n.x * Math.max(0, innerWidth - w)) + "px";
+  card.style.top = Math.round(n.y * Math.max(0, innerHeight - h)) + "px";
+}
+function noteEl(n) {
+  const card = el("div", "note-card");
+  card.dataset.id = n.id;
+  card.style.setProperty("--nc", NOTE_COLORS[n.c]);
+  card.style.setProperty("--rot", n.r + "deg");
+  card.style.zIndex = n.z;
+  const ta = el("textarea");
+  ta.value = n.text; ta.maxLength = 300; ta.placeholder = "寫點什麼…";
+  ta.setAttribute("aria-label", "便條紙");
+  const fit = () => { ta.style.height = "auto"; ta.style.height = Math.max(86, ta.scrollHeight) + "px"; };
+  ta.oninput = () => { n.text = ta.value; fit(); saveNotes(); };
+  // 空白的就收掉：等一下再看，焦點還在這張便條紙上（例如按了換顏色）就不收
+  ta.onblur = () => setTimeout(() => { if (!n.text.trim() && !card.contains(document.activeElement) && card.isConnected) removeNote(n.id); }, 0);
+  const tools = el("div", "note-tools");
+  const color = el("button"); color.innerHTML = '<i class="dot"></i>'; color.title = "換顏色"; color.setAttribute("aria-label", "換顏色");
+  color.querySelector(".dot").style.background = NOTE_COLORS[(n.c + 1) % NOTE_COLORS.length];
+  color.onclick = () => { n.c = (n.c + 1) % NOTE_COLORS.length; card.style.setProperty("--nc", NOTE_COLORS[n.c]); color.querySelector(".dot").style.background = NOTE_COLORS[(n.c + 1) % NOTE_COLORS.length]; saveNotes(); };
+  const del = el("button", "", "×"); del.title = "撕掉"; del.setAttribute("aria-label", "撕掉這張便條紙");
+  del.onclick = () => removeNote(n.id);
+  tools.append(color, del);
+  // 按這兩個按鈕時不要搶走寫字的地方的焦點（iPhone 上按鈕不會拿到焦點，不擋的話空白便條紙會被當成寫完了收掉）
+  tools.onpointerdown = e => e.preventDefault();
+  card.append(ta, tools);
+  // 拖曳：按住便條紙的空白處（不是寫字的地方）拖
+  let drag = null;
+  card.onpointerdown = e => {
+    n.z = ++noteTop; card.style.zIndex = n.z;
+    if (e.target.closest("textarea, button")) { saveNotes(); return; }
+    e.preventDefault();
+    const r = card.getBoundingClientRect();
+    drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, id: e.pointerId };
+    card.setPointerCapture(e.pointerId); card.classList.add("dragging");
+  };
+  card.onpointermove = e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const w = card.offsetWidth, h = card.offsetHeight;
+    const x = Math.min(Math.max(e.clientX - drag.dx, 0), innerWidth - w), y = Math.min(Math.max(e.clientY - drag.dy, 0), innerHeight - h);
+    card.style.left = x + "px"; card.style.top = y + "px";
+    n.x = innerWidth > w ? x / (innerWidth - w) : 0; n.y = innerHeight > h ? y / (innerHeight - h) : 0;
+  };
+  card.onpointerup = card.onpointercancel = () => { if (!drag) return; drag = null; card.classList.remove("dragging"); saveNotes(); };
+  // 鍵盤：便條紙聚焦時，可以用方向鍵移動
+  card.tabIndex = -1;
+  card.onkeydown = e => {
+    if (e.target !== card) return;
+    const d = { ArrowLeft: [-.02, 0], ArrowRight: [.02, 0], ArrowUp: [0, -.02], ArrowDown: [0, .02] }[e.key];
+    if (!d) return;
+    e.preventDefault(); n.x = Math.min(1, Math.max(0, n.x + d[0])); n.y = Math.min(1, Math.max(0, n.y + d[1])); placeNote(card, n); saveNotes();
+  };
+  requestAnimationFrame(() => { fit(); placeNote(card, n); });
+  return card;
+}
+function addNote(text = "") {
+  const k = notes.length % 6;
+  const n = { id: "n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), text: String(text).slice(0, 300),
+    x: Math.min(.9, .38 + k * .05 + Math.random() * .04), y: Math.min(.8, .18 + k * .06 + Math.random() * .04),
+    c: Math.floor(Math.random() * NOTE_COLORS.length), r: +(Math.random() * 6 - 3).toFixed(1), z: ++noteTop };
+  notes.push(n); saveNotes();
+  const card = noteEl(n); $("notes").append(card);
+  if (!text) requestAnimationFrame(() => card.querySelector("textarea").focus());
+  else saveNotes();
+  return n;
+}
+function removeNote(id) {
+  notes = notes.filter(n => n.id !== id); saveNotes();
+  $("notes").querySelector(`[data-id="${id}"]`)?.remove();
+}
+$("addNote").onclick = () => addNote();
+// 貼上：沒有在打字的時候按 Ctrl＋V（或長按貼上），就把文字貼成一張新的便條紙
+document.addEventListener("paste", e => {
+  if (e.target.closest?.("input, textarea, [contenteditable]") || document.querySelector("dialog[open]") || outside) return;
+  const text = (e.clipboardData?.getData("text") || "").trim();
+  if (!text) return;
+  e.preventDefault(); addNote(text);
+});
+addEventListener("resize", () => { clearTimeout(renderNotes.t); renderNotes.t = setTimeout(() => document.querySelectorAll(".note-card").forEach(c => { const n = notes.find(x => x.id === c.dataset.id); if (n) placeNote(c, n); }), 150); });
+renderNotes();
 </script>
 </body>
 </html>
