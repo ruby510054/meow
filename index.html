@@ -621,6 +621,13 @@
   .pad-dot[hidden] { display: none; }
   .pad-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; width: 100%; margin: 4px 0; }
   .pad-hint { font-size: 12px; color: var(--muted); }
+  .mine-fam .emo-chip.add-word { border-style: solid; color: var(--ink); background: color-mix(in srgb, var(--q) 22%, var(--card)); font-weight: 600; }
+  .fam.mine-fam { padding-bottom: 6px; border-bottom: 1.5px dashed color-mix(in srgb, var(--line) 50%, transparent); margin-bottom: 4px; }
+  .fam-chip.has:not(.on) { border-style: solid; font-weight: 600; }
+  .chips.words { margin-top: 6px; padding: 6px 0 0 10px; border-left: 2px solid color-mix(in srgb, var(--line) 45%, transparent); }
+  .add-fam { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; width: 100%; }
+  .add-fam.need { animation: needfam .5s; }
+  @keyframes needfam { 0%, 100% { transform: none; } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
   .hide-word { font: inherit; font-size: 12px; color: var(--muted); background: none; border: 0; text-decoration: underline; cursor: pointer; padding: 0 2px; }
   .acc-preview { display: flex; align-items: center; gap: 10px; margin: -2px 0 12px; font-size: 14px; }
   .acc-preview[hidden] { display: none; }
@@ -742,6 +749,8 @@
   button, a, label, select, input[type="range"], [role="button"]:not(.drape):not(.valance), .cat, .quad, .emo-chip, .special, .coat, .day:not(.empty), .meadow, .toy, .room-buddy, .dlg-x {
     cursor: var(--cur-hand, pointer) !important;
   }
+  /* 在房間裡只看得到窗外：草原上的貓、毛線球、草地都不能點（出門走走才可以） */
+  body:not(.outside) .meadow, body:not(.outside) .meadow .cat, body:not(.outside) .meadow .toy { cursor: var(--cur, auto) !important; }
   .paw-stamp { position: fixed; z-index: 50; width: 22px; pointer-events: none; transform: translate(-50%, -50%) rotate(var(--r)); animation: stamp .7s ease-out forwards; }
   @keyframes stamp { 0% { opacity: .9; scale: .6; } 30% { scale: 1; } 100% { opacity: 0; scale: 1; } }
 
@@ -1027,7 +1036,7 @@
     <button class="drawer-x" data-close aria-label="收起來">×</button>
     <section class="card">
       <h2>現在的心情</h2>
-      <p class="hint" id="hint">選一個最接近的感覺</p>
+      <p class="hint" id="hint"></p>
       <div id="picker"></div>
       <div class="acc-preview" id="accPreview" hidden></div>
       <textarea id="text" placeholder="寫一點什麼（可以不寫）"></textarea>
@@ -1323,6 +1332,13 @@ const MEOW_CLIPS = [
 // 畫面上的中文照這張對照表換成英文；之後才出現的字（對話、日曆…）也會自動換。
 // 情緒詞的英文直接用 mood.json 裡的 label.en；你自己寫的心情內容不會被翻譯。
 const EN = {
+  "哪一類？": "Which kind?",
+  "自己的詞": "My own words",
+  "＋ 寫下自己的詞": "+ Write my own word",
+  "沒有想法的話，可以參考": "No idea? Browse for reference",
+  "比較接近哪一類？": "Which kind is it closer to?",
+  "寫下自己的詞，或從下面的類別找一個接近的": "Write your own word, or find a close one in the kinds below",
+  "小仙人掌": "Little cactus", "繃緊的彈簧": "Tight spring", "含羞草": "Mimosa", "放下的石頭": "Stone set down", "小烏雲": "Little gray cloud",
   "…小鳥？": "…A bird?",
   "有小鳥…": "A little bird…",
   "好好聽…": "So pretty…",
@@ -1939,8 +1955,6 @@ function headArt(mood, coat = mood, acc = null) {
     ${mood !== "angry" ? `<ellipse cx="87" cy="49.5" rx="3.3" ry="1.8" fill="#FF9DB5" opacity=".55" stroke="none"/><ellipse cx="113" cy="49.5" rx="3.3" ry="1.8" fill="#FF9DB5" opacity=".55" stroke="none"/>` : ""}
     <g class="eyes">${eye(92, 42, mood, -1, coat)}${eye(108, 42, mood, 1, coat)}</g>
     <g class="closed"><path d="M87.5 42.5 Q92 45.8 96.5 42.5 M103.5 42.5 Q108 45.8 112.5 42.5" fill="none" stroke="${m.eyeLine || INK}" stroke-width="1.6"/></g>
-    ${mood === "sad" ? `<path d="M90 48 Q88.4 51 90 52.4 Q91.6 51 90 48Z" fill="#8EC1EE" stroke="none"/>` : ""}
-    ${mood === "anxious" ? `<path d="M120 30 Q122.6 34 120 35.8 Q117.4 34 120 30Z" fill="#8EC1EE" stroke-width=".8"/>` : ""}
     <circle cx="97.6" cy="50.4" r="2.9" fill="${m.chest}" stroke="none"/><circle cx="102.4" cy="50.4" r="2.9" fill="${m.chest}" stroke="none"/>
     <path d="M98.1 47.1 Q100 46.4 101.9 47.1 Q101.1 49.3 100 49.7 Q98.9 49.3 98.1 47.1Z" fill="#F29BAE" stroke-width="1"/>
     <path d="M100 49.7 L100 51.3" stroke-width="1"/>
@@ -2096,9 +2110,12 @@ const ACC = {
     <circle cx="100" cy="17" r="7.4" fill="${hsl(h, 70, 74)}"/>
     <path d="M94 14 Q100 11 106 15 M93.4 19 Q100 15 106.6 20 M96 23.6 Q98 15 103 10.6" fill="none" stroke="${hsl(h, 55, 52)}" stroke-width="1.1"/></g>
     ${shine("M95 12.6 Q96.6 10.8 98.6 10.4")}`,
-  // 被冒犯：胖胖的青筋
-  offended: h => { const d = "M115 13 Q118 17 115 19 M121 13 Q118 17 121 19 M115 25 Q118 21 115 19 M121 25 Q118 21 121 19";
-    return `<g transform="rotate(45 118 19)" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="${d}" stroke="#4a3439" stroke-width="4.4"/><path d="${d}" stroke="${hsl(345 + h % 30, 85, 70)}" stroke-width="2.4"/></g>`; },
+  // 被冒犯：小仙人掌（像被刺了一下）
+  offended: h => `<g ${AK()}><path d="M115 28 H129 L127.6 33 Q122 35 116.4 33Z" fill="${hsl(h + 20, 55, 76)}"/>
+    <path d="M118 28 V15 Q118 9.6 122 9.6 Q126 9.6 126 15 V28Z" fill="#9dd47f"/>
+    <path d="M118 19 Q114 19 114 15 Q114 12.4 116 12.4 Q117.6 12.4 118 15 M126 22 Q130 22 130 18 Q130 15.4 128 15.4 Q126.4 15.4 126 18" fill="#9dd47f"/></g>
+    <path d="M120 14 l-1.4 -1 M124 17 l1.4 -1 M120.6 22 l-1.4 1 M123.6 25 l1.4 1 M113.6 16 l-1.4 -.6 M130.4 19 l1.4 -.6" fill="none" stroke="#4a3439" stroke-width=".9" stroke-linecap="round"/>
+    <circle cx="122" cy="8.6" r="2" fill="${hsl(h, 80, 80)}" ${AK(.8)}/>${miniFace(122, 20.6, .5, "angry", false)}`,
   // 嫉妒：想要的小魚乾
   jealous: h => `<g ${AK()}><circle cx="112.6" cy="23" r="1.4" fill="#fff"/><circle cx="116.6" cy="17" r="2.2" fill="#fff"/>
     <ellipse cx="126" cy="7.4" rx="10" ry="7.6" fill="#fff"/>
@@ -2109,33 +2126,35 @@ const ACC = {
     <path d="M100 11 C104 14 107 17 105.4 21.6 C104 24 96 24 94.6 21.6 C93 17 96 14 100 11Z" fill="${hsl(h + 30, 95, 86)}" stroke="none"/></g>
     ${miniFace(100, 18.6, .8, "angry", false)}${shine("M90 13 Q90 10.6 91.6 9.6")}`,
   // 害怕
-  // 緊張：一顆大大的冷汗
-  nervous: h => `<g ${AK(1.1)}>${bigDrop(121, 28, 2, hsl(h, 75, 84))}${bigDrop(80, 31, 1.2, hsl(h, 75, 84))}</g>`,
+  // 緊張：繃緊的彈簧
+  nervous: h => { const d = "M121 30 C114 29 114 26 121 25 C128 24 128 21 121 20 C114 19 114 16 121 15 C128 14 128 11 121 10";
+    return `<g fill="none" stroke-linecap="round"><path d="${d}" stroke="#4a3439" stroke-width="3.8"/><path d="${d}" stroke="${hsl(h, 70, 76)}" stroke-width="2"/></g>
+    <circle cx="121" cy="8" r="2.8" fill="${hsl(h + 40, 75, 80)}" ${AK(1.1)}/>${shine("M119.8 7 Q120.4 6 121.4 6", .8)}`; },
   // 擔心：胖胖的問號
   worried: h => `${puffy(119, 21, "?", 15, hsl(h, 75, 74))}${puffy(128.6, 11, "?", 10, hsl(h + 40, 75, 82))}`,
   // 焦慮：轉圈圈眼睛的小雲
   anxious: h => `<g ${AK()}><path d="${cloudPath(100, 9, .82)}" fill="${hsl(h, 45, 90)}"/>
     <path d="M96.6 7.6 m-1.6 0 a1.6 1.6 0 1 1 1.6 1.6 a.8 .8 0 0 1 -.8 -.8 M104.6 7.6 m-1.6 0 a1.6 1.6 0 1 1 1.6 1.6 a.8 .8 0 0 1 -.8 -.8" fill="none" stroke-width=".9"/>
     <path d="M97.6 11.8 q1.2 -1 2.4 0 t2.4 0" fill="none" stroke-width=".9"/></g>${shine("M92.4 6.4 Q93.2 4.4 95.4 4.2")}`,
-  // 害怕：驚嘆號＋發抖的線
-  scared: h => `${puffy(100, 15, "!", 17, hsl(h, 85, 72))}<g ${AK(1.3)} fill="none"><path d="M76 33 Q73 31.6 72 30 M75 40 H70.6 M76 47 Q73 48.4 72 50 M124 33 Q127 31.6 128 30 M125 40 H129.4 M124 47 Q127 48.4 128 50"/></g>${bigDrop(121, 26, 1.3, "#cfe8ff").replace("<path", `<path ${AK(1)}`)}`,
-  // 恐慌：兩個驚嘆號＋汗珠
-  panicked: h => `${puffy(95.6, 14, "!", 16, hsl(h, 85, 68))}${puffy(104.6, 14, "!", 16, hsl(h + 30, 85, 72))}<g ${AK(1.1)}>${bigDrop(121, 27, 1.5, "#cfe8ff")}${bigDrop(79, 27, 1.5, "#cfe8ff")}${bigDrop(125, 37, 1, "#cfe8ff")}</g>`,
+  // 害怕：驚嘆號
+  scared: h => `${puffy(119, 21, "!", 17, hsl(h, 85, 72))}`,
+  // 恐慌：好幾個驚嘆號
+  panicked: h => `${puffy(95.6, 14, "!", 16, hsl(h, 85, 68))}${puffy(104.6, 14, "!", 16, hsl(h + 30, 85, 72))}${puffy(121, 24, "!", 12, hsl(h + 60, 85, 76))}`,
   // 壓力
-  // 有壓力：流汗的小鬧鐘
+  // 有壓力：小鬧鐘
   pressured: h => `<g ${AK()}><path d="M94.6 24 L93 26.4 M105.4 24 L107 26.4" fill="none"/>
     <circle cx="93.6" cy="10.4" r="3.2" fill="${hsl(h, 60, 62)}"/><circle cx="106.4" cy="10.4" r="3.2" fill="${hsl(h, 60, 62)}"/>
     <circle cx="100" cy="17" r="8" fill="${hsl(h, 70, 76)}"/><circle cx="100" cy="17.4" r="5.8" fill="#fffaf5" stroke-width="1"/>
     <path d="M89 12 L87 10.6 M111 12 L113 10.6" fill="none" stroke-width="1"/></g>
-    ${miniFace(100, 17, .78, "o")}${drop(106.6, 13.2, .7, "#cfe8ff").replace("<path", `<path ${AK(.8)}`)}`,
+    ${miniFace(100, 17, .78, "o")}`,
   // 坐立不安：小閃電
   restless: h => `<g ${AK()}><path d="M121 6.6 L115.6 16.4 H120.4 L116.6 27 L126.6 13.6 H121.6 L125.6 6.6Z" fill="${hsl(h, 90, 76)}"/>
     <path d="M79 25 q-3 2 0 4 q3 2 0 4 M75 27 q-3 2 0 4 q3 2 0 4" fill="none" stroke-width="1.1"/></g>${shine("M121.6 8.4 L119.4 12.6", 1)}`,
-  // 不知所措：一疊文件，最上面那張在流汗
+  // 不知所措：疊得高高的一疊文件
   overwhelmed: h => `<g ${AK()}><rect x="88" y="17" width="24" height="5.4" rx="2" fill="${hsl(h, 60, 82)}" transform="rotate(-6 100 19)"/>
     <rect x="89" y="11.6" width="22" height="5.4" rx="2" fill="${hsl(h + 40, 60, 84)}" transform="rotate(5 100 14)"/>
     <rect x="90" y="5" width="20" height="7" rx="2" fill="#fffaf5" transform="rotate(-4 100 8.4)"/></g>
-    ${miniFace(100, 8, .6, "o", false)}${drop(106.4, 6.6, .55, "#cfe8ff").replace("<path", `<path ${AK(.7)}`)}`,
+    ${miniFace(100, 8, .6, "o", false)}`,
   // 喜悅
   // 開心：耳朵邊一朵笑咪咪的小花
   happy: h => `<g ${AK()}><path d="M91 30 Q94 34 97.6 32 Q94.6 28.4 91 30Z" fill="#9fd07f"/>
@@ -2215,9 +2234,11 @@ const ACC = {
     <path d="M100 13.6 V11" fill="none" stroke-width="1.2"/><path d="M100 9 Q97 6 100 3 Q103 0 100 -3" fill="none" stroke="#b9b0b4" stroke-width="1.2"/></g>
     ${miniFace(100, 19.6, .55, "sleep", false)}`,
   // 自我責備
-  // 尷尬：臉頰紅通通＋一滴汗
-  embarrassed: h => `<g stroke="none"><ellipse cx="86" cy="47" rx="5" ry="2.6" fill="${hsl(h, 85, 78)}" opacity=".85"/><ellipse cx="114" cy="47" rx="5" ry="2.6" fill="${hsl(h, 85, 78)}" opacity=".85"/></g>
-    <g ${AK(1.1, "#fff")} fill="none"><path d="M83.6 48 L85 46 M86.4 48 L87.8 46 M112.2 48 L113.6 46 M115 48 L116.4 46"/></g>${bigDrop(120, 26, 1.4, "#cfe8ff").replace("<path", `<path ${AK(1)}`)}`,
+  // 尷尬：含羞草
+  embarrassed: h => `<g ${AK()}><path d="M90 31 C88 24 85 18 81 13" fill="none" stroke="#6fa655" stroke-width="1.5"/>
+    ${[[88.6, 26], [86.4, 21.4], [83.8, 17]].map(([x, y]) => `<path d="M${x} ${y} q-4.6 -1.4 -5.4 1.6 q3 1.4 5.4 -1.6Z M${x} ${y} q3.6 -3 6 -.6 q-2.6 2.4 -6 .6Z" fill="#a8d88e" stroke-width="1"/>`).join("")}</g>
+    ${[0, 40, 80, 120, 160, 200, 240, 280, 320].map(a => { const r = a * Math.PI / 180; return `<path d="M81 12 l${(4.4 * Math.cos(r)).toFixed(1)} ${(4.4 * Math.sin(r)).toFixed(1)}" stroke="${hsl(h, 75, 78)}" stroke-width="1.6" stroke-linecap="round"/>`; }).join("")}
+    <circle cx="81" cy="12" r="2.2" fill="${hsl(h, 80, 82)}"/>`,
   // 愧疚：對不起的小牌子
   guilty: h => `<g ${AK()}><path d="M93 55 L97.6 60.4 M107 55 L102.4 60.4" fill="none" stroke-width="1"/>
     <rect x="88" y="59.6" width="24" height="11" rx="3.6" fill="${hsl(h, 60, 90)}"/></g>${label(100, 67.4, "對不起", 5.2, "#4a3439")}<path ${AK(.8)} d="${heartPath(110, 61.6, .45)}" fill="#ff9db5"/>`,
@@ -2290,8 +2311,7 @@ const ACC = {
     ${miniFace(122, 18.6, .62, "angry", false)}${shine("M115.6 15 Q115.2 18 116 20.6", 1)}<path d="${heartPath(130, 7, .4)}" fill="${hsl(h, 80, 80)}" ${AK(.8)}/>`,
   // 噁心：飄過來的怪味道
   disgusted: h => { const d = "M114 32 q-2.4 -3 0 -6 t0 -6 M121 30 q-2.4 -3 0 -6 t0 -6 t0 -6 M128 32 q-2.4 -3 0 -6 t0 -6";
-    return `<g fill="none" stroke-linecap="round"><path d="${d}" stroke="#4a3439" stroke-width="3.8"/><path d="${d}" stroke="${hsl(80 + h % 40, 55, 68)}" stroke-width="2"/></g>
-    <g ${AK(.9)}>${bigDrop(80, 30, 1.2, "#cfe8ff")}</g>`; },
+    return `<g fill="none" stroke-linecap="round"><path d="${d}" stroke="#4a3439" stroke-width="3.8"/><path d="${d}" stroke="${hsl(80 + h % 40, 55, 68)}" stroke-width="2"/></g>`; },
   // 驚奇
   // 敬畏：帶著光環的小星球
   awe: h => `<g ${AK()}><path d="M110.4 16.4 A12 3.6 -18 0 1 133.6 9" fill="none" stroke="#4a3439" stroke-width="4"/><path d="M110.4 16.4 A12 3.6 -18 0 1 133.6 9" fill="none" stroke="${hsl(h + 50, 70, 82)}" stroke-width="2"/>
@@ -2311,11 +2331,10 @@ const ACC = {
   startled: h => `<path ${AK(1.2)} d="${heartPath(122, 14, 1.6)}" fill="${hsl(h, 80, 78)}"/>${miniFace(122, 12.6, .5, "o", false)}
     <g ${AK(1.2)} fill="none"><path d="M112 9 L109 7 M112.4 15 H108.6 M132 9 L135 7 M131.6 15 H135.4 M118 25 L117 28 M126 25 L127 28"/></g>`,
   // 震驚：驚嘆號加問號
-  shocked: h => `${puffy(114, 21, "!", 16, hsl(h, 85, 70))}${puffy(124.6, 19, "?", 14, hsl(h + 40, 80, 76))}<g ${AK(1.1)}>${bigDrop(80, 30, 1.3, "#cfe8ff")}</g>`,
+  shocked: h => `${puffy(114, 21, "!", 16, hsl(h, 85, 70))}${puffy(124.6, 19, "?", 14, hsl(h + 40, 80, 76))}`,
   // 喘不過氣：頭上壓著一顆大石頭
   suffocated: h => `<g ${AK()}><path d="M86 22 Q84 12 92 8.6 Q100 4 108 7.4 Q117 9 115.4 19 Q115 24 100 24.4 Q87 24.6 86 22Z" fill="${hsl(h, 12, 82)}"/>
-    <path d="M92 13 Q95 11 98 12.4 M105 16 Q108 15 110 17" fill="none" stroke-width="1"/></g>${miniFace(101, 17.6, .7, "o", false)}
-    <g ${AK(1)}>${bigDrop(121, 26, 1.3, "#cfe8ff")}${bigDrop(79, 28, 1, "#cfe8ff")}</g>`,
+    <path d="M92 13 Q95 11 98 12.4 M105 16 Q108 15 110 17" fill="none" stroke-width="1"/></g>${miniFace(101, 17.6, .7, "o", false)}`,
   // 愉快：耳朵邊的四葉草
   cheerful: h => `<g ${AK()}><path d="M87 24 Q88 30 92.6 32" fill="none" stroke="#7fae5f" stroke-width="1.6"/>
     ${[0, 90, 180, 270].map(a => `<path d="${heartPath(0, 0, .95)}" transform="translate(87 22) rotate(${a + 45}) translate(0 -3.6)" fill="${a ? "#a8d88e" : hsl(h, 75, 82)}"/>`).join("")}
@@ -2324,15 +2343,16 @@ const ACC = {
   anticipating: h => `<g ${AK()}><rect x="113" y="7" width="18" height="16" rx="3" fill="#fffaf5"/><path d="M113 12 V10 Q113 7 116 7 H128 Q131 7 131 10 V12Z" fill="${hsl(h, 70, 74)}"/>
     <path d="M117 5 V9 M127 5 V9" fill="none" stroke-width="1.6"/></g>
     <path ${AK(.9)} d="${heartPath(122, 17.6, .8)}" fill="${hsl(h + 330, 80, 78)}"/>${sparkle(134.4, 4.6, .5, "#ffd977").replace("<path", `<path ${AK(.8)}`)}`,
-  // 有點低落：垂下來的呆毛
-  down: h => `<g fill="none" stroke-linecap="round"><path d="M100 21 Q99 11.6 105 10.2 Q110.4 9.4 110.6 14.6" stroke="#4a3439" stroke-width="3.6"/><path d="M100 21 Q99 11.6 105 10.2 Q110.4 9.4 110.6 14.6" stroke="${hsl(h, 55, 78)}" stroke-width="1.8"/></g>
-    <g ${AK(.9)}>${drop(110.8, 20, .8, "#cfe8ff")}</g>`,
+  // 有點低落：一朵小烏雲（還沒下雨）
+  down: h => `<g ${AK()}><path d="${cloudPath(122, 12, .9)}" fill="${hsl(h, 12, 86)}"/></g>${miniFace(122, 11.4, .7, "flat", false)}`,
   // 心碎：裂成兩半的心
   heartbroken: h => `<g ${AK()} fill="${hsl(335 + h % 40, 75, 78)}"><path d="M120 12 C118 6.4 109 6.4 109.4 13.4 C109.8 19 115 22 119.6 26.4 L118.2 21.4 L121 17.4 L118.6 14.4Z" transform="rotate(-8 115 18)"/>
     <path d="M122.6 12 C124.6 6.4 133.6 6.4 133.2 13.4 C132.8 19 127.6 22 123 26.4 L121.6 21.4 L124.4 17.4 L122 14.4Z" transform="rotate(8 128 18)"/></g>
     ${shine("M112 11 Q112.6 9.4 114.4 9.4", 1)}<g ${AK(.9)}>${drop(107, 30, .8, "#cfe8ff")}</g>`,
-  // 鬆一口氣：呼——的一口氣
-  relieved: h => `<g ${AK()}><path d="${cloudPath(128, 34, .85)}" fill="#fff"/><path d="M118.6 41 Q115 43 113.4 45.6" fill="none" stroke-width="1.1"/></g>${label(128.4, 37, "呼", 7.6, hsl(h, 60, 72))}`,
+  // 鬆一口氣：放下來的石頭
+  relieved: h => `<g ${AK()}><path d="M117 31 C116 25 120 21.6 125 21.6 C130 21.6 133.4 25 133 30 C132.6 33 129 34 125 34 C120.6 34 117.4 33.4 117 31Z" fill="${hsl(h, 14, 84)}"/></g>
+    ${miniFace(125, 28.4, .6, "sleep", false)}<path d="M114 34.6 H136" fill="none" stroke="#4a3439" stroke-width="1" stroke-linecap="round" opacity=".5"/>
+    <path d="M125 17 V12 M122 15 L125 12 L128 15" fill="none" ${AK(1.1)}/>${sparkle(134, 15, .5, "#fffaf5").replace("<path", `<path ${AK(.8)}`)}`,
   // 喜歡：頭上彈來彈去的愛心天線
   fond: h => `<g ${AK()}><path d="M100 21 q-3.4 -2.6 0 -5 q3.4 -2.4 0 -5 q-3 -2 .6 -4.2" fill="none" stroke-width="1.4"/>
     <path d="${heartPath(101, 3.4, 1.2)}" fill="${hsl(h, 80, 76)}"/></g>${shine("M97.6 1.6 Q98 .6 99 .6", .9)}
@@ -2365,20 +2385,20 @@ function accSVGRaw(acc) {
   return typeof out === "string" ? { back: "", front: out } : out;
 }
 const ACC_NAME = {
-  irritated: "冒煙", frustrated: "打結的毛線球", offended: "青筋", jealous: "想要的小魚乾", furious: "頭頂著火",
-  nervous: "冷汗", worried: "問號", anxious: "一團亂線", scared: "驚嘆號", panicked: "雙驚嘆號",
+  irritated: "冒煙", frustrated: "打結的毛線球", offended: "小仙人掌", jealous: "想要的小魚乾", furious: "頭頂著火",
+  nervous: "繃緊的彈簧", worried: "問號", anxious: "一團亂線", scared: "驚嘆號", panicked: "雙驚嘆號",
   pressured: "鬧鐘", restless: "小閃電", overwhelmed: "一疊文件",
   happy: "小花", amused: "音符", excited: "派對帽", confident: "墨鏡", accomplished: "獎牌", proud: "皇冠",
   curious: "放大鏡", motivated: "運動頭帶", hopeful: "小嫩芽",
   sad: "小雨雲", disappointed: "枯萎的花", wronged: "OK 繃", lonely: "氣球", lost: "落葉",
   tired: "睡帽", unmotivated: "沒電的電池", helpless: "小白旗", burned_out: "燒完的蠟燭",
-  embarrassed: "臉紅", guilty: "對不起牌子", ashamed: "帽兜", inadequate: "小小的…",
+  embarrassed: "含羞草", guilty: "對不起牌子", ashamed: "帽兜", inadequate: "小小的…",
   bored: "打哈欠泡泡", empty: "空心愛心", numb: "冰塊",
   relaxed: "毛巾", peaceful: "光圈", at_ease: "花圈", content: "小太陽", secure: "小房子", comfortable: "眼罩",
   grateful: "禮物", touched: "閃閃", loved: "愛心", unsure: "問號泡泡",
   averse: "叉叉泡泡", dislike: "青椒", disgusted: "怪味道", awe: "小星球", amazed: "流星", pleasantly_surprised: "拉炮",
   startled: "跳起來的心", shocked: "驚嘆號和問號", suffocated: "大石頭", cheerful: "四葉草", anticipating: "圈起來的日子",
-  down: "垂下來的呆毛", heartbroken: "裂開的心", relieved: "呼一口氣", fond: "愛心天線", longing: "一封信", okay: "一杯溫開水",
+  down: "小烏雲", heartbroken: "裂開的心", relieved: "放下的石頭", fond: "愛心天線", longing: "一封信", okay: "一杯溫開水",
 };
 const accName = id => ACC_NAME[id] || ACC_NAME[FAMILY_ACC[id]] || ACC_NAME[FAMILY_ACC[EMO[id]?.family]] || "";
 // 沒有存顏色的舊記錄：用內容算出一個固定的顏色
@@ -2813,7 +2833,7 @@ function makeCat(key, entry, enter) {
   el.innerHTML = `<div class="flip"><div class="hopper">${bodySVG(entry.mood, undefined, recCoat(entry), accOf(entry, key.slice(0, 10)))}</div></div><div class="zzz">z<small>z</small></div>`;
   const P = persona(entry);
   el.style.setProperty("--step", (0.36 * 45 / P.speed).toFixed(2) + "s");
-  el.setAttribute("role", "button");
+  if (outside) el.setAttribute("role", "button");   // 在房間裡只看得到，出門走走才能點
   el.setAttribute("aria-label", `${key} 的${emoNames(entry)}貓`);
   if (!entry.pet && !entry.demo) el.style.setProperty("--fade", (1 - ageOf(key.slice(0, 10), entry.t) * .7).toFixed(2));   // 示範的貓不變淡
   meadow.appendChild(el);
@@ -2821,6 +2841,7 @@ function makeCat(key, entry, enter) {
   const c = { key, entry, el, dir: 1, mode: "sit", timer: 1 + Math.random() * 3, partner: null, ...P,
     x: enter ? -CAT_W : randX(), y: Y_MIN + Math.random() * (Y_MAX - Y_MIN), tx: 0, ty: 0 };
   el.onclick = () => {
+    if (!outside) return;
     const date = key.slice(0, 10), [, mo, d] = date.split("-");
     const who = (date === TODAY ? tr("今天") : `${+mo}/${+d}`) + (entry.t ? " " + entry.t : "");
     const sep = LANG === "en" ? [" · ", ": "] : ["・", "："];
@@ -3061,7 +3082,7 @@ function heart(x, y) {
 // ---------- 玩具：毛線球、小魚乾 ----------
 const ball = { x: 0, y: 30, vx: 0, vy: 0, rot: 0, el: document.createElement("div") };
 ball.el.className = "toy ball";
-ball.el.setAttribute("role", "button");
+ball.el.setAttribute("role", "img");   // 出門走走時才能踢（變成按鈕）
 ball.el.setAttribute("aria-label", "毛線球");
 // 跟草原上的花草一樣不描邊，顏色跟著主題色
 ball.el.innerHTML = `<svg viewBox="0 0 32 30" overflow="visible"><g fill="none" stroke-linecap="round">
@@ -3074,6 +3095,7 @@ ball.el.innerHTML = `<svg viewBox="0 0 32 30" overflow="visible"><g fill="none" 
   <path d="M7.4 9.4 Q9.6 5.6 13.6 4.6" stroke="#fff" stroke-width="1.8" opacity=".75"/></g></svg>`;
 ball.el.onclick = e => {
   e.stopPropagation();
+  if (!outside) return;
   ball.vx = (Math.random() < .5 ? -1 : 1) * (180 + Math.random() * 120);
   ball.vy = (Math.random() - .5) * 80;
 };
@@ -3110,7 +3132,7 @@ const treats = [];
 const FISH = `<svg viewBox="0 0 34 18"><path d="M3 9 C8 2 18 1 24 7 L31 2 L30 9 L31 16 L24 11 C18 17 8 16 3 9Z" fill="#f2b38c" stroke="${INK}" stroke-width="1.5" stroke-linejoin="round"/>
   <circle cx="9" cy="8" r="1.4" fill="${INK}"/><path d="M14 5.5 Q16.5 9 14 12.5" fill="none" stroke="${INK}" stroke-width="1"/></svg>`;
 meadow.addEventListener("click", e => {
-  if (reduceMotion || e.target.closest(".cat, .toy, .label")) return;
+  if (!outside || reduceMotion || e.target.closest(".cat, .toy, .label")) return;
   // 扣掉窗框的寬度（草原的座標從窗框內側開始算）
   const r = meadow.getBoundingClientRect(), fx = meadow.clientLeft, fy = meadow.clientTop;
   if (document.body.classList.contains("rot")) {   // 草原轉了 90 度：畫面的上下是草原的左右，畫面的左邊是草原的底部
@@ -4013,9 +4035,12 @@ function moodPad({ pt, range = [-1, 1, -1, 1], onMove }) {
   return pad;
 }
 function emotionPicker(root, opts = {}) {
-  const blank = () => ({ quad: null, multi: false, sel: [], unsure: false, body: [], ctx: [], focus: null, adding: null, pt: null, addPt: null });
+  // 分層：四個區塊 → 自己的詞（優先）／參考的類別 → 點了類別才出現那一類的詞
+  const blank = () => ({ quad: null, fam: null, multi: false, sel: [], unsure: false, body: [], ctx: [], focus: null, adding: false, addFam: null, pt: null, addPt: null });
   const st = Object.assign(blank(), opts.init || {});
   if (!st.quad && st.sel.length) st.quad = EMO[st.sel[0]]?.quad || null;
+  // 已經選了內建的詞（例如修改舊記錄）：把那一類打開
+  if (!st.fam && st.sel.length && !EMO[st.sel[0]]?.custom) st.fam = EMO[st.sel[0]]?.family || null;
   if (st.sel.length > 1) st.multi = true;
   const changed = () => opts.onChange?.(st);
   let descEl;
@@ -4032,7 +4057,7 @@ function emotionPicker(root, opts = {}) {
   };
   const defaultDesc = () => st.unsure ? EMO.unsure.desc
     : st.sel.length ? `${EMO[st.sel.at(-1)].name}${EMO[st.sel.at(-1)].desc ? "：" + EMO[st.sel.at(-1)].desc : ""}`
-    : st.quad ? (st.multi ? "可以選好幾個" : "點一個最接近的詞")
+    : st.quad ? (st.multi ? "可以選好幾個" : "")
     : "";
   const toggleIn = (list, v) => list.includes(v) ? list.splice(list.indexOf(v), 1) : list.push(v);
 
@@ -4051,8 +4076,8 @@ function emotionPicker(root, opts = {}) {
         : headSVG(face);
       b.innerHTML = `${pic}<b></b><small></small>`;
       b.querySelector(":scope > b").textContent = q.label.zh;
-      b.querySelector(":scope > small").textContent = q.families.map(f => f.label.zh).join("、");   // 貓咪圖裡也有 <small>（zzz），只找最外層
-      b.onclick = () => { st.quad = q.id; st.unsure = false; render(); };
+      b.querySelector(":scope > small").remove();   // 類別點進去才看得到，這裡不列出來（字少一點）
+      b.onclick = () => { if (st.quad !== q.id) { st.fam = null; st.adding = false; st.addFam = null; st.addPt = null; } st.quad = q.id; st.unsure = false; render(); changed(); };
       quads.append(b);
     });
     root.append(quads);
@@ -4114,71 +4139,85 @@ function emotionPicker(root, opts = {}) {
       g.append(row);
       root.append(g);
     } else if (st.quad) {
-      const q = QUADS.find(x => x.id === st.quad);
+      const q = QUADS.find(x => x.id === st.quad), famIds = q.families.map(f => f.id);
+      const pickWord = (id, on) => { if (st.multi) toggleIn(st.sel, id); else st.sel = on ? [] : [id]; render(); changed(); };
+      const wordChip = (id, label, mine) => {
+        const on = st.sel.includes(id);
+        const c = el("button", "emo-chip" + (mine ? " mine" : "") + (on ? " on" : ""), label);
+        c.style.setProperty("--q", q.soft);
+        c.setAttribute("aria-pressed", on);
+        if (EMO[id]?.desc) c.setAttribute("aria-description", EMO[id].desc);
+        c.onmouseenter = c.onfocus = () => showDesc(id);
+        c.onmouseleave = c.onblur = () => showDesc(null);
+        c.onclick = () => pickWord(id, on);
+        return c;
+      };
+      // 1. 自己的詞：放在最前面，是優先的選擇
+      const mine = el("div", "fam mine-fam");
+      const mc = el("div", "chips");
+      customEmo.filter(c => famIds.includes(c.family) && (!c.hidden || st.sel.includes(c.id))).forEach(cw => mc.append(wordChip(cw.id, cw.name, true)));
+      if (st.adding) {
+        const form = el("div", "word-form");
+        const name = el("input"); name.maxLength = 8; name.placeholder = "情緒詞";
+        const desc = el("input"); desc.maxLength = 30; desc.placeholder = "說明（可以不寫）";
+        // 比較接近哪一類（決定花色和配件）
+        const famRow = el("div", "add-fam");
+        famRow.append(el("span", "pad-hint", "哪一類？"));
+        q.families.forEach(f => {
+          const b = el("button", "emo-chip soft" + (st.addFam === f.id ? " on" : ""), f.label.zh);
+          b.setAttribute("aria-pressed", st.addFam === f.id);
+          b.onclick = () => { st.addFam = f.id; const e = EMO[f.id]; if (!st.addMoved) st.addPt = [+e.valence.toFixed(2), +e.arousal.toFixed(2)]; keep(); render(); changed(); };
+          famRow.append(b);
+        });
+        const r = QUAD_RANGE[q.id];
+        if (!st.addPt) st.addPt = [+((r[0] + r[1]) / 2).toFixed(2), +((r[2] + r[3]) / 2).toFixed(2)];
+        const padRow = el("div", "pad-row");
+        padRow.append(moodPad({ pt: st.addPt, range: r, onMove: pt => { st.addPt = pt; st.addMoved = true; changed(); } }));
+        const ok = el("button", "emo-chip on", "加入"), no = el("button", "emo-chip", "取消");
+        ok.style.setProperty("--q", q.soft);
+        // 重畫之前先記住打到一半的字
+        const keep = () => { st.addName = name.value; st.addDesc = desc.value; };
+        name.value = st.addName || ""; desc.value = st.addDesc || "";
+        const done = () => { st.adding = false; st.addFam = null; st.addPt = null; st.addMoved = false; st.addName = st.addDesc = ""; };
+        const add = () => {
+          if (!name.value.trim()) { name.focus(); return; }
+          if (!st.addFam) { famRow.classList.remove("need"); void famRow.offsetWidth; famRow.classList.add("need"); return; }
+          const id = addCustom(st.addFam, name.value, desc.value, st.addPt);
+          if (st.multi) st.sel.push(id); else st.sel = [id];
+          done(); render(); changed();
+        };
+        const cancel = () => { done(); render(); changed(); };
+        ok.onclick = add; no.onclick = cancel;
+        [name, desc].forEach(i => i.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); add(); } if (e.key === "Escape") { e.stopPropagation(); cancel(); } });
+        form.append(name, desc, famRow, padRow, ok, no);
+        mc.append(form);
+        if (!st.addName) setTimeout(() => name.focus(), 0);
+      } else {
+        const plus = el("button", "emo-chip add-word", "＋ 寫下自己的詞");
+        plus.style.setProperty("--q", q.soft);
+        plus.onclick = () => { st.adding = true; st.addFam = st.fam; st.addPt = null; st.addMoved = false; render(); changed(); };
+        mc.append(plus);
+      }
+      mine.append(mc);
+      root.append(mine);
+      // 2. 沒有想法的時候：先看類別，點了類別才出現那一類的詞
+      const ref = el("div", "fam");
+      const fc = el("div", "chips");
       q.families.forEach(f => {
-        const g = el("div", "fam");
-        g.append(el("span", "fam-name", f.label.zh));
-        const chips = el("div", "chips");
-        f.emotions.forEach(e => {
-          const on = st.sel.includes(e.id);
-          const c = el("button", "emo-chip" + (on ? " on" : ""), e.label.zh);
-          c.style.setProperty("--q", q.soft);
-          c.setAttribute("aria-pressed", on);
-          c.setAttribute("aria-description", e.desc || "");
-          c.onmouseenter = c.onfocus = () => showDesc(e.id);
-          c.onmouseleave = c.onblur = () => showDesc(null);
-          c.onclick = () => {
-            if (st.multi) toggleIn(st.sel, e.id); else st.sel = on ? [] : [e.id];
-            render(); changed();
-          };
-          chips.append(c);
-        });
-        // 自己的詞（這個家族的）
-        customEmo.filter(c => c.family === f.id && (!c.hidden || st.sel.includes(c.id))).forEach(cw => {
-          const on = st.sel.includes(cw.id);
-          const c = el("button", "emo-chip mine" + (on ? " on" : ""), cw.name);
-          c.style.setProperty("--q", q.soft);
-          c.setAttribute("aria-pressed", on);
-          c.onmouseenter = c.onfocus = () => showDesc(cw.id);
-          c.onmouseleave = c.onblur = () => showDesc(null);
-          c.onclick = () => {
-            if (st.multi) toggleIn(st.sel, cw.id); else st.sel = on ? [] : [cw.id];
-            render(); changed();
-          };
-          chips.append(c);
-        });
-        if (st.adding === f.id) {
-          const form = el("div", "word-form");
-          const name = el("input"); name.maxLength = 8; name.placeholder = "情緒詞";
-          const desc = el("input"); desc.maxLength = 30; desc.placeholder = "說明（可以不寫）";
-          const ok = el("button", "emo-chip on", "加入"), no = el("button", "emo-chip", "取消");
-          const fam = EMO[f.id];
-          if (!st.addPt) st.addPt = [+fam.valence.toFixed(2), +fam.arousal.toFixed(2)];
-          const padRow = el("div", "pad-row");
-          padRow.append(moodPad({ pt: st.addPt, range: QUAD_RANGE[q.id], onMove: pt => { st.addPt = pt; changed(); } }));
-          padRow.append(el("span", "pad-hint", "拖一下，看窗外的天氣（可以不拖）"));
-          ok.style.setProperty("--q", q.soft);
-          const add = () => {
-            if (!name.value.trim()) { name.focus(); return; }
-            const id = addCustom(f.id, name.value, desc.value, st.addPt);
-            if (st.multi) st.sel.push(id); else st.sel = [id];
-            st.adding = null; st.addPt = null; render(); changed();
-          };
-          const cancel = () => { st.adding = null; st.addPt = null; render(); changed(); };
-          ok.onclick = add; no.onclick = cancel;
-          [name, desc].forEach(i => i.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); add(); } if (e.key === "Escape") { e.stopPropagation(); cancel(); } });
-          form.append(name, desc, padRow, ok, no);
-          chips.append(form);
-          setTimeout(() => name.focus(), 0);
-        } else {
-          const plus = el("button", "emo-chip add-word", "＋ 自己的詞");
-          plus.style.setProperty("--q", q.soft);
-          plus.onclick = () => { st.adding = f.id; st.addPt = null; render(); changed(); };
-          chips.append(plus);
-        }
-        g.append(chips);
-        root.append(g);
+        const on = st.fam === f.id, has = f.emotions.some(e => st.sel.includes(e.id));
+        const b = el("button", "emo-chip soft fam-chip" + (on ? " on" : "") + (has ? " has" : ""), f.label.zh);
+        b.setAttribute("aria-expanded", on);
+        b.onclick = () => { st.fam = on ? null : f.id; render(); };
+        fc.append(b);
       });
+      ref.append(fc);
+      const f = q.families.find(f => f.id === st.fam);
+      if (f) {
+        const wc = el("div", "chips words");
+        f.emotions.forEach(e => wc.append(wordChip(e.id, e.label.zh, false)));
+        ref.append(wc);
+      }
+      root.append(ref);
     }
 
     // 已經選了哪些（混合情緒時可以跨象限）
@@ -4231,7 +4270,7 @@ function renderMoods() {
       updateWeather();
       if (ids.length && ids.join() !== before) buddyReact(picked, ids);
       $("text").placeholder = st.unsure ? "發生了什麼事、身體有什麼感覺（可以不寫）" : "寫一點什麼（可以不寫）";
-      $("hint").textContent = ids.length ? "" : "選一個最接近的感覺";
+      $("hint").textContent = "";
     },
   });
 }
@@ -5575,7 +5614,7 @@ function goOut() {
     updateRot();
     try { screen.orientation?.lock?.("landscape").catch(() => {}); } catch (e) {}
     roomRun++; roomBuddy.hidden = true;   // 房間裡的寵物先停下來（牠跟你出門了）
-    sizeMeadow(); placeWild();
+    sizeMeadow(); placeWild(); ball.el.setAttribute("role", outside ? "button" : "img");
     renderMeadow(!reduceMotion);
     ball.x = meadow.clientWidth * .6; moveBall(0, meadow.clientWidth);
     $("homeBtn").focus();
@@ -5589,7 +5628,7 @@ function goHome() {
     document.body.classList.remove("outside");
     updateRot();
     try { screen.orientation?.unlock?.(); } catch (e) {}
-    sizeMeadow(); placeWild();
+    sizeMeadow(); placeWild(); ball.el.setAttribute("role", outside ? "button" : "img");
     renderMeadow();
     ball.x = meadow.clientWidth * .6; moveBall(0, meadow.clientWidth);
     inRoom = false; $("dock").hidden = true;   // 讓寵物重新回到房間

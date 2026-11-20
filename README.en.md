@@ -43,7 +43,7 @@ Mood Meadow is a small practice tool and can't replace professional help. If you
 ## Features
 
 ### Log your mood
-Start with one of four areas (energy × pleasantness), then pick the feeling word that fits best. If none quite fits, add your own word; "Not sure" or just "Okay" are fine to log too.
+Start with one of four areas (energy × pleasantness), then write your own word. If nothing comes to mind, open a kind of feeling and browse the ready-made words for reference. "Not sure" or just "Okay" are fine to log too.
 
 ![Logging a mood: pick "Sad" and it starts raining outside](docs/record.png)
 
@@ -65,7 +65,7 @@ There's a cat in the room too, living its own day, with an expression that follo
 ![Two rooms: the pink cottage and the cat café](docs/rooms.png)
 
 ### Go outside, Recent
-"Go outside" takes you out into the meadow to see the cats up close; "Recent" lets you look back over the last 7 days.
+From the room you can only watch the meadow through the window; "Go outside" takes you out into it, where you can see and tap the cats up close; "Recent" lets you look back over the last 7 days.
 
 ![Going outside: the room cat comes along to the meadow](docs/outside.png)
 
