@@ -43,8 +43,9 @@ Mood Meadow is a small practice tool and can't replace professional help. If you
 ## Features
 
 ### Log your mood
-- Pick one of four areas (energy × pleasantness, based on the circumplex model of affect), then the closest of 47 feeling words — each comes with a short description
+- Pick one of four areas (energy × pleasantness, based on the circumplex model of affect), then the closest of 63 feeling words — each comes with a short description. Some families go from mild to strong, like "A bit down" to "Heartbroken"
 - Each feeling family ends with "+ My own word": if a feeling belongs to a family but none of the words or descriptions quite fit, add your own word and description. Its coat and accessory follow that family; while adding it you can also drag a point on a small square to set how pleasant and how energetic it is, and the weather outside changes as you drag. Words you no longer want can be hidden
+- When it's nothing especially good or bad, choose "Okay"
 - Choose "Mixed" to pick several words; if you're "Not sure", you can log how your body feels and what it's about instead, or tap a rough spot on the small square
 - Log as many times a day as you like, and edit, delete, or add entries for any of the last 7 days
 
@@ -58,13 +59,22 @@ It follows the time of day too: a light mist in the early morning, sunset colors
 ![Four kinds of mood weather: sunny, rainbow, windy, rain](docs/weather.png)
 
 ### The meadow
-- Every entry sends a cat into the meadow. Its coat depends on the feeling's family (14 coats), and it wears a little accessory for that feeling
+- Every entry sends a cat into the meadow. Its coat depends on the feeling's family (17 coats), and it wears a little accessory for that feeling
 - Cats walk, play and snuggle; their moves and expressions depend on the mood
 - Click a cat to hear about that day's mood; click the grass to drop a fish snack, or kick the yarn ball
 - Cats react to the weather and scenery too: they hide from the rain and curl up, jump at thunder, roll around in the sun, and chat about flowers, butterflies and clouds
 - The older the entry, the fainter its cat; after 7 days it no longer appears
 
 ![All feeling accessories](docs/accessories.png)
+
+### Little animals and hiding spots in the meadow
+The meadow is a small system: the cats' feelings affect the little animals, and the animals affect the cats in return. These interactions only change what a cat is doing in the moment, never its feeling.
+
+- Birds, a rabbit, frogs, fireflies and a bee show up depending on the weather and time: frogs come out in the rain, fireflies at night, and the bee visits flowers on sunny days
+- Little animals come closer to calm cats; when an energetic cat runs over, the birds fly back to the tree and the rabbit hides in the bush, coming out again once things settle
+- Sometimes a bird keeps a sad cat company: it lands nearby and chirps softly, and the cat's ears lift a little; when the cat rolls over, the bird startles and flies off, leaving a feather behind
+- Cats talk to themselves when they notice the animals, like "A bunny!", "So pretty…" or "Oh, it flew away…"
+- There are taro leaves, a bush, a hollow log and a big tree to hide in: on rainy days low-spirited cats shelter under the taro leaves, in thunder scared cats hide behind the log or bush, and at night tired cats sleep under the tree
 
 ### The room and its cat
 - A cat lives in the room and wanders around on its own. It runs around, chases its tail, naps on the bed and sofa, and now and then makes mischief on the desk
