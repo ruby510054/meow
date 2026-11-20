@@ -138,12 +138,23 @@ special_options：mixed（混合情緒）、unsure（說不上來）
 
 ## 參考資料
 
-設計時參考的研究：
+心情草原借用了下面這些研究和想法。它們是設計時的參考，不代表這個網頁本身被研究證實有效。
 
-- 把感受用文字說出來，本身就是一種調節情緒的方式：Lieberman, M. D., Eisenberger, N. I., Crockett, M. J., Tom, S. M., Pfeifer, J. H., & Way, B. M. (2007). Putting feelings into words: Affect labeling disrupts amygdala activity in response to affective stimuli. *Psychological Science, 18*(5), 421–428.
-- 能分辨細微情緒差別的人，比較能好好面對不舒服的情緒：Kashdan, T. B., Barrett, L. F., & McKnight, P. E. (2015). Unpacking emotion differentiation: Transforming unpleasant experience by perceiving distinctions in negativity. *Current Directions in Psychological Science, 24*(1), 10–16.
-- 把情緒經驗寫下來，對身心健康有幫助：Pennebaker, J. W. (1997). Writing about emotional experiences as a therapeutic process. *Psychological Science, 8*(3), 162–166.
-- 四個區塊的分法（情緒環狀模型）：Russell, J. A. (1980). A circumplex model of affect. *Journal of Personality and Social Psychology, 39*(6), 1161–1178.
+**研究**
+
+- 把感覺說出來，本身就是一種調節情緒的方式（「說」）：
+  - Lieberman, M. D., Eisenberger, N. I., Crockett, M. J., Tom, S. M., Pfeifer, J. H., & Way, B. M. (2007). Putting feelings into words: Affect labeling disrupts amygdala activity in response to affective stimuli. *Psychological Science, 18*(5), 421–428. https://doi.org/10.1111/j.1467-9280.2007.01916.x
+  - Torre, J. B., & Lieberman, M. D. (2018). Putting feelings into words: Affect labeling as implicit emotion regulation. *Emotion Review, 10*(2), 116–124. https://doi.org/10.1177/1754073917742706
+- 能分辨細微的情緒差別，比較能面對不舒服的情緒（分家族、分輕重的情緒詞）：Kashdan, T. B., Barrett, L. F., & McKnight, P. E. (2015). Unpacking emotion differentiation: Transforming unpleasant experience by perceiving distinctions in negativity. *Current Directions in Psychological Science, 24*(1), 10–16. https://doi.org/10.1177/0963721414550708
+- 把情緒經驗寫下來（可以寫一點什麼）：Pennebaker, J. W. (1997). Writing about emotional experiences as a therapeutic process. *Psychological Science, 8*(3), 162–166. https://doi.org/10.1111/j.1467-9280.1997.tb00403.x
+- 舒不舒服 × 能量高低（四個區塊、心情天氣）：Russell, J. A. (1980). A circumplex model of affect. *Journal of Personality and Social Psychology, 39*(6), 1161–1178. https://doi.org/10.1037/h0077714
+
+**設計時的思考脈絡**
+
+- 情緒是用概念建構出來的（自己的詞優先，現成的詞只是參考）：Barrett, L. F. (2017). The theory of constructed emotion: An active inference account of interoception and categorization. *Social Cognitive and Affective Neuroscience, 12*(1), 1–23. https://doi.org/10.1093/scan/nsw154
+- 外化：人不等於情緒（「看見」：說出來的情緒變成一隻貓）：White, M., & Epston, D. (1990). *Narrative means to therapeutic ends.* W. W. Norton.
+- 接納：和感覺待在一起，不急著改變它（「待著」）：Hayes, S. C., Strosahl, K. D., & Wilson, K. G. (2012). *Acceptance and commitment therapy: The process and practice of mindful change* (2nd ed.). Guilford Press.
+- 系統：在關係裡互相影響（草原上的貓和小動物）：Bateson, G. (1972). *Steps to an ecology of mind.* Chandler.
 
 ## 素材來源
 

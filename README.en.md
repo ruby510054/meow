@@ -152,12 +152,23 @@ So the page works as a single file, `index.html` contains an identical copy (ins
 
 ## References
 
-Research that informed the design:
+Mood Meadow borrows from the research and ideas below. They informed the design; they don't mean the app itself has been shown to work.
 
-- Putting feelings into words is itself a way of regulating them: Lieberman, M. D., Eisenberger, N. I., Crockett, M. J., Tom, S. M., Pfeifer, J. H., & Way, B. M. (2007). Putting feelings into words: Affect labeling disrupts amygdala activity in response to affective stimuli. *Psychological Science, 18*(5), 421–428.
-- People who can tell subtle feelings apart cope better with unpleasant ones: Kashdan, T. B., Barrett, L. F., & McKnight, P. E. (2015). Unpacking emotion differentiation: Transforming unpleasant experience by perceiving distinctions in negativity. *Current Directions in Psychological Science, 24*(1), 10–16.
-- Writing about emotional experiences is good for body and mind: Pennebaker, J. W. (1997). Writing about emotional experiences as a therapeutic process. *Psychological Science, 8*(3), 162–166.
-- How the four areas are divided (circumplex model of affect): Russell, J. A. (1980). A circumplex model of affect. *Journal of Personality and Social Psychology, 39*(6), 1161–1178.
+**Research**
+
+- Putting feelings into words is itself a way of regulating them ("naming"):
+  - Lieberman, M. D., Eisenberger, N. I., Crockett, M. J., Tom, S. M., Pfeifer, J. H., & Way, B. M. (2007). Putting feelings into words: Affect labeling disrupts amygdala activity in response to affective stimuli. *Psychological Science, 18*(5), 421–428. https://doi.org/10.1111/j.1467-9280.2007.01916.x
+  - Torre, J. B., & Lieberman, M. D. (2018). Putting feelings into words: Affect labeling as implicit emotion regulation. *Emotion Review, 10*(2), 116–124. https://doi.org/10.1177/1754073917742706
+- Telling subtle feelings apart helps with unpleasant ones (feeling words grouped into families, from mild to strong): Kashdan, T. B., Barrett, L. F., & McKnight, P. E. (2015). Unpacking emotion differentiation: Transforming unpleasant experience by perceiving distinctions in negativity. *Current Directions in Psychological Science, 24*(1), 10–16. https://doi.org/10.1177/0963721414550708
+- Writing about emotional experiences (the optional note): Pennebaker, J. W. (1997). Writing about emotional experiences as a therapeutic process. *Psychological Science, 8*(3), 162–166. https://doi.org/10.1111/j.1467-9280.1997.tb00403.x
+- Pleasantness × energy (the four areas and the mood weather): Russell, J. A. (1980). A circumplex model of affect. *Journal of Personality and Social Psychology, 39*(6), 1161–1178. https://doi.org/10.1037/h0077714
+
+**Ideas behind the design**
+
+- Emotions are constructed with concepts (your own words first; ready-made words are just references): Barrett, L. F. (2017). The theory of constructed emotion: An active inference account of interoception and categorization. *Social Cognitive and Affective Neuroscience, 12*(1), 1–23. https://doi.org/10.1093/scan/nsw154
+- Externalizing: you are not your feeling ("seeing": a named feeling becomes a cat): White, M., & Epston, D. (1990). *Narrative means to therapeutic ends.* W. W. Norton.
+- Acceptance: staying with a feeling instead of rushing to change it ("staying"): Hayes, S. C., Strosahl, K. D., & Wilson, K. G. (2012). *Acceptance and commitment therapy: The process and practice of mindful change* (2nd ed.). Guilford Press.
+- Systems: influencing each other through relationships (the cats and animals in the meadow): Bateson, G. (1972). *Steps to an ecology of mind.* Chandler.
 
 ## Credits
 
