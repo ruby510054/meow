@@ -1944,6 +1944,7 @@ const HEAD_POSE = {
 // 耳朵：難過會垂下、生氣會壓平（飛機耳）
 const EARS = { happy: [0, 0], calm: [0, 0], tired: [12, 1], sad: [36, 5], angry: [52, 7], anxious: [16, 1] };
 
+const EYE_K = .84;   // 眼睛的大小（表情小一點，比較柔和）
 function eye(cx, cy, mood, side, coat = mood) {
   const m = coatOf(coat);
   const iris = (pw, ph = 4.4) => `<ellipse cx="${cx}" cy="${cy}" rx="4.6" ry="5" fill="${m.eye}" stroke-width="1.4"/>
@@ -2003,8 +2004,10 @@ function headArt(mood, coat = mood, acc = null) {
     <path d="M95 29.5 L96.5 34 M100 28 L100 33.5 M105 29.5 L103.5 34" stroke="${m.stripe}" stroke-width="1.8" fill="none"/>
     ${m.muzzle ? `<path d="M100 36 C95 42 92 48 93 53 C96 57.5 104 57.5 107 53 C108 48 105 42 100 36Z" fill="#fff" stroke="none"/>` : ""}
     ${mood !== "angry" ? `<ellipse cx="87" cy="49.5" rx="3.3" ry="1.8" fill="#FF9DB5" opacity=".55" stroke="none"/><ellipse cx="113" cy="49.5" rx="3.3" ry="1.8" fill="#FF9DB5" opacity=".55" stroke="none"/>` : ""}
-    <g class="eyes">${eye(92, 42, mood, -1, coat)}${eye(108, 42, mood, 1, coat)}</g>
-    <g class="closed"><path d="M87.5 42.5 Q92 45.8 96.5 42.5 M103.5 42.5 Q108 45.8 112.5 42.5" fill="none" stroke="${m.eyeLine || INK}" stroke-width="1.6"/></g>
+    <g class="eyes">${[[92, -1], [108, 1]].map(([x, side]) => `<g transform="translate(${x} 42) scale(${EYE_K}) translate(${-x} -42)">${eye(x, 42, mood, side, coat)}</g>`).join("")}</g>
+    <g class="closed"><path d="M88.2 42.4 Q92 45.2 95.8 42.4 M104.2 42.4 Q108 45.2 111.8 42.4" fill="none" stroke="${m.eyeLine || INK}" stroke-width="1.6"/></g>
+    ${mood === "sad" ? `<path d="M90.4 47.4 Q88.8 50.4 90.4 51.8 Q92 50.4 90.4 47.4Z" fill="#8EC1EE" stroke="none"/>` : ""}
+    ${mood === "anxious" ? `<path d="M120 30 Q122.6 34 120 35.8 Q117.4 34 120 30Z" fill="#8EC1EE" stroke-width=".8"/>` : ""}
     <circle cx="97.6" cy="50.4" r="2.9" fill="${m.chest}" stroke="none"/><circle cx="102.4" cy="50.4" r="2.9" fill="${m.chest}" stroke="none"/>
     <path d="M98.1 47.1 Q100 46.4 101.9 47.1 Q101.1 49.3 100 49.7 Q98.9 49.3 98.1 47.1Z" fill="#F29BAE" stroke-width="1"/>
     <path d="M100 49.7 L100 51.3" stroke-width="1"/>
@@ -2124,25 +2127,7 @@ const sparkle = (x, y, s, fill) => `<path d="M${x} ${y - 4 * s} Q${x + .8 * s} $
 const label = (x, y, t, size, fill) => `<text x="${x}" y="${y}" font-size="${size}" text-anchor="middle" font-weight="bold" fill="${fill}" stroke="#4a3439" stroke-width=".6" paint-order="stroke" font-family="Huninn, sans-serif">${t}</text>`;
 const cloudPath = (x, y, s) => `M${x - 8 * s} ${y + 3 * s} Q${x - 11 * s} ${y + 3 * s} ${x - 10 * s} ${y} Q${x - 10 * s} ${y - 4 * s} ${x - 5 * s} ${y - 3.4 * s} Q${x - 3 * s} ${y - 7 * s} ${x + 1 * s} ${y - 5.6 * s} Q${x + 5 * s} ${y - 7 * s} ${x + 6.4 * s} ${y - 3 * s} Q${x + 11 * s} ${y - 3 * s} ${x + 10 * s} ${y + 1 * s} Q${x + 10 * s} ${y + 3 * s} ${x + 7 * s} ${y + 3 * s}Z`;
 
-// 小臉：配件上的表情（smile 笑、sad 難過、angry 生氣、sleep 睡著、o 驚訝、flat 沒表情）
-const miniFace = (x, y, s = 1, k = "smile", blush = true) => {
-  const f = n => +n.toFixed(2);
-  let eyes;
-  if (k === "angry") eyes = `<path d="M${f(x - 3 * s)} ${f(y - 1.2 * s)} L${f(x - 1.4 * s)} ${f(y - .2 * s)} L${f(x - 3 * s)} ${f(y + .8 * s)} M${f(x + 3 * s)} ${f(y - 1.2 * s)} L${f(x + 1.4 * s)} ${f(y - .2 * s)} L${f(x + 3 * s)} ${f(y + .8 * s)}" fill="none" stroke-width="${f(.9 * s)}"/>`;
-  else if (k === "sleep") eyes = `<path d="M${f(x - 3.2 * s)} ${f(y - .4 * s)} Q${f(x - 2.2 * s)} ${f(y + .8 * s)} ${f(x - 1.2 * s)} ${f(y - .4 * s)} M${f(x + 1.2 * s)} ${f(y - .4 * s)} Q${f(x + 2.2 * s)} ${f(y + .8 * s)} ${f(x + 3.2 * s)} ${f(y - .4 * s)}" fill="none" stroke-width="${f(.8 * s)}"/>`;
-  else eyes = `<circle cx="${f(x - 2.2 * s)}" cy="${f(y)}" r="${f(.75 * s)}" fill="#4a3439" stroke="none"/><circle cx="${f(x + 2.2 * s)}" cy="${f(y)}" r="${f(.75 * s)}" fill="#4a3439" stroke="none"/>`;
-  const m = {
-    smile: `M${f(x - 1 * s)} ${f(y + 1.3 * s)} Q${f(x)} ${f(y + 2.3 * s)} ${f(x + 1 * s)} ${f(y + 1.3 * s)}`,
-    sleep: `M${f(x - .8 * s)} ${f(y + 1.6 * s)} Q${f(x)} ${f(y + 2.2 * s)} ${f(x + .8 * s)} ${f(y + 1.6 * s)}`,
-    sad: `M${f(x - 1 * s)} ${f(y + 2.1 * s)} Q${f(x)} ${f(y + 1.2 * s)} ${f(x + 1 * s)} ${f(y + 2.1 * s)}`,
-    angry: `M${f(x - 1 * s)} ${f(y + 2 * s)} Q${f(x)} ${f(y + 1.2 * s)} ${f(x + 1 * s)} ${f(y + 2 * s)}`,
-    flat: `M${f(x - .9 * s)} ${f(y + 1.6 * s)} H${f(x + .9 * s)}`,
-  }[k];
-  const mouth = k === "o" ? `<ellipse cx="${f(x)}" cy="${f(y + 1.8 * s)}" rx="${f(.6 * s)}" ry="${f(.8 * s)}" fill="#4a3439" stroke="none"/>`
-    : `<path d="${m}" fill="none" stroke-width="${f(.75 * s)}"/>`;
-  const b = blush ? `<ellipse cx="${f(x - 3.6 * s)}" cy="${f(y + 1.2 * s)}" rx="${f(1.1 * s)}" ry="${f(.7 * s)}" fill="#ff9db5" opacity=".75" stroke="none"/><ellipse cx="${f(x + 3.6 * s)}" cy="${f(y + 1.2 * s)}" rx="${f(1.1 * s)}" ry="${f(.7 * s)}" fill="#ff9db5" opacity=".75" stroke="none"/>` : "";
-  return `<g stroke="#4a3439" stroke-linecap="round">${eyes}${mouth}${b}</g>`;
-};
+// 配件只是單純的配件，上面不畫表情（表情只在貓的臉上）
 // 白色反光
 const shine = (d, w = 1.2) => `<path d="${d}" fill="none" stroke="#fff" stroke-width="${w}" stroke-linecap="round" opacity=".9"/>`;
 // 胖胖的符號（? ! ♪），外框粗一點
@@ -2154,7 +2139,7 @@ const ACC = {
   // 生氣
   // 煩躁：耳朵旁冒出一朵氣噗噗的小煙
   irritated: h => `<g ${AK()}><path d="${cloudPath(128.6, 1.6, .38)}" fill="${hsl(h, 60, 92)}"/><path d="${cloudPath(120, 14, .9)}" fill="${hsl(h, 60, 92)}"/></g>
-    ${miniFace(120.6, 12.4, 1, "angry")}${shine("M112.4 11.6 Q113.4 9.2 116 8.8")}`,
+    ${shine("M112.4 11.6 Q113.4 9.2 116 8.8")}`,
   // 挫折：打結的毛線球
   frustrated: h => `<g ${AK()}><path d="M106 20 Q115 19 113 26 Q111 31 117 32 Q122 33 121 28 Q120 24 116 26" fill="none" stroke="${hsl(h, 55, 52)}" stroke-width="1.5"/>
     <circle cx="100" cy="17" r="7.4" fill="${hsl(h, 70, 74)}"/>
@@ -2165,7 +2150,7 @@ const ACC = {
     <path d="M118 28 V15 Q118 9.6 122 9.6 Q126 9.6 126 15 V28Z" fill="#9dd47f"/>
     <path d="M118 19 Q114 19 114 15 Q114 12.4 116 12.4 Q117.6 12.4 118 15 M126 22 Q130 22 130 18 Q130 15.4 128 15.4 Q126.4 15.4 126 18" fill="#9dd47f"/></g>
     <path d="M120 14 l-1.4 -1 M124 17 l1.4 -1 M120.6 22 l-1.4 1 M123.6 25 l1.4 1 M113.6 16 l-1.4 -.6 M130.4 19 l1.4 -.6" fill="none" stroke="#4a3439" stroke-width=".9" stroke-linecap="round"/>
-    <circle cx="122" cy="8.6" r="2" fill="${hsl(h, 80, 80)}" ${AK(.8)}/>${miniFace(122, 20.6, .5, "angry", false)}`,
+    <circle cx="122" cy="8.6" r="2" fill="${hsl(h, 80, 80)}" ${AK(.8)}/>`,
   // 嫉妒：想要的小魚乾
   jealous: h => `<g ${AK()}><circle cx="112.6" cy="23" r="1.4" fill="#fff"/><circle cx="116.6" cy="17" r="2.2" fill="#fff"/>
     <ellipse cx="126" cy="7.4" rx="10" ry="7.6" fill="#fff"/>
@@ -2174,7 +2159,7 @@ const ACC = {
   // 憤怒：生氣的小火焰
   furious: h => `<g ${AK()}><path d="M100 1 C104 8 109 9 108 15 C111 13 112 10 112 9 C117 15 113 25 106 25 H94 C87 25 83 15 88 9 C88 10 89 13 92 15 C91 9 96 8 100 1Z" fill="${hsl(h, 85, 66)}"/>
     <path d="M100 11 C104 14 107 17 105.4 21.6 C104 24 96 24 94.6 21.6 C93 17 96 14 100 11Z" fill="${hsl(h + 30, 95, 86)}" stroke="none"/></g>
-    ${miniFace(100, 18.6, .8, "angry", false)}${shine("M90 13 Q90 10.6 91.6 9.6")}`,
+    ${shine("M90 13 Q90 10.6 91.6 9.6")}`,
   // 害怕
   // 緊張：繃緊的彈簧
   nervous: h => { const d = "M121 30 C114 29 114 26 121 25 C128 24 128 21 121 20 C114 19 114 16 121 15 C128 14 128 11 121 10";
@@ -2182,10 +2167,9 @@ const ACC = {
     <circle cx="121" cy="8" r="2.8" fill="${hsl(h + 40, 75, 80)}" ${AK(1.1)}/>${shine("M119.8 7 Q120.4 6 121.4 6", .8)}`; },
   // 擔心：胖胖的問號
   worried: h => `${puffy(119, 21, "?", 15, hsl(h, 75, 74))}${puffy(128.6, 11, "?", 10, hsl(h + 40, 75, 82))}`,
-  // 焦慮：轉圈圈眼睛的小雲
+  // 焦慮：一朵亂亂的小雲
   anxious: h => `<g ${AK()}><path d="${cloudPath(100, 9, .82)}" fill="${hsl(h, 45, 90)}"/>
-    <path d="M96.6 7.6 m-1.6 0 a1.6 1.6 0 1 1 1.6 1.6 a.8 .8 0 0 1 -.8 -.8 M104.6 7.6 m-1.6 0 a1.6 1.6 0 1 1 1.6 1.6 a.8 .8 0 0 1 -.8 -.8" fill="none" stroke-width=".9"/>
-    <path d="M97.6 11.8 q1.2 -1 2.4 0 t2.4 0" fill="none" stroke-width=".9"/></g>${shine("M92.4 6.4 Q93.2 4.4 95.4 4.2")}`,
+    <path d="M93 8 q3 -3 6 0 t6 0 M95 11 q2.6 -2.4 5.2 0 t5.2 0" fill="none" stroke-width=".9"/></g>${shine("M92.4 6.4 Q93.2 4.4 95.4 4.2")}`,
   // 害怕：驚嘆號
   scared: h => `${puffy(119, 21, "!", 17, hsl(h, 85, 72))}`,
   // 恐慌：好幾個驚嘆號
@@ -2196,7 +2180,7 @@ const ACC = {
     <circle cx="93.6" cy="10.4" r="3.2" fill="${hsl(h, 60, 62)}"/><circle cx="106.4" cy="10.4" r="3.2" fill="${hsl(h, 60, 62)}"/>
     <circle cx="100" cy="17" r="8" fill="${hsl(h, 70, 76)}"/><circle cx="100" cy="17.4" r="5.8" fill="#fffaf5" stroke-width="1"/>
     <path d="M89 12 L87 10.6 M111 12 L113 10.6" fill="none" stroke-width="1"/></g>
-    ${miniFace(100, 17, .78, "o")}`,
+    `,
   // 坐立不安：小閃電
   restless: h => `<g ${AK()}><path d="M121 6.6 L115.6 16.4 H120.4 L116.6 27 L126.6 13.6 H121.6 L125.6 6.6Z" fill="${hsl(h, 90, 76)}"/>
     <path d="M79 25 q-3 2 0 4 q3 2 0 4 M75 27 q-3 2 0 4 q3 2 0 4" fill="none" stroke-width="1.1"/></g>${shine("M121.6 8.4 L119.4 12.6", 1)}`,
@@ -2204,12 +2188,12 @@ const ACC = {
   overwhelmed: h => `<g ${AK()}><rect x="88" y="17" width="24" height="5.4" rx="2" fill="${hsl(h, 60, 82)}" transform="rotate(-6 100 19)"/>
     <rect x="89" y="11.6" width="22" height="5.4" rx="2" fill="${hsl(h + 40, 60, 84)}" transform="rotate(5 100 14)"/>
     <rect x="90" y="5" width="20" height="7" rx="2" fill="#fffaf5" transform="rotate(-4 100 8.4)"/></g>
-    ${miniFace(100, 8, .6, "o", false)}`,
+    `,
   // 喜悅
   // 開心：耳朵邊一朵笑咪咪的小花
   happy: h => `<g ${AK()}><path d="M91 30 Q94 34 97.6 32 Q94.6 28.4 91 30Z" fill="#9fd07f"/>
     ${[0, 72, 144, 216, 288].map(a => `<circle cx="${(87 + 4.4 * Math.cos((a - 90) * Math.PI / 180)).toFixed(1)}" cy="${(23 + 4.4 * Math.sin((a - 90) * Math.PI / 180)).toFixed(1)}" r="3.6" fill="${hsl(h, 80, 80)}"/>`).join("")}
-    <circle cx="87" cy="23" r="3" fill="#ffe08a"/></g>${miniFace(87, 22.6, .5, "smile", false)}`,
+    <circle cx="87" cy="23" r="3" fill="#ffe08a"/></g>`,
   // 好笑：胖胖的音符
   amused: h => `<g ${AK()}><path d="M117 22 V10 L124 8 V19" fill="none" stroke-width="1.4"/>
     <ellipse cx="115.4" cy="22" rx="2.6" ry="2" fill="${hsl(h, 75, 74)}" transform="rotate(-20 115.4 22)"/><ellipse cx="122.4" cy="19.4" rx="2.6" ry="2" fill="${hsl(h, 75, 74)}" transform="rotate(-20 122.4 19.4)"/>
@@ -2248,11 +2232,11 @@ const ACC = {
   // 悲傷
   // 難過：一朵哭哭的小雨雲
   sad: h => `<g ${AK()}><path d="${cloudPath(100, 6, .8)}" fill="${hsl(h, 25, 86)}"/>${drop(94, 16.4, .85, hsl(h, 75, 78))}${drop(100.6, 18.4, .85, hsl(h, 75, 78))}${drop(107, 16, .85, hsl(h, 75, 78))}</g>
-    ${miniFace(100, 5.4, .72, "sad")}`,
+    `,
   // 失望：垂頭喪氣的小花
   disappointed: h => `<g ${AK()}><path d="M100 25 Q101 14 108 13 Q113.6 13 113.4 18" fill="none" stroke="#6fa655" stroke-width="1.6"/>
     <path d="M103.4 15.8 Q99 13 98 17 Q101 18.6 103.4 15.8Z" fill="#b6c99a"/>
-    <circle cx="113.4" cy="22" r="4.6" fill="${hsl(h, 50, 78)}"/></g>${miniFace(113.4, 22, .62, "sad", false)}`,
+    <circle cx="113.4" cy="22" r="4.6" fill="${hsl(h, 50, 78)}"/></g>`,
   // 委屈：貼著愛心的 OK 繃
   wronged: h => `<g ${AK()}><g transform="rotate(-30 113 48)"><rect x="104.6" y="45" width="17" height="6.2" rx="3.1" fill="${hsl(h, 60, 87)}"/><rect x="110.4" y="45" width="5.4" height="6.2" rx="1" fill="${hsl(h, 55, 78)}" stroke-width="1"/>
     <circle cx="107.4" cy="47" r=".5" fill="${hsl(h, 50, 68)}" stroke="none"/><circle cx="107.4" cy="49.2" r=".5" fill="${hsl(h, 50, 68)}" stroke="none"/><circle cx="118.8" cy="47" r=".5" fill="${hsl(h, 50, 68)}" stroke="none"/><circle cx="118.8" cy="49.2" r=".5" fill="${hsl(h, 50, 68)}" stroke="none"/></g>
@@ -2260,7 +2244,7 @@ const ACC = {
   // 孤單：一顆小氣球
   lonely: h => `<g ${AK()}><path d="M117 52 Q124 40 122.6 27" fill="none" stroke-width="1"/>
     <ellipse cx="124" cy="17" rx="7" ry="8.4" fill="${hsl(h, 75, 78)}"/><path d="M122.4 25.2 L125.6 25.2 L124 27.4Z" fill="${hsl(h, 75, 78)}" stroke-width="1"/></g>
-    ${shine("M119.8 13.4 Q120.8 10.4 123.4 10")}${miniFace(124, 18, .6, "flat")}`,
+    ${shine("M119.8 13.4 Q120.8 10.4 123.4 10")}`,
   // 失落：飄走的落葉
   lost: h => `<g ${AK()}><path d="M115 5 C121 1.4 128 5.4 126 13 C119.6 15.2 113.4 11 115 5Z" fill="${hsl(h, 70, 72)}"/>
     <path d="M116.4 6 L124.6 12.2 M119 8 L120.4 5.4 M121.4 9.8 L123.6 7.8" fill="none" stroke-width="1"/>
@@ -2273,16 +2257,16 @@ const ACC = {
     <circle cx="128.6" cy="31" r="3.4" fill="#fffaf5"/></g>${shine("M88 20 Q90 14 95 11.4")}`,
   // 提不起勁：快沒電的電池
   unmotivated: h => `<g ${AK()}><rect x="90" y="5" width="20" height="12" rx="3" fill="#fffaf5"/><rect x="110" y="8.6" width="2.6" height="4.8" rx="1" fill="#4a3439"/>
-    <rect x="92.2" y="7.2" width="3.6" height="7.6" rx="1" fill="${hsl(h, 80, 66)}" stroke="none"/></g>${miniFace(102.6, 10.6, .62, "sleep", false)}`,
+    <rect x="92.2" y="7.2" width="3.6" height="7.6" rx="1" fill="${hsl(h, 80, 66)}" stroke="none"/></g>`,
   // 無力：小白旗
   helpless: h => `<g ${AK()}><path d="M120 50 L122 14" fill="none" stroke="#4a3439" stroke-width="3.6"/><path d="M120 50 L122 14" fill="none" stroke="#e7b98d" stroke-width="1.8"/>
     <circle cx="122" cy="13" r="1.8" fill="${hsl(h, 70, 80)}"/>
-    <path d="M122.4 16 Q128 13.6 132 16.4 Q129 20.4 134 24.4 Q128 22.4 121.8 25.6Z" fill="#fffaf5"/></g>${miniFace(127.4, 19.6, .5, "sleep", false)}`,
+    <path d="M122.4 16 Q128 13.6 132 16.4 Q129 20.4 134 24.4 Q128 22.4 121.8 25.6Z" fill="#fffaf5"/></g>`,
   // 倦怠：燒完的小蠟燭
   burned_out: h => `<g ${AK()}><path d="M95.6 24 V15.6 Q95.6 13.6 97.6 13.6 H102.4 Q104.4 13.6 104.4 15.6 V24Z" fill="${hsl(h, 60, 88)}"/>
     <path d="M95.6 16 Q97 19.4 98.4 16 M101.6 16 Q103 18.6 104.4 16" fill="${hsl(h, 60, 88)}" stroke-width="1"/>
     <path d="M100 13.6 V11" fill="none" stroke-width="1.2"/><path d="M100 9 Q97 6 100 3 Q103 0 100 -3" fill="none" stroke="#b9b0b4" stroke-width="1.2"/></g>
-    ${miniFace(100, 19.6, .55, "sleep", false)}`,
+    `,
   // 自我責備
   // 尷尬：含羞草
   embarrassed: h => `<g ${AK()}><path d="M90 31 C88 24 85 18 81 13" fill="none" stroke="#6fa655" stroke-width="1.5"/>
@@ -2309,7 +2293,7 @@ const ACC = {
   empty: h => `<path ${AK(1.8, hsl(h, 60, 64))} d="${heartPath(100, 11, 2.1)}" fill="${hsl(h, 60, 96)}" fill-opacity=".6" stroke-dasharray="2 1.8"/>`,
   // 無感：發呆的冰塊
   numb: h => `<g ${AK()}><rect x="91" y="6" width="18" height="17" rx="4" fill="${hsl(h, 70, 92)}" fill-opacity=".95"/>
-    <path d="M93 9.6 Q93 8 95 8" fill="none" stroke="#fff" stroke-width="1.6"/></g>${miniFace(100, 14.4, .72, "flat")}`,
+    <path d="M93 9.6 Q93 8 95 8" fill="none" stroke="#fff" stroke-width="1.6"/></g>`,
   // 平靜
   // 放鬆：毛巾頭巾＋泡泡
   relaxed: h => `<g ${AK()}><path d="M80 30 Q78 14 100 10 Q122 14 120 30 Q100 22 80 30Z" fill="${hsl(h, 65, 88)}"/>
@@ -2327,7 +2311,7 @@ const ACC = {
   // 滿足：頭上飄著一顆微笑的小太陽，心裡暖暖的
   content: h => `<g ${AK(1.2)}><g stroke="${hsl(h, 80, 66)}" stroke-width="1.8">${[0, 45, 90, 135, 180, 225, 270, 315].map(a => { const r = a * Math.PI / 180;
       return `<path d="M${(100 + 9 * Math.cos(r)).toFixed(1)} ${(10 + 9 * Math.sin(r)).toFixed(1)} L${(100 + 12.4 * Math.cos(r)).toFixed(1)} ${(10 + 12.4 * Math.sin(r)).toFixed(1)}"/>`; }).join("")}</g>
-    <circle cx="100" cy="10" r="6.8" fill="${hsl(h, 85, 80)}"/></g>${miniFace(100, 9.6, .7, "sleep")}`,
+    <circle cx="100" cy="10" r="6.8" fill="${hsl(h, 85, 80)}"/></g>`,
   // 安心：頭上一間冒著煙的小房子，有家的感覺
   secure: h => `<g ${AK(1.2)}><path d="M93 24 V15.4 H107 V24" fill="#fffaf0"/>
     <path d="M90.4 16.6 L100 7.4 L109.6 16.6Z" fill="${hsl(h, 65, 74)}"/>
@@ -2358,7 +2342,7 @@ const ACC = {
   dislike: h => `<g ${AK()}><path d="M122 10.6 Q122.4 6.6 126 5" fill="none" stroke="#4a3439" stroke-width="3.4"/><path d="M122 10.6 Q122.4 6.6 126 5" fill="none" stroke="#7fae5f" stroke-width="1.6"/>
     <path d="M113.6 13 Q112.4 24.6 118.6 26 Q122 27.4 125.4 26 Q131.6 24.6 130.4 13 Q126.4 9.2 122 11.2 Q117.6 9.2 113.6 13Z" fill="#9dd47f"/>
     <path d="M118.6 13 Q117.6 20 119.4 25 M125.4 13 Q126.4 20 124.6 25" fill="none" stroke="#7fbf63" stroke-width="1"/></g>
-    ${miniFace(122, 18.6, .62, "angry", false)}${shine("M115.6 15 Q115.2 18 116 20.6", 1)}<path d="${heartPath(130, 7, .4)}" fill="${hsl(h, 80, 80)}" ${AK(.8)}/>`,
+    ${shine("M115.6 15 Q115.2 18 116 20.6", 1)}<path d="${heartPath(130, 7, .4)}" fill="${hsl(h, 80, 80)}" ${AK(.8)}/>`,
   // 噁心：飄過來的怪味道
   disgusted: h => { const d = "M114 32 q-2.4 -3 0 -6 t0 -6 M121 30 q-2.4 -3 0 -6 t0 -6 t0 -6 M128 32 q-2.4 -3 0 -6 t0 -6";
     return `<g fill="none" stroke-linecap="round"><path d="${d}" stroke="#4a3439" stroke-width="3.8"/><path d="${d}" stroke="${hsl(80 + h % 40, 55, 68)}" stroke-width="2"/></g>`; },
@@ -2367,24 +2351,24 @@ const ACC = {
   awe: h => `<g ${AK()}><path d="M110.4 16.4 A12 3.6 -18 0 1 133.6 9" fill="none" stroke="#4a3439" stroke-width="4"/><path d="M110.4 16.4 A12 3.6 -18 0 1 133.6 9" fill="none" stroke="${hsl(h + 50, 70, 82)}" stroke-width="2"/>
     <circle cx="122" cy="12.6" r="8" fill="${hsl(h, 60, 80)}"/>
     <path d="M110.4 16.4 A12 3.6 -18 0 0 133.6 9" fill="none" stroke="#4a3439" stroke-width="4"/><path d="M110.4 16.4 A12 3.6 -18 0 0 133.6 9" fill="none" stroke="${hsl(h + 50, 70, 82)}" stroke-width="2"/></g>
-    ${miniFace(121, 10.6, .55, "smile", false)}${shine("M116.4 9 Q117 6.6 119.4 5.8", 1)}${sparkle(107, 4, .6, "#ffd977").replace("<path", `<path ${AK(.8)}`)}${sparkle(136, 21, .5, "#fffaf5").replace("<path", `<path ${AK(.8)}`)}`,
+    ${shine("M116.4 9 Q117 6.6 119.4 5.8", 1)}${sparkle(107, 4, .6, "#ffd977").replace("<path", `<path ${AK(.8)}`)}${sparkle(136, 21, .5, "#fffaf5").replace("<path", `<path ${AK(.8)}`)}`,
   // 驚嘆：一顆流星
   amazed: h => { const st = (cx, cy, r) => [...Array(10)].map((_, i) => { const a = (i * 36 - 90) * Math.PI / 180, rr = i % 2 ? r * .5 : r; return `${i ? "L" : "M"}${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`; }).join(" ") + "Z";
     return `<g fill="none" stroke-linecap="round"><path d="M96 20 Q104 14.6 112 11.6 M99 24.4 Q106 19 113 16" stroke="#4a3439" stroke-width="3.6"/><path d="M96 20 Q104 14.6 112 11.6 M99 24.4 Q106 19 113 16" stroke="${hsl(h + 40, 80, 82)}" stroke-width="1.8"/></g>
-    <path ${AK()} d="${st(120, 10, 8.4)}" fill="#ffd977"/>${miniFace(120, 10.6, .55, "smile", false)}${shine("M115.4 7 L117.4 5.4", 1)}`; },
+    <path ${AK()} d="${st(120, 10, 8.4)}" fill="#ffd977"/>${shine("M115.4 7 L117.4 5.4", 1)}`; },
   // 驚喜：拉炮
   pleasantly_surprised: h => `<g ${AK()}><path d="M115 34 L123 16 L132.6 25Z" fill="${hsl(h, 75, 76)}"/><path d="M118.2 27.4 L127.6 20.6 M120.8 31.4 L130 23.4" fill="none" stroke="${hsl(h + 180, 70, 86)}" stroke-width="1.8"/></g>
     <g ${AK(.8)}><rect x="112" y="7" width="4.6" height="2.4" rx="1" fill="${hsl(h + 60, 85, 70)}" transform="rotate(30 114.3 8.2)"/><rect x="129" y="2" width="4.6" height="2.4" rx="1" fill="${hsl(h + 140, 85, 70)}" transform="rotate(-25 131.3 3.2)"/>
     <circle cx="121" cy="5" r="1.7" fill="${hsl(h + 220, 85, 72)}"/><circle cx="136" cy="13" r="1.6" fill="${hsl(h + 300, 85, 72)}"/></g>
     ${sparkle(120, 12, .8, "#ffd977").replace("<path", `<path ${AK(.8)}`)}<path ${AK(.8)} d="${heartPath(134, 6.4, .7)}" fill="${hsl(h + 330, 85, 76)}"/>`,
   // 嚇一跳：跳起來的心
-  startled: h => `<path ${AK(1.2)} d="${heartPath(122, 14, 1.6)}" fill="${hsl(h, 80, 78)}"/>${miniFace(122, 12.6, .5, "o", false)}
+  startled: h => `<path ${AK(1.2)} d="${heartPath(122, 14, 1.6)}" fill="${hsl(h, 80, 78)}"/>
     <g ${AK(1.2)} fill="none"><path d="M112 9 L109 7 M112.4 15 H108.6 M132 9 L135 7 M131.6 15 H135.4 M118 25 L117 28 M126 25 L127 28"/></g>`,
   // 震驚：驚嘆號加問號
   shocked: h => `${puffy(114, 21, "!", 16, hsl(h, 85, 70))}${puffy(124.6, 19, "?", 14, hsl(h + 40, 80, 76))}`,
   // 喘不過氣：頭上壓著一顆大石頭
   suffocated: h => `<g ${AK()}><path d="M86 22 Q84 12 92 8.6 Q100 4 108 7.4 Q117 9 115.4 19 Q115 24 100 24.4 Q87 24.6 86 22Z" fill="${hsl(h, 12, 82)}"/>
-    <path d="M92 13 Q95 11 98 12.4 M105 16 Q108 15 110 17" fill="none" stroke-width="1"/></g>${miniFace(101, 17.6, .7, "o", false)}`,
+    <path d="M92 13 Q95 11 98 12.4 M105 16 Q108 15 110 17" fill="none" stroke-width="1"/></g>`,
   // 愉快：耳朵邊的四葉草
   cheerful: h => `<g ${AK()}><path d="M87 24 Q88 30 92.6 32" fill="none" stroke="#7fae5f" stroke-width="1.6"/>
     ${[0, 90, 180, 270].map(a => `<path d="${heartPath(0, 0, .95)}" transform="translate(87 22) rotate(${a + 45}) translate(0 -3.6)" fill="${a ? "#a8d88e" : hsl(h, 75, 82)}"/>`).join("")}
@@ -2394,14 +2378,14 @@ const ACC = {
     <path d="M117 5 V9 M127 5 V9" fill="none" stroke-width="1.6"/></g>
     <path ${AK(.9)} d="${heartPath(122, 17.6, .8)}" fill="${hsl(h + 330, 80, 78)}"/>${sparkle(134.4, 4.6, .5, "#ffd977").replace("<path", `<path ${AK(.8)}`)}`,
   // 有點低落：一朵小烏雲（還沒下雨）
-  down: h => `<g ${AK()}><path d="${cloudPath(122, 12, .9)}" fill="${hsl(h, 12, 86)}"/></g>${miniFace(122, 11.4, .7, "flat", false)}`,
+  down: h => `<g ${AK()}><path d="${cloudPath(122, 12, .9)}" fill="${hsl(h, 12, 86)}"/></g>`,
   // 心碎：裂成兩半的心
   heartbroken: h => `<g ${AK()} fill="${hsl(335 + h % 40, 75, 78)}"><path d="M120 12 C118 6.4 109 6.4 109.4 13.4 C109.8 19 115 22 119.6 26.4 L118.2 21.4 L121 17.4 L118.6 14.4Z" transform="rotate(-8 115 18)"/>
     <path d="M122.6 12 C124.6 6.4 133.6 6.4 133.2 13.4 C132.8 19 127.6 22 123 26.4 L121.6 21.4 L124.4 17.4 L122 14.4Z" transform="rotate(8 128 18)"/></g>
     ${shine("M112 11 Q112.6 9.4 114.4 9.4", 1)}<g ${AK(.9)}>${drop(107, 30, .8, "#cfe8ff")}</g>`,
   // 鬆一口氣：放下來的石頭
   relieved: h => `<g ${AK()}><path d="M117 31 C116 25 120 21.6 125 21.6 C130 21.6 133.4 25 133 30 C132.6 33 129 34 125 34 C120.6 34 117.4 33.4 117 31Z" fill="${hsl(h, 14, 84)}"/></g>
-    ${miniFace(125, 28.4, .6, "sleep", false)}<path d="M114 34.6 H136" fill="none" stroke="#4a3439" stroke-width="1" stroke-linecap="round" opacity=".5"/>
+    <path d="M114 34.6 H136" fill="none" stroke="#4a3439" stroke-width="1" stroke-linecap="round" opacity=".5"/>
     <path d="M125 17 V12 M122 15 L125 12 L128 15" fill="none" ${AK(1.1)}/>${sparkle(134, 15, .5, "#fffaf5").replace("<path", `<path ${AK(.8)}`)}`,
   // 喜歡：頭上彈來彈去的愛心天線
   fond: h => `<g ${AK()}><path d="M100 21 q-3.4 -2.6 0 -5 q3.4 -2.4 0 -5 q-3 -2 .6 -4.2" fill="none" stroke-width="1.4"/>
@@ -2414,7 +2398,7 @@ const ACC = {
     <path d="M109 22 Q104.6 25 106.4 29" fill="none" stroke="#4a3439" stroke-width="1" stroke-dasharray="1.6 2.4" stroke-linecap="round"/>`,
   // 還好：一杯溫開水
   okay: h => `<g ${AK()}><path d="M115 13 H129 L127.4 25.4 Q127 27 125.4 27 H118.6 Q117 27 116.6 25.4Z" fill="${hsl(h, 45, 90)}"/>
-    <path d="M129 15.6 Q133.4 15.6 132.6 19.4 Q132 22 128.2 21.6" fill="none" stroke-width="1.2"/></g>${miniFace(122, 20, .55, "flat", false)}
+    <path d="M129 15.6 Q133.4 15.6 132.6 19.4 Q132 22 128.2 21.6" fill="none" stroke-width="1.2"/></g>
     <path d="M119 10.4 q-1 -2 0 -3.4 q1 -1.6 0 -3 M124.6 10.4 q-1 -2 0 -3.4 q1 -1.6 0 -3" fill="none" stroke="#bdb5b8" stroke-width=".9" stroke-linecap="round"/>`,
   // 新增的淡的詞、在乎
   // 不爽：揉皺的紙團
@@ -2444,7 +2428,7 @@ const ACC = {
     <path d="M118 10 C117 7 119 5 121 5 M116 12 C117 9 120 8.6 122 10" fill="none" stroke="#6fa655" stroke-width="1.8"/></g>${shine("M125 16 Q127 19 126.6 22", 1)}`,
   // 還不錯：小星星貼紙
   alright: h => { const st = [...Array(10)].map((_, i) => { const a = (i * 36 - 90) * Math.PI / 180, r = i % 2 ? 3.8 : 8; return `${i ? "L" : "M"}${(122 + r * Math.cos(a)).toFixed(1)} ${(14 + r * Math.sin(a)).toFixed(1)}`; }).join(" ") + "Z";
-    return `<g ${AK()}><circle cx="122" cy="14.6" r="10" fill="#fffaf5"/><path d="${st}" fill="${hsl(h, 80, 80)}"/></g>${miniFace(122, 14.6, .45, "smile", false)}`; },
+    return `<g ${AK()}><circle cx="122" cy="14.6" r="10" fill="#fffaf5"/><path d="${st}" fill="${hsl(h, 80, 80)}"/></g>`; },
   // 幸福：一道小彩虹
   happiness: h => `<g fill="none" stroke-linecap="round">
     <path d="M108 22 A14 14 0 0 1 136 22" stroke="#4a3439" stroke-width="10.4"/>
@@ -2453,7 +2437,7 @@ const ACC = {
     <g ${AK()}><path d="${cloudPath(108, 23, .42)}" fill="#fff"/><path d="${cloudPath(136, 23, .42)}" fill="#fff"/></g>`,
   // 歸屬感：剛好拼上的拼圖
   belonging: h => `<g ${AK()}><path d="M112 8 H120 C120 5 124 5 124 8 H130 V14 C127 14 127 18 130 18 V24 H112Z" fill="${hsl(h, 65, 80)}"/>
-    <path d="M124 8 C124 11 120 11 120 8" fill="none" stroke-width="1"/></g>${miniFace(119, 17, .55, "smile", false)}`,
+    <path d="M124 8 C124 11 120 11 120 8" fill="none" stroke-width="1"/></g>`,
   // 關心：小澆水壺
   caring: h => `<g ${AK()}><path d="M112 14 H126 L125 26 H113Z" fill="${hsl(h, 60, 80)}"/><path d="M126 17 L133 11 L134.6 12.6 L127 21" fill="${hsl(h, 60, 80)}"/>
     <path d="M114 14 C114 8 124 8 124 14" fill="none" stroke-width="1.6"/></g>
