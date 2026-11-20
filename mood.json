@@ -14,6 +14,7 @@
           "id": "anger",
           "label": { "zh": "生氣", "en": "Anger" },
           "emotions": [
+            { "id": "irked", "label": { "zh": "不爽", "en": "Irked" }, "desc": "心裡不太痛快", "valence": -0.3, "arousal": 0.3 },
             { "id": "irritated", "label": { "zh": "煩躁", "en": "Irritated" }, "desc": "毛毛躁躁，一碰就炸", "valence": -0.4, "arousal": 0.5 },
             { "id": "frustrated", "label": { "zh": "挫折", "en": "Frustrated" }, "desc": "一股氣悶著，出不去", "valence": -0.6, "arousal": 0.5 },
             { "id": "offended", "label": { "zh": "被冒犯", "en": "Offended" }, "desc": "像被刺了一下", "valence": -0.6, "arousal": 0.6 },
@@ -25,6 +26,7 @@
           "id": "fear",
           "label": { "zh": "害怕", "en": "Fear" },
           "emotions": [
+            { "id": "uneasy", "label": { "zh": "不安", "en": "Uneasy" }, "desc": "隱隱約約的不踏實", "valence": -0.3, "arousal": 0.3 },
             { "id": "nervous", "label": { "zh": "緊張", "en": "Nervous" }, "desc": "緊繃，一刻都放不鬆", "valence": -0.3, "arousal": 0.6 },
             { "id": "startled", "label": { "zh": "嚇一跳", "en": "Startled" }, "desc": "突然被驚動", "valence": -0.4, "arousal": 0.8 },
             { "id": "worried", "label": { "zh": "擔心", "en": "Worried" }, "desc": "懸著，放不下", "valence": -0.5, "arousal": 0.4 },
@@ -38,6 +40,7 @@
           "id": "stress",
           "label": { "zh": "壓力", "en": "Stress" },
           "emotions": [
+            { "id": "busy", "label": { "zh": "忙亂", "en": "Hectic" }, "desc": "轉個不停", "valence": -0.2, "arousal": 0.4 },
             { "id": "pressured", "label": { "zh": "有壓力", "en": "Pressured" }, "desc": "像扛著重重的東西", "valence": -0.4, "arousal": 0.6 },
             { "id": "restless", "label": { "zh": "坐立不安", "en": "Restless" }, "desc": "坐也不是，站也不是", "valence": -0.3, "arousal": 0.7 },
             { "id": "overwhelmed", "label": { "zh": "不知所措", "en": "Overwhelmed" }, "desc": "亂糟糟的，快滿出來", "valence": -0.7, "arousal": 0.7 },
@@ -74,6 +77,7 @@
           "id": "confidence",
           "label": { "zh": "自信", "en": "Confidence" },
           "emotions": [
+            { "id": "assured", "label": { "zh": "有把握", "en": "Assured" }, "desc": "心裡有數", "valence": 0.4, "arousal": 0.3 },
             { "id": "confident", "label": { "zh": "有自信", "en": "Confident" }, "desc": "穩穩的，有底氣", "valence": 0.6, "arousal": 0.4 },
             { "id": "accomplished", "label": { "zh": "有成就感", "en": "Accomplished" }, "desc": "充實、有份量", "valence": 0.8, "arousal": 0.5 },
             { "id": "proud", "label": { "zh": "自豪", "en": "Proud" }, "desc": "覺得光榮", "valence": 0.8, "arousal": 0.6 }
@@ -83,10 +87,12 @@
           "id": "engagement",
           "label": { "zh": "投入", "en": "Engagement" },
           "emotions": [
+            { "id": "interested", "label": { "zh": "感興趣", "en": "Interested" }, "desc": "被吸引住了", "valence": 0.3, "arousal": 0.3 },
             { "id": "curious", "label": { "zh": "好奇", "en": "Curious" }, "desc": "想湊近看看，想知道更多", "valence": 0.5, "arousal": 0.5 },
             { "id": "anticipating", "label": { "zh": "期待", "en": "Looking forward" }, "desc": "雀躍，等不及了", "valence": 0.6, "arousal": 0.5 },
             { "id": "motivated", "label": { "zh": "有動力", "en": "Motivated" }, "desc": "躍躍欲試", "valence": 0.6, "arousal": 0.6 },
-            { "id": "hopeful", "label": { "zh": "充滿希望", "en": "Hopeful" }, "desc": "有一點光透進來", "valence": 0.6, "arousal": 0.3 }
+            { "id": "hopeful", "label": { "zh": "充滿希望", "en": "Hopeful" }, "desc": "有一點光透進來", "valence": 0.6, "arousal": 0.3 },
+            { "id": "passionate", "label": { "zh": "熱情", "en": "Passionate" }, "desc": "熱騰騰的，全心投入", "valence": 0.7, "arousal": 0.8 }
           ]
         },
         {
@@ -109,7 +115,7 @@
           "id": "sadness",
           "label": { "zh": "悲傷", "en": "Sadness" },
           "emotions": [
-            { "id": "down", "label": { "zh": "有點低落", "en": "A bit down" }, "desc": "情緒往下掉了一點", "valence": -0.3, "arousal": -0.2 },
+            { "id": "down", "label": { "zh": "低落", "en": "Low" }, "desc": "情緒往下掉了一點", "valence": -0.3, "arousal": -0.2 },
             { "id": "sad", "label": { "zh": "難過", "en": "Sad" }, "desc": "沉甸甸的，很傷心", "valence": -0.7, "arousal": -0.3 },
             { "id": "disappointed", "label": { "zh": "失望", "en": "Disappointed" }, "desc": "一下子洩了氣", "valence": -0.6, "arousal": -0.2 },
             { "id": "wronged", "label": { "zh": "委屈", "en": "Wronged" }, "desc": "受了傷，又說不出口", "valence": -0.7, "arousal": -0.1 },
@@ -122,6 +128,7 @@
           "id": "exhaustion",
           "label": { "zh": "疲憊", "en": "Exhaustion" },
           "emotions": [
+            { "id": "sleepy", "label": { "zh": "睏", "en": "Sleepy" }, "desc": "只想睡一覺", "valence": -0.1, "arousal": -0.5 },
             { "id": "tired", "label": { "zh": "累", "en": "Tired" }, "desc": "沒有力氣，想休息", "valence": -0.3, "arousal": -0.7 },
             { "id": "unmotivated", "label": { "zh": "提不起勁", "en": "Unmotivated" }, "desc": "懶洋洋，動不起來", "valence": -0.4, "arousal": -0.6 },
             { "id": "helpless", "label": { "zh": "無力", "en": "Helpless" }, "desc": "有心無力", "valence": -0.7, "arousal": -0.6 },
@@ -168,19 +175,31 @@
           "id": "contentment",
           "label": { "zh": "滿足", "en": "Contentment" },
           "emotions": [
+            { "id": "alright", "label": { "zh": "還不錯", "en": "Alright" }, "desc": "小小的滿意", "valence": 0.3, "arousal": -0.1 },
             { "id": "content", "label": { "zh": "滿足", "en": "Content" }, "desc": "剛剛好，很飽足", "valence": 0.7, "arousal": -0.3 },
             { "id": "secure", "label": { "zh": "安心", "en": "Secure" }, "desc": "踏實，很放心", "valence": 0.6, "arousal": -0.5 },
-            { "id": "comfortable", "label": { "zh": "舒服", "en": "Comfortable" }, "desc": "暖呼呼的，很舒適", "valence": 0.5, "arousal": -0.5 }
+            { "id": "comfortable", "label": { "zh": "舒服", "en": "Comfortable" }, "desc": "暖呼呼的，很舒適", "valence": 0.5, "arousal": -0.5 },
+            { "id": "happiness", "label": { "zh": "幸福", "en": "Happy inside" }, "desc": "整個世界都柔和了", "valence": 0.95, "arousal": -0.2 }
           ]
         },
         {
           "id": "connection",
           "label": { "zh": "連結", "en": "Connection" },
           "emotions": [
-            { "id": "fond", "label": { "zh": "喜歡", "en": "Fond" }, "desc": "甜甜的，有好感", "valence": 0.7, "arousal": 0.2 },
             { "id": "grateful", "label": { "zh": "感激", "en": "Grateful" }, "desc": "溫暖，想說聲謝謝", "valence": 0.7, "arousal": -0.1 },
             { "id": "touched", "label": { "zh": "感動", "en": "Touched" }, "desc": "被輕輕碰到最軟的地方", "valence": 0.7, "arousal": 0.1 },
-            { "id": "loved", "label": { "zh": "被愛", "en": "Loved" }, "desc": "被在乎、被接住", "valence": 0.9, "arousal": -0.1 },
+            { "id": "belonging", "label": { "zh": "歸屬感", "en": "Belonging" }, "desc": "有一個屬於自己的位置", "valence": 0.7, "arousal": -0.2 },
+            { "id": "loved", "label": { "zh": "被愛", "en": "Loved" }, "desc": "被在乎、被接住", "valence": 0.9, "arousal": -0.1 }
+          ]
+        },
+        {
+          "id": "care",
+          "label": { "zh": "在乎", "en": "Care" },
+          "emotions": [
+            { "id": "caring", "label": { "zh": "關心", "en": "Caring" }, "desc": "放在心上，想知道對方好不好", "valence": 0.5, "arousal": 0.1 },
+            { "id": "gentle", "label": { "zh": "溫柔", "en": "Tender" }, "desc": "輕輕的、軟軟的", "valence": 0.6, "arousal": -0.4 },
+            { "id": "fond", "label": { "zh": "喜歡", "en": "Fond" }, "desc": "甜甜的，有好感", "valence": 0.7, "arousal": 0.2 },
+            { "id": "heartache", "label": { "zh": "心疼", "en": "Aching for someone" }, "desc": "看著對方難受，自己也跟著痛", "valence": -0.1, "arousal": -0.1 },
             { "id": "longing", "label": { "zh": "思念", "en": "Longing" }, "desc": "掛念著，又甜又酸", "valence": 0.1, "arousal": -0.3 }
           ]
         }

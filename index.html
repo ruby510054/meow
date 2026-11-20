@@ -1131,6 +1131,7 @@
           "id": "anger",
           "label": { "zh": "生氣", "en": "Anger" },
           "emotions": [
+            { "id": "irked", "label": { "zh": "不爽", "en": "Irked" }, "desc": "心裡不太痛快", "valence": -0.3, "arousal": 0.3 },
             { "id": "irritated", "label": { "zh": "煩躁", "en": "Irritated" }, "desc": "毛毛躁躁，一碰就炸", "valence": -0.4, "arousal": 0.5 },
             { "id": "frustrated", "label": { "zh": "挫折", "en": "Frustrated" }, "desc": "一股氣悶著，出不去", "valence": -0.6, "arousal": 0.5 },
             { "id": "offended", "label": { "zh": "被冒犯", "en": "Offended" }, "desc": "像被刺了一下", "valence": -0.6, "arousal": 0.6 },
@@ -1142,6 +1143,7 @@
           "id": "fear",
           "label": { "zh": "害怕", "en": "Fear" },
           "emotions": [
+            { "id": "uneasy", "label": { "zh": "不安", "en": "Uneasy" }, "desc": "隱隱約約的不踏實", "valence": -0.3, "arousal": 0.3 },
             { "id": "nervous", "label": { "zh": "緊張", "en": "Nervous" }, "desc": "緊繃，一刻都放不鬆", "valence": -0.3, "arousal": 0.6 },
             { "id": "startled", "label": { "zh": "嚇一跳", "en": "Startled" }, "desc": "突然被驚動", "valence": -0.4, "arousal": 0.8 },
             { "id": "worried", "label": { "zh": "擔心", "en": "Worried" }, "desc": "懸著，放不下", "valence": -0.5, "arousal": 0.4 },
@@ -1155,6 +1157,7 @@
           "id": "stress",
           "label": { "zh": "壓力", "en": "Stress" },
           "emotions": [
+            { "id": "busy", "label": { "zh": "忙亂", "en": "Hectic" }, "desc": "轉個不停", "valence": -0.2, "arousal": 0.4 },
             { "id": "pressured", "label": { "zh": "有壓力", "en": "Pressured" }, "desc": "像扛著重重的東西", "valence": -0.4, "arousal": 0.6 },
             { "id": "restless", "label": { "zh": "坐立不安", "en": "Restless" }, "desc": "坐也不是，站也不是", "valence": -0.3, "arousal": 0.7 },
             { "id": "overwhelmed", "label": { "zh": "不知所措", "en": "Overwhelmed" }, "desc": "亂糟糟的，快滿出來", "valence": -0.7, "arousal": 0.7 },
@@ -1191,6 +1194,7 @@
           "id": "confidence",
           "label": { "zh": "自信", "en": "Confidence" },
           "emotions": [
+            { "id": "assured", "label": { "zh": "有把握", "en": "Assured" }, "desc": "心裡有數", "valence": 0.4, "arousal": 0.3 },
             { "id": "confident", "label": { "zh": "有自信", "en": "Confident" }, "desc": "穩穩的，有底氣", "valence": 0.6, "arousal": 0.4 },
             { "id": "accomplished", "label": { "zh": "有成就感", "en": "Accomplished" }, "desc": "充實、有份量", "valence": 0.8, "arousal": 0.5 },
             { "id": "proud", "label": { "zh": "自豪", "en": "Proud" }, "desc": "覺得光榮", "valence": 0.8, "arousal": 0.6 }
@@ -1200,10 +1204,12 @@
           "id": "engagement",
           "label": { "zh": "投入", "en": "Engagement" },
           "emotions": [
+            { "id": "interested", "label": { "zh": "感興趣", "en": "Interested" }, "desc": "被吸引住了", "valence": 0.3, "arousal": 0.3 },
             { "id": "curious", "label": { "zh": "好奇", "en": "Curious" }, "desc": "想湊近看看，想知道更多", "valence": 0.5, "arousal": 0.5 },
             { "id": "anticipating", "label": { "zh": "期待", "en": "Looking forward" }, "desc": "雀躍，等不及了", "valence": 0.6, "arousal": 0.5 },
             { "id": "motivated", "label": { "zh": "有動力", "en": "Motivated" }, "desc": "躍躍欲試", "valence": 0.6, "arousal": 0.6 },
-            { "id": "hopeful", "label": { "zh": "充滿希望", "en": "Hopeful" }, "desc": "有一點光透進來", "valence": 0.6, "arousal": 0.3 }
+            { "id": "hopeful", "label": { "zh": "充滿希望", "en": "Hopeful" }, "desc": "有一點光透進來", "valence": 0.6, "arousal": 0.3 },
+            { "id": "passionate", "label": { "zh": "熱情", "en": "Passionate" }, "desc": "熱騰騰的，全心投入", "valence": 0.7, "arousal": 0.8 }
           ]
         },
         {
@@ -1226,7 +1232,7 @@
           "id": "sadness",
           "label": { "zh": "悲傷", "en": "Sadness" },
           "emotions": [
-            { "id": "down", "label": { "zh": "有點低落", "en": "A bit down" }, "desc": "情緒往下掉了一點", "valence": -0.3, "arousal": -0.2 },
+            { "id": "down", "label": { "zh": "低落", "en": "Low" }, "desc": "情緒往下掉了一點", "valence": -0.3, "arousal": -0.2 },
             { "id": "sad", "label": { "zh": "難過", "en": "Sad" }, "desc": "沉甸甸的，很傷心", "valence": -0.7, "arousal": -0.3 },
             { "id": "disappointed", "label": { "zh": "失望", "en": "Disappointed" }, "desc": "一下子洩了氣", "valence": -0.6, "arousal": -0.2 },
             { "id": "wronged", "label": { "zh": "委屈", "en": "Wronged" }, "desc": "受了傷，又說不出口", "valence": -0.7, "arousal": -0.1 },
@@ -1239,6 +1245,7 @@
           "id": "exhaustion",
           "label": { "zh": "疲憊", "en": "Exhaustion" },
           "emotions": [
+            { "id": "sleepy", "label": { "zh": "睏", "en": "Sleepy" }, "desc": "只想睡一覺", "valence": -0.1, "arousal": -0.5 },
             { "id": "tired", "label": { "zh": "累", "en": "Tired" }, "desc": "沒有力氣，想休息", "valence": -0.3, "arousal": -0.7 },
             { "id": "unmotivated", "label": { "zh": "提不起勁", "en": "Unmotivated" }, "desc": "懶洋洋，動不起來", "valence": -0.4, "arousal": -0.6 },
             { "id": "helpless", "label": { "zh": "無力", "en": "Helpless" }, "desc": "有心無力", "valence": -0.7, "arousal": -0.6 },
@@ -1285,19 +1292,31 @@
           "id": "contentment",
           "label": { "zh": "滿足", "en": "Contentment" },
           "emotions": [
+            { "id": "alright", "label": { "zh": "還不錯", "en": "Alright" }, "desc": "小小的滿意", "valence": 0.3, "arousal": -0.1 },
             { "id": "content", "label": { "zh": "滿足", "en": "Content" }, "desc": "剛剛好，很飽足", "valence": 0.7, "arousal": -0.3 },
             { "id": "secure", "label": { "zh": "安心", "en": "Secure" }, "desc": "踏實，很放心", "valence": 0.6, "arousal": -0.5 },
-            { "id": "comfortable", "label": { "zh": "舒服", "en": "Comfortable" }, "desc": "暖呼呼的，很舒適", "valence": 0.5, "arousal": -0.5 }
+            { "id": "comfortable", "label": { "zh": "舒服", "en": "Comfortable" }, "desc": "暖呼呼的，很舒適", "valence": 0.5, "arousal": -0.5 },
+            { "id": "happiness", "label": { "zh": "幸福", "en": "Happy inside" }, "desc": "整個世界都柔和了", "valence": 0.95, "arousal": -0.2 }
           ]
         },
         {
           "id": "connection",
           "label": { "zh": "連結", "en": "Connection" },
           "emotions": [
-            { "id": "fond", "label": { "zh": "喜歡", "en": "Fond" }, "desc": "甜甜的，有好感", "valence": 0.7, "arousal": 0.2 },
             { "id": "grateful", "label": { "zh": "感激", "en": "Grateful" }, "desc": "溫暖，想說聲謝謝", "valence": 0.7, "arousal": -0.1 },
             { "id": "touched", "label": { "zh": "感動", "en": "Touched" }, "desc": "被輕輕碰到最軟的地方", "valence": 0.7, "arousal": 0.1 },
-            { "id": "loved", "label": { "zh": "被愛", "en": "Loved" }, "desc": "被在乎、被接住", "valence": 0.9, "arousal": -0.1 },
+            { "id": "belonging", "label": { "zh": "歸屬感", "en": "Belonging" }, "desc": "有一個屬於自己的位置", "valence": 0.7, "arousal": -0.2 },
+            { "id": "loved", "label": { "zh": "被愛", "en": "Loved" }, "desc": "被在乎、被接住", "valence": 0.9, "arousal": -0.1 }
+          ]
+        },
+        {
+          "id": "care",
+          "label": { "zh": "在乎", "en": "Care" },
+          "emotions": [
+            { "id": "caring", "label": { "zh": "關心", "en": "Caring" }, "desc": "放在心上，想知道對方好不好", "valence": 0.5, "arousal": 0.1 },
+            { "id": "gentle", "label": { "zh": "溫柔", "en": "Tender" }, "desc": "輕輕的、軟軟的", "valence": 0.6, "arousal": -0.4 },
+            { "id": "fond", "label": { "zh": "喜歡", "en": "Fond" }, "desc": "甜甜的，有好感", "valence": 0.7, "arousal": 0.2 },
+            { "id": "heartache", "label": { "zh": "心疼", "en": "Aching for someone" }, "desc": "看著對方難受，自己也跟著痛", "valence": -0.1, "arousal": -0.1 },
             { "id": "longing", "label": { "zh": "思念", "en": "Longing" }, "desc": "掛念著，又甜又酸", "valence": 0.1, "arousal": -0.3 }
           ]
         }
@@ -1332,6 +1351,36 @@ const MEOW_CLIPS = [
 // 畫面上的中文照這張對照表換成英文；之後才出現的字（對話、日曆…）也會自動換。
 // 情緒詞的英文直接用 mood.json 裡的 label.en；你自己寫的心情內容不會被翻譯。
 const EN = {
+  "心裡不太痛快": "Not quite pleased",
+  "隱隱約約的不踏實": "A faint unsettled feeling",
+  "轉個不停": "Spinning nonstop",
+  "只想睡一覺": "Just want to sleep",
+  "心裡有數": "I know where I stand",
+  "被吸引住了": "Drawn in",
+  "熱騰騰的，全心投入": "Fired up, all in",
+  "小小的滿意": "A little satisfied",
+  "整個世界都柔和了": "The whole world feels soft",
+  "有一個屬於自己的位置": "Having a place of my own",
+  "放在心上，想知道對方好不好": "Holding someone in mind, wondering how they are",
+  "輕輕的、軟軟的": "Light and soft",
+  "看著對方難受，自己也跟著痛": "Hurting along with someone who's hurting",
+  "揉皺的紙團": "Crumpled paper",
+  "晃動的指南針": "Wobbly compass",
+  "轉不停的小風車": "Spinning pinwheel",
+  "小月亮": "Little moon",
+  "勾勾": "Check mark",
+  "小燈泡": "Light bulb",
+  "小辣椒": "Little chili",
+  "星星貼紙": "Star sticker",
+  "小彩虹": "Little rainbow",
+  "拼上的拼圖": "Fitting puzzle piece",
+  "小澆水壺": "Watering can",
+  "羽毛": "Feather",
+  "圍著圍巾的心": "Heart in a scarf",
+  "蜜桃": "Peach",
+  "好有歸屬感": "I belong here",
+  "好在乎…": "I care so much…",
+  "想守護": "I want to protect",
   "哪一類？": "Which kind?",
   "自己的詞": "My own words",
   "＋ 寫下自己的詞": "+ Write my own word",
@@ -1850,7 +1899,7 @@ const MOODS = {
              acts: { walk: 4, sit: 1, groom: 1 }, speed: 80 },
 };
 const CALICO_DARK = "#5A5560", CALICO_ORANGE = "#E9A06A";
-// ---------- 花色：17 種，按情緒家族決定 ----------
+// ---------- 花色：18 種，按情緒家族決定 ----------
 // fur 底色、stripe 虎斑紋（跟 fur 一樣就是沒有斑紋）、chest 胸口和嘴邊、eye 眼睛
 // patches：兩塊斑（三花、玳瑁、橘白）、earR：右耳的顏色、point：暹羅的重點色（耳朵、臉、腳、尾巴）
 // muzzle：白色嘴套、paw：腳的顏色、whisker／eyeLine：深色毛的貓用淺色鬍鬚和眼線
@@ -1871,6 +1920,7 @@ const COATS = {
   cream:      { name: "奶油", fur: "#F7DDB8", stripe: "#EBC08E", chest: "#FFF6EA", eye: "#9FC27A" },
   taro:       { name: "芋頭", fur: "#D3C6DC", stripe: "#B6A4C6", chest: "#F6F1F9", eye: "#EDC45E" },
   oat:        { name: "燕麥", fur: "#DCD2C4", stripe: "#BBAE9B", chest: "#F5F0E8", eye: "#B9A0D8" },
+  peach:      { name: "蜜桃", fur: "#F6D3C4", stripe: "#E8AE98", chest: "#FFF5EF", eye: "#8FC08F" },
   black:      { name: "煤球", fur: "#45424D", stripe: "#45424D", chest: "#55525D", eye: "#F0D25C", whisker: "#fff", eyeLine: "#F3EEF5" },
 };
 const coatOf = k => COATS[k] || MOODS[k] || COATS.calm;
@@ -1879,7 +1929,7 @@ const recCoat = r => FAMILY_COAT[typeof EMO !== "undefined" && EMO[emoOf(r)[0]]?
 const emoCoat = id => FAMILY_COAT[EMO[id]?.family] || "calm";
 const FAMILY_COAT = { joy: "happy", confidence: "goldie", engagement: "siamese", connection: "anxious", calm: "calm", contentment: "orangewhite",
   sadness: "sad", exhaustion: "tired", self_conscious: "graywhite", numbness: "silver", anger: "angry", fear: "tortie", stress: "brown", unsure: "black",
-  disgust: "cream", wonder: "taro", neutral: "oat" };
+  disgust: "cream", wonder: "taro", neutral: "oat", care: "peach" };
 
 // 頭的位置（各個姿勢）：x, y 位移與旋轉角度（以頭中心 100,42 為軸）
 // 胖胖版的頭：以下巴 (100, 58) 為中心放大 1.16 倍，再往下 7
@@ -2366,12 +2416,61 @@ const ACC = {
   okay: h => `<g ${AK()}><path d="M115 13 H129 L127.4 25.4 Q127 27 125.4 27 H118.6 Q117 27 116.6 25.4Z" fill="${hsl(h, 45, 90)}"/>
     <path d="M129 15.6 Q133.4 15.6 132.6 19.4 Q132 22 128.2 21.6" fill="none" stroke-width="1.2"/></g>${miniFace(122, 20, .55, "flat", false)}
     <path d="M119 10.4 q-1 -2 0 -3.4 q1 -1.6 0 -3 M124.6 10.4 q-1 -2 0 -3.4 q1 -1.6 0 -3" fill="none" stroke="#bdb5b8" stroke-width=".9" stroke-linecap="round"/>`,
+  // 新增的淡的詞、在乎
+  // 不爽：揉皺的紙團
+  irked: h => `<g ${AK()}><path d="M115 16 L119 10 L124 13 L129 9 L132 15 L129 20 L132 25 L126 27 L121 24 L116 26 L114 21Z" fill="${hsl(h, 30, 92)}"/>
+    <path d="M119 10 L121 17 L129 20 M124 13 L121 17 L116 26 M126 27 L121 24" fill="none" stroke-width="1"/></g>`,
+  // 不安：晃來晃去的指南針
+  uneasy: h => `<g ${AK()}><circle cx="122" cy="16" r="8.6" fill="#fffaf5"/><circle cx="122" cy="16" r="6.4" fill="${hsl(h, 50, 90)}" stroke-width="1"/>
+    <path d="M122 16 L126.4 10.6 L123.2 17.2Z" fill="${hsl(h, 80, 70)}" stroke-width="1"/><path d="M122 16 L117.6 21.4 L120.8 14.8Z" fill="#fffaf5" stroke-width="1"/></g>
+    <path d="M110.6 10 q-1.6 2 0 4 M133.4 18 q1.6 2 0 4" fill="none" ${AK(1)}/>`,
+  // 忙亂：轉不停的小風車
+  busy: h => `<g ${AK()}><path d="M122 18 L122 34" fill="none" stroke-width="1.8"/>
+    ${[0, 90, 180, 270].map((r, i) => `<path d="M122 18 L122 8 Q128 8 122 18Z" fill="${hsl(h + i * 50, 75, 78)}" transform="rotate(${r + 20} 122 18)"/>`).join("")}
+    <circle cx="122" cy="18" r="1.6" fill="#fffaf5"/></g><path d="M110 12 q2 -4 6 -5 M134 26 q-2 4 -6 5" fill="none" ${AK(1)}/>`,
+  // 睏：一彎小月亮
+  sleepy: h => `<g ${AK()}><path d="M126 4 C118 5 114 12 116 19 C118 26 126 29 132 25 C125 25 120 19 121 13 C121.6 9 123.4 6 126 4Z" fill="#ffe08a"/></g>
+    ${sparkle(132, 9, .5, "#fffaf5").replace("<path", `<path ${AK(.8)}`)}${sparkle(110, 14, .4, "#fffaf5").replace("<path", `<path ${AK(.8)}`)}`,
+  // 有把握：一個勾勾
+  assured: h => `<g ${AK()}><circle cx="122" cy="14" r="8.4" fill="${hsl(h, 65, 80)}"/></g>
+    <path d="M117.6 14.2 L121 17.6 L126.6 10.6" fill="none" stroke="#4a3439" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M117.6 14.2 L121 17.6 L126.6 10.6" fill="none" stroke="#fffaf5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>`,
+  // 感興趣：亮起來的小燈泡
+  interested: h => `<g ${AK()}><path d="M116 12 C116 6 128 6 128 12 C128 16 125 17 125 20 H119 C119 17 116 16 116 12Z" fill="#fff1a8"/>
+    <rect x="118.6" y="20" width="6.8" height="4.4" rx="1.4" fill="${hsl(h, 30, 80)}"/></g>
+    <path d="M110 8 L112.6 9.4 M134 8 L131.4 9.4 M122 1 V3.6" fill="none" ${AK(1)}/>${shine("M118.6 10.6 Q119 8.6 121 8.2", 1)}`,
+  // 熱情：一根小辣椒
+  passionate: h => `<g ${AK()}><path d="M118 10 C126 10 131 18 128 27 C127 31 123 32 122 29 C124 24 121 16 116 14 C114 13 115 10 118 10Z" fill="#f2826e"/>
+    <path d="M118 10 C117 7 119 5 121 5 M116 12 C117 9 120 8.6 122 10" fill="none" stroke="#6fa655" stroke-width="1.8"/></g>${shine("M125 16 Q127 19 126.6 22", 1)}`,
+  // 還不錯：小星星貼紙
+  alright: h => { const st = [...Array(10)].map((_, i) => { const a = (i * 36 - 90) * Math.PI / 180, r = i % 2 ? 3.8 : 8; return `${i ? "L" : "M"}${(122 + r * Math.cos(a)).toFixed(1)} ${(14 + r * Math.sin(a)).toFixed(1)}`; }).join(" ") + "Z";
+    return `<g ${AK()}><circle cx="122" cy="14.6" r="10" fill="#fffaf5"/><path d="${st}" fill="${hsl(h, 80, 80)}"/></g>${miniFace(122, 14.6, .45, "smile", false)}`; },
+  // 幸福：一道小彩虹
+  happiness: h => `<g fill="none" stroke-linecap="round">
+    <path d="M108 22 A14 14 0 0 1 136 22" stroke="#4a3439" stroke-width="10.4"/>
+    <path d="M108 22 A14 14 0 0 1 136 22" stroke="#f9c4c9" stroke-width="2.6"/><path d="M110.6 22 A11.4 11.4 0 0 1 133.4 22" stroke="#fde2b0" stroke-width="2.6"/>
+    <path d="M113.2 22 A8.8 8.8 0 0 1 130.8 22" stroke="#cdeccb" stroke-width="2.6"/></g>
+    <g ${AK()}><path d="${cloudPath(108, 23, .42)}" fill="#fff"/><path d="${cloudPath(136, 23, .42)}" fill="#fff"/></g>`,
+  // 歸屬感：剛好拼上的拼圖
+  belonging: h => `<g ${AK()}><path d="M112 8 H120 C120 5 124 5 124 8 H130 V14 C127 14 127 18 130 18 V24 H112Z" fill="${hsl(h, 65, 80)}"/>
+    <path d="M124 8 C124 11 120 11 120 8" fill="none" stroke-width="1"/></g>${miniFace(119, 17, .55, "smile", false)}`,
+  // 關心：小澆水壺
+  caring: h => `<g ${AK()}><path d="M112 14 H126 L125 26 H113Z" fill="${hsl(h, 60, 80)}"/><path d="M126 17 L133 11 L134.6 12.6 L127 21" fill="${hsl(h, 60, 80)}"/>
+    <path d="M114 14 C114 8 124 8 124 14" fill="none" stroke-width="1.6"/></g>
+    <g fill="#bfe3f7" stroke="none"><circle cx="136" cy="16" r="1"/><circle cx="137.6" cy="20" r="1"/><circle cx="135.4" cy="23" r="1"/></g>`,
+  // 溫柔：一根輕輕的羽毛
+  gentle: h => `<g ${AK()}><path d="M112 28 C114 18 122 8 134 4 C132 14 124 24 112 28Z" fill="${hsl(h, 55, 90)}"/>
+    <path d="M112 28 C118 20 124 13 134 4" fill="none" stroke-width="1"/>
+    <path d="M118 21 L115.6 18 M122 16 L119.8 12.8 M121 22 L124 22 M125 17 L128 17" fill="none" stroke-width=".8"/></g>`,
+  // 心疼：圍著圍巾的心
+  heartache: h => `<path ${AK(1.2)} d="${heartPath(122, 14, 1.9)}" fill="${hsl(335 + h % 40, 75, 80)}"/>
+    <g ${AK(1)}><path d="M114.4 15 Q122 19 129.6 15 L129.6 18.4 Q122 22.4 114.4 18.4Z" fill="${hsl(h + 180, 50, 82)}"/><path d="M126 19 L127 26 L130 25 L128.4 18.4" fill="${hsl(h + 180, 50, 82)}"/></g>`,
   unsure: h => `<g ${AK()}><circle cx="112.6" cy="23" r="1.4" fill="#fff"/><circle cx="116.6" cy="17" r="2.1" fill="#fff"/><ellipse cx="125" cy="8" rx="8.6" ry="7" fill="#fffaf5"/></g>${puffy(125, 12, "?", 10, hsl(h, 70, 72))}${shine("M119.4 6 Q120 3.6 122.4 3")}`,
 };
 // 家族（舊記錄用）→ 代表的配件
 const FAMILY_ACC = { anger: "offended", fear: "nervous", stress: "pressured", joy: "happy", confidence: "proud", engagement: "curious",
   sadness: "sad", exhaustion: "tired", self_conscious: "embarrassed", numbness: "numb", calm: "peaceful", contentment: "content", connection: "loved",
-  disgust: "dislike", wonder: "amazed", neutral: "okay" };
+  disgust: "dislike", wonder: "amazed", neutral: "okay", care: "caring" };
 // 插畫風：貓咪和配件的線條換成溫暖的棕色、細一點（跟房間家具同一種畫風）
 const ACC_LINE = "#7a5a50";
 const illus = svg => svg.replace(/#4a3439/gi, ACC_LINE).replace(/stroke-width="([\d.]+)"/g, (m, w) => `stroke-width="${(+w * .85).toFixed(2)}"`);
@@ -2398,7 +2497,8 @@ const ACC_NAME = {
   grateful: "禮物", touched: "閃閃", loved: "愛心", unsure: "問號泡泡",
   averse: "叉叉泡泡", dislike: "青椒", disgusted: "怪味道", awe: "小星球", amazed: "流星", pleasantly_surprised: "拉炮",
   startled: "跳起來的心", shocked: "驚嘆號和問號", suffocated: "大石頭", cheerful: "四葉草", anticipating: "圈起來的日子",
-  down: "小烏雲", heartbroken: "裂開的心", relieved: "放下的石頭", fond: "愛心天線", longing: "一封信", okay: "一杯溫開水",
+  down: "小烏雲", irked: "揉皺的紙團", uneasy: "晃動的指南針", busy: "轉不停的小風車", sleepy: "小月亮", assured: "勾勾",
+  interested: "小燈泡", passionate: "小辣椒", alright: "星星貼紙", happiness: "小彩虹", belonging: "拼上的拼圖", caring: "小澆水壺", gentle: "羽毛", heartache: "圍著圍巾的心", heartbroken: "裂開的心", relieved: "放下的石頭", fond: "愛心天線", longing: "一封信", okay: "一杯溫開水",
 };
 const accName = id => ACC_NAME[id] || ACC_NAME[FAMILY_ACC[id]] || ACC_NAME[FAMILY_ACC[EMO[id]?.family]] || "";
 // 沒有存顏色的舊記錄：用內容算出一個固定的顏色
@@ -3185,7 +3285,8 @@ const FAMILY_TALK = {
   numbness: ["什麼都感覺不到", "空空的", "好無聊…"],
   calm: ["好平靜", "好放鬆～", "靜靜的"],
   contentment: ["好滿足～", "好安心", "好舒服～"],
-  connection: ["心裡暖暖的", "好感動…", "想念…"],
+  connection: ["心裡暖暖的", "好感動…", "好有歸屬感"],
+  care: ["好在乎…", "想守護", "想念…"],
   disgust: ["好討厭…", "噁——", "不想靠近"],
   wonder: ["哇——", "不可思議…", "沒想到！"],
   neutral: ["還好", "普普通通", "平平的"],
@@ -3931,7 +4032,7 @@ const FAMILY_FACE = {
   joy: "happy", confidence: "happy", engagement: "happy",
   sadness: "sad", exhaustion: "tired", self_conscious: "sad", numbness: "tired",
   calm: "calm", contentment: "calm", connection: "happy",
-  disgust: "anxious", wonder: "happy", neutral: "calm",
+  disgust: "anxious", wonder: "happy", neutral: "calm", care: "calm",
 };
 const QUAD_FACE = { high_unpleasant: "angry", high_pleasant: "happy", low_unpleasant: "sad", low_pleasant: "calm" };
 const EMO = {};
