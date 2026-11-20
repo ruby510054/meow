@@ -43,68 +43,36 @@ Mood Meadow is a small practice tool and can't replace professional help. If you
 ## Features
 
 ### Log your mood
-- Pick one of four areas (energy × pleasantness, based on the circumplex model of affect), then the closest of 63 feeling words — each comes with a short description. Some families go from mild to strong, like "A bit down" to "Heartbroken"
-- Each feeling family ends with "+ My own word": if a feeling belongs to a family but none of the words or descriptions quite fit, add your own word and description. Its coat and accessory follow that family; while adding it you can also drag a point on a small square to set how pleasant and how energetic it is, and the weather outside changes as you drag. Words you no longer want can be hidden
-- When it's nothing especially good or bad, choose "Okay"
-- Choose "Mixed" to pick several words; if you're "Not sure", you can log how your body feels and what it's about instead, or tap a rough spot on the small square
-- Log as many times a day as you like, and edit, delete, or add entries for any of the last 7 days
+Start with one of four areas (energy × pleasantness), then pick the feeling word that fits best. If none quite fits, add your own word; "Not sure" or just "Okay" are fine to log too.
 
 ![Logging a mood: pick "Sad" and it starts raining outside](docs/record.png)
 
 ### Mood weather
-The sky outside follows your mood: happy is sunny, calm brings a rainbow, irritated gets windy, sad brings rain.
-
-It follows the time of day too: a light mist in the early morning, sunset colors in the evening, and stars and a moon at night.
+The sky outside follows your mood and the time of day: happy is sunny, sad brings rain, and night brings stars and a moon.
 
 ![Four kinds of mood weather: sunny, rainbow, windy, rain](docs/weather.png)
 
 ### The meadow
-- Every entry sends a cat into the meadow. Its coat depends on the feeling's family (17 coats), and it wears a little accessory for that feeling
-- Cats walk, play and snuggle; their moves and expressions depend on the mood
-- Click a cat to hear about that day's mood; click the grass to drop a fish snack, or kick the yarn ball
-- Cats react to the weather and scenery too: they hide from the rain and curl up, jump at thunder, roll around in the sun, and chat about flowers, butterflies and clouds
-- The older the entry, the fainter its cat; after 7 days it no longer appears
+Every entry becomes a cat that runs into the meadow outside the window. The cat *is* that feeling: its coat and little accessory follow the feeling, older entries fade, and after 7 days they're gone.
 
 ![All feeling accessories](docs/accessories.png)
 
-### Little animals and hiding spots in the meadow
-The meadow is a small system: the cats' feelings affect the little animals, and the animals affect the cats in return. These interactions only change what a cat is doing in the moment, never its feeling.
+The meadow is also a small system. Birds, a rabbit, frogs, fireflies and a bee come and go with the weather and time, and they and the cats affect each other: little animals come closer to calm cats, and on rainy days some cats look for shelter. These interactions only change what a cat is doing in the moment, never its feeling.
 
-- Birds, a rabbit, frogs, fireflies and a bee show up depending on the weather and time: frogs come out in the rain, fireflies at night, and the bee visits flowers on sunny days
-- Little animals come closer to calm cats; when an energetic cat runs over, the birds fly back to the tree and the rabbit hides in the bush, coming out again once things settle
-- Sometimes a bird keeps a sad cat company: it lands nearby and chirps softly, and the cat's ears lift a little; when the cat rolls over, the bird startles and flies off, leaving a feather behind
-- Cats talk to themselves when they notice the animals, like "A bunny!", "So pretty…" or "Oh, it flew away…"
-- There are taro leaves, a bush, a hollow log and a big tree to hide in: on rainy days low-spirited cats shelter under the taro leaves, in thunder scared cats hide behind the log or bush, and at night tired cats sleep under the tree
-
-### The room and its cat
-- A cat lives in the room and wanders around on its own. It runs around, chases its tail, naps on the bed and sofa, and now and then makes mischief on the desk
-- Its expression follows your mood, and petting it makes hearts float up
-- Give it a name and pick its coat
-- Two rooms to choose from: the pink cottage and the cat café, each with its own furniture
-- Three curtain styles, which you can drag open and closed
+### The room
+There's a cat in the room too, living its own day, with an expression that follows your mood. You can change the room, curtains and colors, and stick notes on the wall.
 
 ![Two rooms: the pink cottage and the cat café](docs/rooms.png)
 
-![Curtain styles](docs/curtains.png)
-
-### Go outside
-Press "Go outside" to step out into the meadow; the room cat comes along, and you can see the meadow cats up close.
+### Go outside, Recent
+"Go outside" takes you out into the meadow to see the cats up close; "Recent" lets you look back over the last 7 days.
 
 ![Going outside: the room cat comes along to the meadow](docs/outside.png)
-
-### Sticky notes
-Press "Notes" to stick a note in the room, write something, and drag it wherever you like. You can also press Ctrl+V (or paste on a phone) to turn copied text into a new note. Notes don't fade; peel one off with the × in its corner, and use the dot to change its color.
-
-### Recent
-"Recent" shows the cats from the last 7 days, fainter the further back they are, along with the mood colors and the feelings that came up.
 
 ![Recent moods](docs/calendar.png)
 
 ### More
-- Piano background music, and meows and purrs when you pet a cat — each can be turned on or off
-- The pink cottage has 9 color themes; the cat café has its own set of drink colors (milk, latte, caramel, strawberry milk, matcha, blueberry yogurt, hojicha, night sky). Each room remembers its own choice
-- Switch between Chinese and English with the "EN" button; English feeling words come from `label.en` in `mood.json`
-- Works on desktop and mobile
+Piano music and sound effects, Chinese / English, and it works on desktop and mobile.
 
 ![Mobile layout](docs/phone.png)
 
